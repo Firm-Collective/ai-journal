@@ -1,7 +1,6 @@
 <div align="center">
-    <img src="img.png" width="20%" height="20%" alt="OneVoiceEcho-logo">
+    <img src="/assets/OneVoiceLogo.png" width="20%" height="20%" alt="OneVoiceEcho-logo">
     <h1>One Voice Echo</h1>
-     <hr>
     <h3 align="center">A shared journaling and reflection platform</h3>
 </div>
 
@@ -17,11 +16,11 @@ A mobile application to record journal entries for Christians to reflect on thei
 5. [Extra Resources](#extra-resources)
 
 ## Introduction
-###Project Goals:
+### Project Goals:
 
-###Target user:
+### Target user:
 
-###Main Features:
+### Main Features:
 - **Expo:** 
 - **React Native:** 
 - **React:** 
