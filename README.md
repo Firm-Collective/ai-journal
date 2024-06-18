@@ -1,12 +1,8 @@
 <div align="center">
     <img src="/assets/OneVoiceLogo.png" width="20%" height="20%" alt="OneVoiceEcho-logo">
     <h1>One Voice Echo</h1>
-    <h3 align="center">A shared journaling and reflection platform</h3>
+    <h3 align="center">A mobile application to record journal entries for Christians to reflect on their prayers and Bible readings while connecting with others around the world.</h3>
 </div>
-
-# One Voice Echo
-
-A mobile application to record journal entries for Christians to reflect on their prayers and Bible readings while connecting with others around the world.
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -17,13 +13,16 @@ A mobile application to record journal entries for Christians to reflect on thei
 
 ## Introduction
 ### Project Goals:
+1. Allow users to authenticate and signup/login to their account
+2. Allow users to input and save a text message into the app which is then saved and stored within our database
+3. Allow users to record and upload voice memos into the app.
 
 ### Target user:
+Christians or non-christian users with faith.
 
-### Main Features:
-- **Expo:** 
-- **React Native:** 
-- **React:** 
+### Tools:
+- **Expo:** This will be used to build and deploy our project easily. 
+- **React Native:** Is the framework we will use to create the project.
 
 ## Versions and Deployments
 - **Expo:** `~51.0.14`
