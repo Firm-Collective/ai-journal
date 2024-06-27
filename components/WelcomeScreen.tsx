@@ -1,11 +1,17 @@
 import * as React from 'react';
-import { Image, StyleSheet, View, Text, Dimensions } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+} from 'react-native';
 import Signup from '@/components/auth/Signup';
 import SignupButton from '@/components/buttons/SignupButton';
 import SigninButton from '@/components/buttons/SigninButton';
-import { useState } from 'react';
+import {useState} from 'react';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
   const [showSignup, setShowSignup] = useState(false);
@@ -22,26 +28,29 @@ const WelcomeScreen = () => {
         resizeMode="cover"
         source={require('../assets/images/gradient1.png')}
       />
-      <Image
-        style={styles.logosIcon}
-        resizeMode="cover"
-        source={require('../assets/images/logos.png')}
-      />
-      <Text style={styles.welcomeTo}>
-        Welcome to {'\n'}
-        <View style={styles.welcomeContainer}>
-          <Text style={[styles.onevoice, styles.boldText]}>one</Text>
-          <Text style={styles.onevoice}>voice</Text>
-        </View>
-        {'\n'}
-        <Text style={[styles.boldText, styles.journal]}>Journal</Text>
-      </Text>
+      <View style={styles.welcomeContainer}>
+        <Image
+          style={styles.logosIcon}
+          resizeMode="contain"
+          source={require('../assets/images/logos.png')}
+        />
+        <Text style={styles.welcomeTo}>Welcome to</Text>
+        <Image
+          style={styles.onevoiceJournalLogo1}
+          source={require('../assets/images/onevoice-journal-logo-text.png')}
+          resizeMode="cover"
+        />
+      </View>
       <View style={styles.buttonContainer}>
         {showSignup ? (
           <Signup />
         ) : (
           <>
-            <SigninButton onPress={() => { /* Todo: handle Signin button press */ }} />
+            <SigninButton
+              onPress={() => {
+                /* Todo: handle Signin button press */
+              }}
+            />
             <SignupButton onPress={() => setShowSignup(true)} />
           </>
         )}
@@ -74,28 +83,21 @@ const styles = StyleSheet.create({
     height: height + 100,
     width: width + 100,
   },
+  welcomeContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   welcomeTo: {
     fontSize: 22,
     textAlign: 'center',
-    fontFamily: 'Poppins-Regular',
-    marginBottom: 20,
-  },
-  welcomeContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    justifyContent: 'center',
-  },
-  boldText: {
-    fontWeight: 'bold',
-    fontFamily: 'Poppins-Bold',
-  },
-  onevoice: {
     fontFamily: 'Poppins',
-    fontSize: 32,
+    marginTop: 50,
   },
-  journal: {
-    fontFamily: 'Poppins',
-    fontSize: 36,
+  onevoiceJournalLogo1: {
+    width: 215, 
+    height: 87,
   },
   buttonContainer: {
     marginTop: 120,
