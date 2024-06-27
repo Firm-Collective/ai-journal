@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
-import { Alert, StyleSheet, View } from 'react-native'
-import { Button, Input } from '@rneui/themed'
-import { signInWithEmail, signUpWithEmail, signOut } from '@/lib/Auth'
+import React, {useState} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
+import {Button, Input} from '@rneui/themed';
+import {signInWithEmail, signUpWithEmail, signOut} from '@/lib/Auth';
 
 export default function Auth() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   return (
     <View style={styles.container}>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           label="Email"
-          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+          leftIcon={{type: 'font-awesome', name: 'envelope'}}
           onChangeText={(text: any) => setEmail(text)}
           value={email}
           placeholder="email@address.com"
@@ -23,7 +23,7 @@ export default function Auth() {
       <View style={styles.verticallySpaced}>
         <Input
           label="Password"
-          leftIcon={{ type: 'font-awesome', name: 'lock' }}
+          leftIcon={{type: 'font-awesome', name: 'lock'}}
           onChangeText={(text: any) => setPassword(text)}
           value={password}
           secureTextEntry={true}
@@ -32,16 +32,21 @@ export default function Auth() {
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail(email, password)} />
+        <Button
+          title="Sign in"
+          disabled={loading}
+          onPress={() => signInWithEmail(email, password)}
+        />
       </View>
       <View style={styles.verticallySpaced}>
-        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail(email, password)} />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button title="Sign out" disabled={loading} onPress={() => signOut()} />
+        <Button
+          title="Sign up"
+          disabled={loading}
+          onPress={() => signUpWithEmail(email, password)}
+        />
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -57,4 +62,4 @@ const styles = StyleSheet.create({
   mt20: {
     marginTop: 20,
   },
-})
+});
