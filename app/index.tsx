@@ -8,7 +8,7 @@ export default function IndexPage() {
       if (session) {
         router.replace('/(tabs)/home/');
       } else {
-        console.log('No user');
+        router.replace('/(auth)/login');
       }
     });
 
@@ -16,7 +16,6 @@ export default function IndexPage() {
       if (session) {
         router.replace('/(tabs)/home/');
       } else {
-        console.log('No user');
         router.replace('/(auth)/login');
       }
     });

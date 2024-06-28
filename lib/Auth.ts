@@ -40,8 +40,6 @@ export async function signInWithEmail(email: string, password: string) {
     Alert.alert('Error signing in with user', error.message);
   } else {
     Alert.alert('Success signing in with user');
-    const user = await getUser();
-    console.log(user);
   }
 }
 

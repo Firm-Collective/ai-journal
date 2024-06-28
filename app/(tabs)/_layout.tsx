@@ -1,4 +1,3 @@
-import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {Link, Tabs} from 'expo-router';
 import {Pressable} from 'react-native';
@@ -16,6 +15,7 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  // redirect user to login page if not logged in
   const colorScheme = useColorScheme();
 
   return (
