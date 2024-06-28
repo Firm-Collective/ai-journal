@@ -1,23 +1,20 @@
-import {router} from 'expo-router';
-import {useEffect} from 'react';
-import {supabase} from '@/lib/supabase';
+import {View} from '@/components/Themed';
+import {Text} from '@/components/Themed';
+import {signOut} from '@/lib/Auth';
+import {useAuth} from '@/providers/AuthProvider';
+import {Link, Redirect} from 'expo-router';
+import {ActivityIndicator, Button} from 'react-native';
 
 export default function IndexPage() {
-  useEffect(() => {
-    supabase.auth.getSession().then(({data: {session}}) => {
-      if (session) {
-        router.replace('/(tabs)/home/');
-      } else {
-        router.replace('/(auth)/login');
-      }
-    });
+  const {session, loading} = useAuth();
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        router.replace('/(tabs)/home/');
-      } else {
-        router.replace('/(auth)/login');
-      }
-    });
-  }, []);
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  if (!session) {
+    return <Redirect href={'/(auth)/login'} />;
+  }
+
+  return <Redirect href={'/(user)/home'} />;
 }
