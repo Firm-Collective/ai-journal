@@ -15,7 +15,9 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  // redirect user to login page if not logged in
+  // TODO: use the user hook, if the user is not logged in
+  // then redirect the user.
+
   const colorScheme = useColorScheme();
 
   return (
