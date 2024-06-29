@@ -1,15 +1,14 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
 
-interface SignupButtonProps {
-  onPress: () => void;
-}
-
-const SignupButton: React.FC<SignupButtonProps> = ({ onPress }) => {
+const SignupButton = () => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>Sign up</Text>
-    </TouchableOpacity>
+    <Link href="/Signup">
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.text}>Sign up</Text>
+      </TouchableOpacity>
+    </Link>
   );
 };
 

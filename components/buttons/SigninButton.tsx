@@ -1,15 +1,14 @@
+import { Link } from 'expo-router';
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-interface SigninButtonProps {
-  onPress: () => void;
-}
-
-const SigninButton: React.FC<SigninButtonProps> = ({ onPress }) => {
+const SigninButton = () => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>Login</Text>
-    </TouchableOpacity>
+    <Link href="/Signin" >
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.text}>Login</Text>
+      </TouchableOpacity>
+    </Link>
   );
 };
 

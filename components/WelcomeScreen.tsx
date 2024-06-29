@@ -1,21 +1,11 @@
 import * as React from 'react';
-import {
-  Image,
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-} from 'react-native';
-import Signup from '@/components/auth/Signup';
+import {Image, StyleSheet, View, Text, Dimensions} from 'react-native';
 import SignupButton from '@/components/buttons/SignupButton';
 import SigninButton from '@/components/buttons/SigninButton';
-import {useState} from 'react';
 
 const {width, height} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
-  const [showSignup, setShowSignup] = useState(false);
-
   return (
     <View style={styles.container}>
       <Image
@@ -42,18 +32,8 @@ const WelcomeScreen = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        {showSignup ? (
-          <Signup />
-        ) : (
-          <>
-            <SigninButton
-              onPress={() => {
-                /* Todo: handle Signin button press */
-              }}
-            />
-            <SignupButton onPress={() => setShowSignup(true)} />
-          </>
-        )}
+        <SigninButton />
+        <SignupButton />
       </View>
     </View>
   );
@@ -77,8 +57,7 @@ const styles = StyleSheet.create({
   },
   gradientIcon1: {
     position: 'absolute',
-    top: height / 2 - 426,
-    left: -width / 2 + 26,
+    top: height / 2 - 456,
     opacity: 0.6,
     height: height + 100,
     width: width + 100,
@@ -96,7 +75,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   onevoiceJournalLogo1: {
-    width: 215, 
+    width: 215,
     height: 87,
   },
   buttonContainer: {
