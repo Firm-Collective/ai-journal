@@ -1,5 +1,5 @@
 import {useAuth} from '@/providers/AuthProvider';
-import {Redirect, Slot} from 'expo-router';
+import {Redirect, Stack} from 'expo-router';
 
 export default function AuthLayout() {
   const {session} = useAuth();
@@ -9,5 +9,5 @@ export default function AuthLayout() {
     return <Redirect href={'/'} />;
   }
 
-  return <Slot />;
+  return <Stack></Stack>;
 }

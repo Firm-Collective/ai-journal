@@ -1,12 +1,12 @@
+import {Link} from 'expo-router';
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-const SignupButton = () => {
+const SigninButton = () => {
   return (
-    <Link href="/Signup">
+    <Link href="/(auth)/login" asChild>
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.text}>Sign up</Text>
+        <Text style={styles.text}>Login</Text>
       </TouchableOpacity>
     </Link>
   );
@@ -17,16 +17,14 @@ const styles = StyleSheet.create({
     width: 324,
     height: 56,
     borderRadius: 28,
-    borderWidth: 1,
-    borderColor: 'black',
+    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
   },
   text: {
-    color: 'black',
+    color: 'white',
     fontSize: 16,
   },
 });
 
-export default SignupButton;
+export default SigninButton;
