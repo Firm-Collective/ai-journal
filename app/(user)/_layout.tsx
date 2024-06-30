@@ -37,11 +37,7 @@ export default function TabLayout() {
         name="home/index"
         options={{
           title: 'Home',
-<<<<<<< HEAD
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-=======
           tabBarIcon: ({color}) => <TabBarIcon name="code" color={color} />,
->>>>>>> 199bb3d (initial commit for authentication setup)
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
