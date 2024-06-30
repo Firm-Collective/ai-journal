@@ -11,23 +11,23 @@ const WelcomeScreen = () => {
       <Image
         style={styles.gradientIcon}
         resizeMode="cover"
-        source={require('../assets/images/gradient.png')}
+        source={require('../assets/images/welcome-screen/gradient.png')}
       />
       <Image
         style={styles.gradientIcon1}
         resizeMode="cover"
-        source={require('../assets/images/gradient1.png')}
+        source={require('../assets/images/welcome-screen/gradient1.png')}
       />
       <View style={styles.welcomeContainer}>
         <Image
           style={styles.logosIcon}
           resizeMode="contain"
-          source={require('../assets/images/logos.png')}
+          source={require('../assets/images/welcome-screen/logos.png')}
         />
         <Text style={styles.welcomeTo}>Welcome to</Text>
         <Image
           style={styles.onevoiceJournalLogo1}
-          source={require('../assets/images/onevoice-journal-logo-text.png')}
+          source={require('../assets/images/welcome-screen/onevoice-journal-logo-text.png')}
           resizeMode="cover"
         />
       </View>
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    fontFamily: 'Poppins',
   },
   gradientIcon: {
     position: 'absolute',
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
+    gap: 10,
   },
   logosIcon: {
     marginTop: 20,
