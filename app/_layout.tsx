@@ -1,14 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {DarkTheme, DefaultTheme, ThemeProvider} from '@react-navigation/native';
 import {useFonts} from 'expo-font';
-import {Stack} from 'expo-router';
+import {Stack, useRouter} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import 'react-native-reanimated';
 import AuthProvider from '@/providers/AuthProvider';
 
 import {useColorScheme} from '@/components/useColorScheme';
-
+import {Linking} from 'react-native';
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -48,6 +48,34 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleDeepLink = (event: {url: string}) => {
+      const url = new URL(event.url);
+      const path = url.pathname.slice(1);
+
+      console.log('Received deep link: ', path);
+
+      if (path === 'login') {
+        router.push('/login');
+      }
+    };
+
+    // Handle incoming url
+    Linking.getInitialURL().then(url => {
+      if (url) {
+        handleDeepLink({url});
+      }
+    });
+
+    // Listen for new urls
+    const subscription = Linking.addEventListener('url', handleDeepLink);
+
+    return () => {
+      subscription.remove();
+    };
+  }, [router]);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

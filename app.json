@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "One-Voice-Echo",
+    "name": "One Voice Echo",
     "slug": "One-Voice-Echo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "com.firmcollective.onevoiceecho",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -13,13 +13,34 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "associatedDomains": [
+        "applinks:firmcollective.org"
+      ]
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "lyton.dev",
+              "pathPrefix": "/login"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
+      "package": "com.firmcollective.OneVoiceEcho"
     },
     "web": {
       "bundler": "metro",
@@ -38,14 +59,13 @@
         "origin": false
       },
       "eas": {
-        "projectId": "ca2a4644-0c86-4092-b1f9-d554abfc52cf"
+        "projectId": "3196a892-2eac-48b2-89b1-69cb37e04986"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "updates": {
-      "url": "https://u.expo.dev/ca2a4644-0c86-4092-b1f9-d554abfc52cf"
-    }
+      "url": "https://u.expo.dev/3196a892-2eac-48b2-89b1-69cb37e04986"
+    },
+    "owner": "lyton505"
   }
 }

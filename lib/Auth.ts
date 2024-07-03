@@ -1,4 +1,8 @@
-import {Alert} from 'react-native';
+import {Alert, Button} from 'react-native';
+import {makeRedirectUri} from 'expo-auth-session';
+import * as QueryParams from 'expo-auth-session/build/QueryParams';
+import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
 import {supabase} from './supabase';
 
 /**
@@ -14,7 +18,13 @@ export async function signUpWithEmail(email: string, password: string) {
   } = await supabase.auth.signUp({
     email: email,
     password: password,
+    options: {
+      // toDo: change domain to firmcollective --- see developer(Lyton) notes
+      emailRedirectTo: 'https://lyton.dev/login',
+    },
   });
+
+  console.log('Signing up with email');
 
   // TODO: If error then return error code
   if (error) {
