@@ -16,7 +16,8 @@
       "supportsTablet": true,
       "associatedDomains": [
         "applinks:firmcollective.org"
-      ]
+      ],
+      "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
     },
     "android": {
       "adaptiveIcon": {
@@ -49,7 +50,18 @@
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "assets/fonts/Poppins-Regular.ttf",
+            "assets/fonts/Poppins-Black.ttf",
+            "assets/fonts/Poppins-Bold.ttf",
+            "assets/fonts/Poppins-Medium.ttf"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
