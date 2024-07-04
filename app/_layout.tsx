@@ -55,8 +55,6 @@ function RootLayoutNav() {
       const url = new URL(event.url);
       const path = url.pathname.slice(1);
 
-      console.log('Received deep link: ', path);
-
       if (path === 'login') {
         router.push('/login');
       }

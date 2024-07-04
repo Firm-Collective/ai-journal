@@ -24,8 +24,6 @@ export async function signUpWithEmail(email: string, password: string) {
     },
   });
 
-  console.log('Signing up with email');
-
   // TODO: If error then return error code
   if (error) {
     Alert.alert('Sign up error', error.message);
@@ -59,7 +57,6 @@ export async function signOut() {
     Alert.alert('Error logging out user', error.message);
   } else {
     Alert.alert('Success logging out user');
-    console.log('Success logging out');
   }
 }
 
