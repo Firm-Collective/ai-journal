@@ -15,13 +15,13 @@ const WelcomeScreen = () => {
           resizeMode={'contain'}
         ></Image>
       </View>
+      <Text style={styles.logoTextGreet}>Welcome to </Text>
       <View>
-        <Text style={styles.logoTextCont}>
-          <Text style={styles.logoTextGreet}>welcome to </Text>
-          <Text style={styles.logoTextBold}>one</Text>
-          <Text>voice {'\n'}</Text>
-          <Text style={styles.logoTextBold}>journal</Text>
-        </Text>
+        <Image
+          source={require('../../assets/images/welcome-screen/onevoice-journal-logo-text.png')}
+          resizeMode={'contain'}
+          style={{height: 120}}
+        ></Image>
       </View>
       <View>
         <Text style={styles.subHeroText}>
@@ -49,16 +49,15 @@ const styles = StyleSheet.create({
     aspectRatio: 16 / 9,
     width: windowWidth - 40,
   },
-  logoTextCont: {
-    fontSize: 45,
-    textAlign: 'center',
-    fontFamily: 'Poppins-Regular',
-  },
   logoTextBold: {
     fontWeight: 'bold',
   },
   logoTextGreet: {
-    fontSize: 35,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Thin',
+    fontSize: 30,
+    color: '#272727',
+    letterSpacing: 3,
   },
   btnCont: {
     display: 'flex',
