@@ -1,38 +1,36 @@
-import {Image, StyleSheet, View, Text, Dimensions} from 'react-native';
-import SignupButton from '@/components/welcome-screen/buttons/SignupButton';
+import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import SigninButton from '@/components/welcome-screen/buttons/SigninButton';
+import SignupButton from '@/components/welcome-screen/buttons/SignupButton';
 
 const {width, height} = Dimensions.get('window');
+const windowWidth = Dimensions.get('window').width;
 
 const WelcomeScreen = () => {
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.gradientIcon}
-        resizeMode="cover"
-        source={require('../../assets/images/welcome-screen/gradient.png')}
-      />
-      <Image
-        style={styles.gradientIcon1}
-        resizeMode="cover"
-        source={require('../../assets/images/welcome-screen/gradient1.png')}
-      />
-      <View style={styles.welcomeContainer}>
+      <View>
         <Image
-          style={styles.logosIcon}
-          resizeMode="contain"
           source={require('../../assets/images/welcome-screen/logos.png')}
-        />
-        <Text style={styles.welcomeTo}>Welcome to</Text>
-        <Image
-          style={styles.onevoiceJournalLogo1}
-          source={require('../../assets/images/welcome-screen/onevoice-journal-logo-text.png')}
-          resizeMode="cover"
-        />
+          style={styles.imageCont}
+          resizeMode={'contain'}
+        ></Image>
       </View>
-      <View style={styles.buttonContainer}>
-        <SigninButton />
-        <SignupButton />
+      <View>
+        <Text style={styles.logoTextCont}>
+          <Text style={styles.logoTextGreet}>welcome to </Text>
+          <Text style={styles.logoTextBold}>one</Text>
+          <Text>voice {'\n'}</Text>
+          <Text style={styles.logoTextBold}>journal</Text>
+        </Text>
+      </View>
+      <View>
+        <Text style={styles.subHeroText}>
+          Your Faith. Your Story. Guided by AI.
+        </Text>
+      </View>
+      <View style={styles.btnCont}>
+        <SigninButton></SigninButton>
+        <SignupButton></SignupButton>
       </View>
     </View>
   );
@@ -45,51 +43,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    fontFamily: 'Poppins',
   },
-  gradientIcon: {
-    position: 'absolute',
-    top: -21,
-    left: -width / 2,
-    opacity: 0.6,
-    height: height + 100,
-    width: width + 100,
+  imageCont: {
+    height: 'auto',
+    aspectRatio: 16 / 9,
+    width: windowWidth - 40,
   },
-  gradientIcon1: {
-    position: 'absolute',
-    top: height / 2 - 456,
-    opacity: 0.6,
-    height: height + 100,
-    width: width + 100,
+  logoTextCont: {
+    fontSize: 45,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular',
   },
-  welcomeContainer: {
+  logoTextBold: {
+    fontWeight: 'bold',
+  },
+  logoTextGreet: {
+    fontSize: 35,
+  },
+  btnCont: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 20,
+    marginTop: 90,
   },
-  welcomeTo: {
-    fontSize: 22,
-    textAlign: 'center',
-    fontFamily: 'Poppins',
-    marginTop: 50,
-  },
-  onevoiceJournalLogo1: {
-    width: 215,
-    height: 87,
-  },
-  buttonContainer: {
-    marginTop: 120,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-    gap: 10,
-  },
-  logosIcon: {
-    marginTop: 20,
-    width: 114,
-    height: 114,
+  subHeroText: {
+    marginTop: 4,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 15,
   },
 });
 
