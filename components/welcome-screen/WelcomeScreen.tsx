@@ -1,56 +1,54 @@
+import React from 'react';
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import SigninButton from '@/components/welcome-screen/buttons/SigninButton';
 import SignupButton from '@/components/welcome-screen/buttons/SignupButton';
+import GradientBackground from '@/components/welcome-screen/BackgroundGradient';
 
-const {width, height} = Dimensions.get('window');
-const windowWidth = Dimensions.get('window').width;
+const {width} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
   return (
-    <View style={styles.container}>
-      <View>
+    <GradientBackground>
+      <View style={styles.content}>
         <Image
           source={require('../../assets/images/welcome-screen/logos.png')}
           style={styles.imageCont}
           resizeMode={'contain'}
-        ></Image>
-      </View>
-      <Text style={styles.logoTextGreet}>Welcome to </Text>
-      <View>
+        />
+        <Text style={styles.logoTextGreet}>Welcome to</Text>
         <Image
           source={require('../../assets/images/welcome-screen/onevoice-journal-logo-text.png')}
           resizeMode={'contain'}
-          style={{height: 120}}
-        ></Image>
-      </View>
-      <View>
+          style={styles.logoImage}
+        />
         <Text style={styles.subHeroText}>
           Your Faith. Your Story. Guided by AI.
         </Text>
+        <View style={styles.btnCont}>
+          <SigninButton />
+          <SignupButton />
+        </View>
       </View>
-      <View style={styles.btnCont}>
-        <SigninButton></SigninButton>
-        <SignupButton></SignupButton>
-      </View>
-    </View>
+    </GradientBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  content: {
     flex: 1,
-    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    width: '100%',
+    height: '100%',
   },
   imageCont: {
     height: 'auto',
     aspectRatio: 16 / 9,
-    width: windowWidth - 40,
+    width: width - 40,
   },
-  logoTextBold: {
-    fontWeight: 'bold',
+  logoImage: {
+    height: 120,
+    width: '100%',
   },
   logoTextGreet: {
     textAlign: 'center',
@@ -60,16 +58,18 @@ const styles = StyleSheet.create({
     letterSpacing: 3,
   },
   btnCont: {
-    display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignItems: 'center',
     gap: 20,
     marginTop: 90,
+    width: '100%',
   },
   subHeroText: {
     marginTop: 4,
     fontFamily: 'Poppins-Regular',
     fontSize: 15,
+    textAlign: 'center',
   },
 });
 
