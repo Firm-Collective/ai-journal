@@ -14,9 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "associatedDomains": [
-        "applinks:firmcollective.org"
-      ]
+      "associatedDomains": ["applinks:firmcollective.org"]
     },
     "android": {
       "adaptiveIcon": {
@@ -34,10 +32,7 @@
               "pathPrefix": "/login"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
@@ -47,10 +42,7 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": [
-      "expo-router",
-      "expo-secure-store"
-    ],
+    "plugins": ["expo-router", "expo-secure-store"],
     "experiments": {
       "typedRoutes": true
     },
@@ -59,13 +51,12 @@
         "origin": false
       },
       "eas": {
-        "projectId": "3196a892-2eac-48b2-89b1-69cb37e04986"
+        "projectId": "ca2a4644-0c86-4092-b1f9-d554abfc52cf"
       }
     },
     "runtimeVersion": "1.0.0",
     "updates": {
-      "url": "https://u.expo.dev/3196a892-2eac-48b2-89b1-69cb37e04986"
-    },
-    "owner": "lyton505"
+      "url": "https://u.expo.dev/ca2a4644-0c86-4092-b1f9-d554abfc52cf"
+    }
   }
 }
