@@ -2,16 +2,30 @@ import {AppState} from 'react-native';
 import 'react-native-url-polyfill/auto';
 import * as SecureStore from 'expo-secure-store';
 import {createClient} from '@supabase/supabase-js';
+import {deflate, inflate} from 'pako';
+import {encode as btoa, decode as atob} from 'base-64';
 
-const ExpoSecureStoreAdapter = {
-  getItem: (key: string) => {
-    return SecureStore.getItemAsync(key);
+const CompressedSecureStore = {
+  getItem: async (key: string) => {
+    const compressed = await SecureStore.getItemAsync(key);
+    if (compressed) {
+      const binaryString = atob(compressed);
+      const charArray = binaryString.split('').map(x => x.charCodeAt(0));
+      const byteArray = new Uint8Array(charArray);
+      const decompressed = inflate(byteArray, {to: 'string'});
+      return decompressed;
+    }
+    return null;
   },
   setItem: (key: string, value: string) => {
-    SecureStore.setItemAsync(key, value);
+    const compressed = deflate(value);
+    const base64 = btoa(
+      String.fromCharCode.apply(null, Array.from(compressed))
+    );
+    return SecureStore.setItemAsync(key, base64);
   },
   removeItem: (key: string) => {
-    SecureStore.deleteItemAsync(key);
+    return SecureStore.deleteItemAsync(key);
   },
 };
 
@@ -22,7 +36,7 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: ExpoSecureStoreAdapter,
+    storage: CompressedSecureStore,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
