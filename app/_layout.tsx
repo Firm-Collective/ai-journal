@@ -8,9 +8,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import 'react-native-reanimated';
 import AuthProvider from '@/providers/AuthProvider';
-
 import {useColorScheme} from '@/components/useColorScheme';
 import {Linking} from 'react-native';
+import parseAuthURLString from '@/lib/deepLinkHelper';
+import {supabase} from '@/lib/supabase';
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -52,9 +54,19 @@ function RootLayoutNav() {
   const router = useRouter();
 
   useEffect(() => {
-    const handleDeepLink = (event: {url: string}) => {
+    const handleDeepLink = async (event: {url: string}) => {
       const url = new URL(event.url);
       const path = url.pathname.slice(1);
+
+      if (url.toString().includes('access_token')) {
+        const {access_token, refresh_token} = parseAuthURLString(
+          url.toString()
+        );
+        await supabase.auth.setSession({
+          access_token,
+          refresh_token,
+        });
+      }
 
       if (path === 'login') {
         router.push('/login');
