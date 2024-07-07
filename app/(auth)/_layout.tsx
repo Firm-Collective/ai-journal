@@ -13,7 +13,10 @@ export default function AuthLayout() {
     <Stack>
       <Stack.Screen name="login" options={{headerShown: false}} />
       <Stack.Screen name="signup" options={{headerShown: false}} />
+<<<<<<< HEAD
       <Stack.Screen name="email-verification" options={{headerShown: false}} />
+=======
+>>>>>>> fcf4495 (partial 3rd party login solution. Currently supports Fb on Android and Apple auth on ios)
     </Stack>
   );
 }

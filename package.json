@@ -30,10 +30,17 @@
     "@supabase/supabase-js": "^2.44.3",
     "aes-js": "^3.1.2",
     "base-64": "^1.0.0",
+<<<<<<< HEAD
     "dicer": "^0.3.1",
     "eas-cli": "^10.1.1",
     "expo": "~51.0.24",
     "expo-auth-session": "^5.5.2",
+=======
+    "eas-cli": "^10.0.3",
+    "expo": "~51.0.17",
+    "expo-auth-session": "~5.5.2",
+    "expo-crypto": "~13.0.2",
+>>>>>>> fcf4495 (partial 3rd party login solution. Currently supports Fb on Android and Apple auth on ios)
     "expo-font": "~12.0.7",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.20",
@@ -53,7 +60,10 @@
     "react-native-safe-area-context": "4.10.5",
     "react-native-screens": "3.31.1",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-web": "~0.19.10"
+    "react-native-web": "~0.19.10",
+    "expo-apple-authentication": "~6.4.1"
+    "react-native-web": "~0.19.10",
+    "url": "^0.11.3"
   },
   "overrides": {
     "@expo/config-plugins": "^8.0.6",
@@ -72,5 +82,8 @@
     "react-test-renderer": "18.2.0",
     "typescript": "~5.3.3"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": ">=14"
+  }
 }

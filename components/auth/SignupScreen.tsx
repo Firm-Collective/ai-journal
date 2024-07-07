@@ -9,6 +9,8 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
+  Platform,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CheckBox} from '@rneui/themed';
@@ -18,7 +20,13 @@ import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';
-import {signupWithEmail} from '@/lib/Auth';
+import {
+  signInWithApple,
+  signInWithFacebook,
+  signupWithEmail,
+  signInWithGoogle,
+} from '@/lib/Auth';
+import {useRoute} from '@react-navigation/native';
 
 export default function SignupScreen() {
   const [email, setEmail] = useState('');
@@ -38,6 +46,11 @@ export default function SignupScreen() {
     return re.test(password);
   };
 
+  const routeNow = useRoute();
+
+  /**
+   * Handles the logic after a user clicks the signup button
+   */
   const handleSignup = async () => {
     if (!validateEmail(email)) {
       setEmailError('This is an invalid email, please try again.');
@@ -207,26 +220,52 @@ export default function SignupScreen() {
                 <Divider inset flex={1} />
               </View>
 
-              <View style={styles.otherSignupButtonsContainer}>
-                <View style={styles.logoGContainer}>
+              <View style={[styles.otherSignupButtonsContainer]}>
+                <TouchableOpacity
+                  onPress={() => {
+                    return signInWithGoogle();
+                  }}
+                >
+                  <View style={styles.logoGContainer}>
+                    <Image
+                      style={[styles.logo, styles.logoG]}
+                      resizeMode="contain"
+                      source={require('../../assets/images/User/auth-google-logo.png')}
+                    />
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    return signInWithFacebook();
+                  }}
+                >
                   <Image
-                    style={[styles.logo, styles.logoG]}
+                    style={[styles.logo]}
                     resizeMode="contain"
-                    source={require('../../assets/images/User/auth-google-logo.png')}
+                    source={require('../../assets/images/User/auth-facebook-logo.jpg')}
                   />
-                </View>
-                <Image
-                  style={[styles.logo]}
-                  resizeMode="contain"
-                  source={require('../../assets/images/User/auth-facebook-logo.jpg')}
-                />
-                <View style={styles.logoAppleContainer}>
-                  <Image
-                    style={[styles.logo, styles.logoApple]}
-                    resizeMode="contain"
-                    source={require('../../assets/images/User/auth-apple-logo.png')}
-                  />
-                </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('Apple auth');
+                    if (Platform.OS === 'ios') {
+                      return signInWithApple;
+                    } else {
+                      // toDo: implement android apple login
+                      Alert.alert(
+                        'Apple auth is currently available for ios only'
+                      );
+                    }
+                  }}
+                >
+                  <View style={[styles.logoAppleContainer]}>
+                    <Image
+                      style={[styles.logo, styles.logoApple]}
+                      resizeMode="contain"
+                      source={require('../../assets/images/User/auth-apple-logo.png')}
+                    />
+                  </View>
+                </TouchableOpacity>
               </View>
               <Text style={[styles.textSmall, styles.textGrey]}>
                 Already have an account?{' '}
