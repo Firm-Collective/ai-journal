@@ -1,5 +1,6 @@
 import {Alert} from 'react-native';
 import {supabase} from './supabase';
+import {AccessToken, LoginManager} from 'react-native-fbsdk-next';
 
 /**
  * Signs up the user with an email and password
@@ -41,6 +42,58 @@ export async function signInWithEmail(email: string, password: string) {
   } else {
     Alert.alert('Success signing in with user');
   }
+}
+
+export async function signInWithFacebook() {
+  try {
+    // Attempt a login using the Facebook login dialog asking for default permissions.
+
+    const results = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
+
+    if (results.isCancelled) {
+      console.log('Login canceled');
+    } else {
+      const userData = await AccessToken.getCurrentAccessToken();
+      console.log('Access token ', userData?.accessToken.toString());
+      console.log('Data ', userData);
+      console.log(
+        'Login success with permissions: ' +
+          results.grantedPermissions?.toString()
+      );
+
+      const {data, error} = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+        options: {
+          access_token: userData?.accessToken,
+        },
+      });
+
+      if (error) {
+        console.log('Supabase login error:', error);
+      } else {
+        console.log('Supabase login data:', data);
+      }
+
+      if (error) {
+        console.log('Error getting user:', error);
+      } else {
+        console.log('User data:', userData);
+      }
+    }
+
+    // TODO: if error then return error code
+    Alert.alert('Success signing in user');
+  } catch (e) {
+    Alert.alert('Error signing in with user');
+    console.log('An error occurred ', e);
+  }
+}
+
+export async function signOutFacebook() {
+  LoginManager.logOut();
 }
 
 export async function signOut() {
