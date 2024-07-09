@@ -1,7 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import {Platform} from 'react-native';
 
-export default async function openAuthLink(link) {
+export default async function openAuthLink(link: string) {
   console.log('Link in open func ', link);
 
   const platformAppLink =
