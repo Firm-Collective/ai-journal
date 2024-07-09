@@ -63,19 +63,7 @@
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store",
-      [
-        "react-native-fbsdk-next",
-        {
-          "appID": "496149592984911",
-          "clientToken": "c2bdeacd5ef417977e7f5ccfceaabbe9",
-          "displayName": "DFG-AIJ test",
-          "scheme": "fb496149592984911",
-          "advertiserIDCollectionEnabled": false,
-          "autoLogAppEventsEnabled": false,
-          "isAutoInitEnabled": true
-        }
-      ]
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
