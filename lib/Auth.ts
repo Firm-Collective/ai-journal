@@ -49,16 +49,20 @@ export async function signInWithEmail(email: string, password: string) {
   }
 }
 
+/**
+ * Signs in the user with Facebook
+ *
+ */
 export async function signInWithFacebook() {
-  const redirectLocation = makeRedirectUri();
-  console.log('We will redirect to ', redirectLocation);
+  const redirectOnAuthLocation = makeRedirectUri();
+  console.log('We will redirect to ', redirectOnAuthLocation);
   const {
     data: {url: supabaseFacebookUrl},
     error: supabaseError,
   } = await supabase.auth.signInWithOAuth({
     provider: 'facebook',
     options: {
-      redirectTo: redirectLocation,
+      redirectTo: redirectOnAuthLocation,
     },
   });
 
