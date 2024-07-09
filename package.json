@@ -28,7 +28,7 @@
     "@rneui/themed": "^4.0.0-rc.8",
     "@supabase/supabase-js": "^2.43.5",
     "base-64": "^1.0.0",
-    "eas-cli": "^10.0.3",
+    "eas-cli": "^0.49.0",
     "expo": "~51.0.17",
     "expo-auth-session": "^5.5.2",
     "expo-font": "~12.0.7",
