@@ -14,6 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
+<<<<<<< HEAD
       "infoPlist": {
         "SKAdNetworkItems": [
           {
@@ -25,6 +26,9 @@
         ]
       },
       "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
+=======
+      "bundleIdentifier": "com.nanku.OneVoiceEcho"
+>>>>>>> cfdee96 (add .gitignore)
     },
     "android": {
       "permissions": [
@@ -34,6 +38,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+<<<<<<< HEAD
       "intentFilters": [
         {
           "action": "VIEW",
@@ -52,6 +57,9 @@
         }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
+=======
+      "package": "com.nanku.OneVoiceEcho"
+>>>>>>> cfdee96 (add .gitignore)
     },
     "web": {
       "bundler": "metro",

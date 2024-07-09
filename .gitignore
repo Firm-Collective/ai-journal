@@ -41,7 +41,5 @@ yarn-error.*
 
 # webstorm config folder
 .idea/
-
-# ios and android folders
-android/
-ios/
+/android
+/ios
