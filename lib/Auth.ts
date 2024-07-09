@@ -1,6 +1,6 @@
 import {Alert} from 'react-native';
 import {supabase} from './supabase';
-import {AccessToken, LoginManager} from 'react-native-fbsdk-next';
+import openAuthLink from '@/lib/webLinkOpen';
 
 /**
  * Signs up the user with an email and password
@@ -49,55 +49,29 @@ export async function signInWithEmail(email: string, password: string) {
 }
 
 export async function signInWithFacebook() {
-  try {
-    // Attempt a login using the Facebook login dialog asking for default permissions.
+  const {
+    data: {url: supabaseFacebookUrl},
+    error: supabaseError,
+  } = await supabase.auth.signInWithOAuth({
+    provider: 'facebook',
+  });
+  if (supabaseFacebookUrl) {
+    const authResult = await openAuthLink(supabaseFacebookUrl);
+    // If the user does not permit the application to authenticate with the given url, the Promise fulfills with { type: 'cancel' } object.
+    // If the user closed the web browser, the Promise fulfills with { type: 'cancel' } object.
+    // If the browser is closed using dismissBrowser, the Promise fulfills with { type: 'dismiss' } object.
 
-    const results = await LoginManager.logInWithPermissions([
-      'public_profile',
-      'email',
-    ]);
-
-    if (results.isCancelled) {
-      console.log('Login canceled');
-    } else {
-      const userData = await AccessToken.getCurrentAccessToken();
-      console.log('Access token ', userData?.accessToken.toString());
-      console.log('Data ', userData);
-      console.log(
-        'Login success with permissions: ' +
-          results.grantedPermissions?.toString()
-      );
-
-      const {data, error} = await supabase.auth.signInWithOAuth({
-        provider: 'facebook',
-        options: {
-          access_token: userData?.accessToken,
-        },
-      });
-
-      if (error) {
-        console.log('Supabase login error:', error);
-      } else {
-        console.log('Supabase login data:', data);
-      }
-
-      if (error) {
-        console.log('Error getting user:', error);
-      } else {
-        console.log('User data:', userData);
-      }
+    if (authResult.type === 'cancel') {
+      //   toDo: handle cancel
+    } else if (authResult.type === 'dismiss') {
+      //   toDo: handle dismiss
+    } else if (authResult.type === 'success') {
+      //   toDo: handle success
     }
-
-    // TODO: if error then return error code
-    Alert.alert('Success signing in user');
-  } catch (e) {
-    Alert.alert('Error signing in with user');
-    console.log('An error occurred ', e);
+  } else if (supabaseError) console.log('An error occurred with supabase');
+  else {
+    //   toDo: handle case of other error
   }
-}
-
-export async function signOutFacebook() {
-  LoginManager.logOut();
 }
 
 export async function signOut() {
