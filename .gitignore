@@ -47,5 +47,5 @@ expo-env.d.ts
 .idea/
 
 # ios and android folders
-/android
-/ios
+android/
+ios/
