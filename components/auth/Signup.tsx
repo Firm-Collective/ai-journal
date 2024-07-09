@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {Button, Input} from '@rneui/themed';
 import {signInWithEmail, signUpWithEmail, signOut} from '@/lib/Auth';
+import GoogleSignInButton from '../buttons/GoogleSigninButton';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -45,6 +46,7 @@ export default function Auth() {
           onPress={() => signUpWithEmail(email, password)}
         />
       </View>
+      <GoogleSignInButton />
     </View>
   );
 }
