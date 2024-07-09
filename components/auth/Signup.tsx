@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Alert, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Button, Input} from '@rneui/themed';
-import {signInWithEmail, signUpWithEmail, signOut} from '@/lib/Auth';
+import {signInWithEmail, signInWithFacebook, signUpWithEmail} from '@/lib/Auth';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -43,6 +43,13 @@ export default function Auth() {
           title="Sign up"
           disabled={loading}
           onPress={() => signUpWithEmail(email, password)}
+        />
+      </View>
+      <View style={styles.verticallySpaced}>
+        <Button
+          title="Sign in with facebook"
+          disabled={loading}
+          onPress={signInWithFacebook}
         />
       </View>
     </View>
