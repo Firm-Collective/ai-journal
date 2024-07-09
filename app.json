@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "One-Voice-Echo",
+    "name": "One Voice Echo",
     "slug": "One-Voice-Echo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "com.firmcollective.onevoiceecho",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -14,6 +14,9 @@
     },
     "ios": {
       "supportsTablet": true,
+      "associatedDomains": [
+        "applinks:firmcollective.org"
+      ],
       "infoPlist": {
         "SKAdNetworkItems": [
           {
@@ -33,6 +36,23 @@
       },
       "permissions": [
         "android.permission.INTERNET"
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "lyton.dev",
+              "pathPrefix": "/login"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
     },
@@ -68,9 +88,7 @@
         "projectId": "ca2a4644-0c86-4092-b1f9-d554abfc52cf"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/ca2a4644-0c86-4092-b1f9-d554abfc52cf"
     }

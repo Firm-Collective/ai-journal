@@ -15,6 +15,10 @@ export async function signUpWithEmail(email: string, password: string) {
   } = await supabase.auth.signUp({
     email: email,
     password: password,
+    options: {
+      // toDo: change domain to firmcollective --- see developer(Lyton) notes
+      emailRedirectTo: 'https://lyton.dev/login',
+    },
   });
 
   // TODO: If error then return error code
@@ -102,7 +106,6 @@ export async function signOut() {
     Alert.alert('Error logging out user', error.message);
   } else {
     Alert.alert('Success logging out user');
-    console.log('Success logging out');
   }
 }
 

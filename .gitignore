@@ -46,6 +46,6 @@ expo-env.d.ts
 # webstorm config folder
 .idea/
 
-# added androis and ios folders
+# ios and android folders
 /android
 /ios
