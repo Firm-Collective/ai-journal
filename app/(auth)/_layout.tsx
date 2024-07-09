@@ -9,5 +9,10 @@ export default function AuthLayout() {
     return <Redirect href={'/'} />;
   }
 
-  return <Stack></Stack>;
+  return (
+    <Stack>
+      <Stack.Screen name="login" options={{headerShown: true}} />
+      <Stack.Screen name="email-verification" options={{headerShown: false}} />
+    </Stack>
+  );
 }
