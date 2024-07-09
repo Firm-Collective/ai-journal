@@ -56,10 +56,11 @@
     },
     "plugins": [
       "expo-router",
+      "expo-secure-store",
       [
-        "expo-secure-store",
+        "@react-native-google-signin/google-signin",
         {
-          "faceIDPermission": "Please allow One Voice Echo to access your Face ID biometric data for logging in."
+          "iosUrlScheme": "com.googleusercontent.apps.64478294171-ehjcv2i43egrjdcggpm3n4c0a7l5jkk9"
         }
       ]
     ],
