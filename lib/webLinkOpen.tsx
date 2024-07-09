@@ -14,12 +14,10 @@ export default async function openAuthLink(link: string) {
     console.log('Auth state is ', result.type);
     console.log('Auth Session Result:', result);
 
-    const loginUrl = Linking.createURL('/login');
-
-    console.log('Url is ', loginUrl);
-
     if (result.type === 'success') {
-      const loginUrl = Linking.createURL('/login');
+      // toDo: the redirection below may not work with ios -- case of supabase auth not
+      //  redirecting. The code below redirects to home
+      const loginUrl = Linking.createURL('/');
       if (await Linking.canOpenURL(loginUrl)) await Linking.openURL(loginUrl);
       else console.log('We cannot open that lol');
     }
