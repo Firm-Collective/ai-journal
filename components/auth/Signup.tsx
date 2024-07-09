@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {Button, Input} from '@rneui/themed';
 import {signInWithApple, signInWithFacebook} from '@/lib/Auth';
 import {useRoute} from '@react-navigation/native';
+import GoogleSignInButton from '../auth/buttons/GoogleSigninButton';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -56,6 +57,7 @@ export default function Auth() {
           onPress={signInWithApple}
         />
       </View>
+      <GoogleSignInButton />
     </View>
   );
 }
