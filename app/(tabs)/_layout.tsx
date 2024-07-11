@@ -55,6 +55,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="TextEntry"
+        options={{
+          title: 'Text Entry',
+          tabBarIcon: ({ color }) => <TabBarIcon name="pencil" color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="three"
         options={{
           title: 'Tab Three',
