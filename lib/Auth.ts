@@ -52,7 +52,7 @@ export async function signInWithEmail(email: string, password: string) {
 /**
  * Signs in the user with Facebook
  */
-export async function signInWithFacebook() {
+export async function signInWithFacebookWithBrowser() {
   const redirectOnAuthLocation = makeRedirectUri({
     path: '/home',
   });
