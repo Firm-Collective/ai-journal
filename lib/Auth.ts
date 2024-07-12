@@ -1,7 +1,7 @@
 import {Alert} from 'react-native';
 import {supabase} from './supabase';
-import openAuthLink from '@/lib/webLinkOpen';
 import {makeRedirectUri} from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
 
 /**
  * Signs up the user with an email and password
@@ -53,8 +53,9 @@ export async function signInWithEmail(email: string, password: string) {
  * Signs in the user with Facebook
  */
 export async function signInWithFacebook() {
-  const redirectOnAuthLocation = makeRedirectUri();
-  console.log('We will redirect to ', redirectOnAuthLocation);
+  const redirectOnAuthLocation = makeRedirectUri({
+    path: '/home',
+  });
   const {
     data: {url: supabaseFacebookUrl},
     error: supabaseError,
@@ -66,15 +67,17 @@ export async function signInWithFacebook() {
   });
 
   if (supabaseFacebookUrl) {
-    const authResult = await openAuthLink(supabaseFacebookUrl);
+    const authResult =
+      await WebBrowser.openAuthSessionAsync(supabaseFacebookUrl);
     // If the user does not permit the application to authenticate with the given url, the Promise fulfills with { type: 'cancel' } object.
     // If the user closed the web browser, the Promise fulfills with { type: 'cancel' } object.
     // If the browser is closed using dismissBrowser, the Promise fulfills with { type: 'dismiss' } object.
 
     if (authResult.type === 'cancel') {
       //   toDo: handle cancel -- some sort of error
+      Alert.alert('You disallowed the app; please allow');
     } else if (authResult.type === 'dismiss') {
-      //   toDo: handle dismiss -- also a case of success
+      //   toDo: handle dismiss -- also a case of success with supabase
     } else if (authResult.type === 'success') {
       //   toDo: handle success
     }
