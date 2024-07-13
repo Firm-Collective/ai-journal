@@ -14,7 +14,7 @@ import {Link} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
-import {loginWithEmail} from '@/lib/Auth';
+import {loginWithEmail, signInWithFacebook} from '@/lib/Auth';
 
 const {width, height} = Dimensions.get('window');
 
@@ -88,25 +88,34 @@ export default function LoginScreen() {
             <Divider inset={true} width={100} color="black" />
           </View>
           <View style={styles.buttonContainer3}>
-            <View style={styles.logoGContainer}>
-              <Image
-                style={[styles.logo, styles.logoG]}
-                resizeMode="contain"
-                source={require('../../assets/images/User/auth-google-logo.png')}
-              />
-            </View>
-            <Image
-              style={styles.logo}
-              resizeMode="contain"
-              source={require('../../assets/images/User/auth-facebook-logo.jpg')}
-            />
-            <View style={styles.logoAppleContainer}>
-              <Image
-                style={[styles.logo, styles.logoApple]}
-                resizeMode="contain"
-                source={require('../../assets/images/User/auth-apple-logo.png')}
-              />
-            </View>
+            <TouchableOpacity onPress={() => console.log('G auth')}>
+              <View style={styles.logoGContainer}>
+                <Image
+                  style={[styles.logo, styles.logoG]}
+                  resizeMode="contain"
+                  source={require('../../assets/images/User/auth-google-logo.png')}
+                />
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={signInWithFacebook}>
+              <View>
+                <Image
+                  style={styles.logo}
+                  resizeMode="contain"
+                  source={require('../../assets/images/User/auth-facebook-logo.jpg')}
+                />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => console.log('Apple auth')}>
+              <View style={styles.logoAppleContainer}>
+                <Image
+                  style={[styles.logo, styles.logoApple]}
+                  resizeMode="contain"
+                  source={require('../../assets/images/User/auth-apple-logo.png')}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
           <Text style={[styles.textSmall, styles.greyText]}>
             Don’t have an account?{' '}
