@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Input} from '@rneui/themed';
 import {loginWithEmail, signInWithFacebook, signupWithEmail} from '@/lib/Auth';
-import {useRoute} from '@react-navigation/core';
+import {useRoute} from '@react-navigation/native';
 
 export default function Auth() {
   const [email, setEmail] = useState('');

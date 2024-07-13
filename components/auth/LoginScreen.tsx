@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {
-  Image,
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-  TextInput,
-  Platform,
   Alert,
+  Dimensions,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LoginButton from '@/components/auth/buttons/LoginButtonFromLogin';
@@ -17,7 +17,7 @@ import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
 import {loginWithEmail, signInWithApple, signInWithFacebook} from '@/lib/Auth';
-import {useRoute} from '@react-navigation/core';
+import {useRoute} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
