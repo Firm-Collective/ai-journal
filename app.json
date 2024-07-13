@@ -14,29 +14,13 @@
     },
     "ios": {
       "supportsTablet": true,
-      "associatedDomains": [
-        "applinks:firmcollective.org"
-      ],
-      "infoPlist": {
-        "SKAdNetworkItems": [
-          {
-            "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
-          },
-          {
-            "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
-          }
-        ]
-      },
-      "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
+      "associatedDomains": ["applinks:firmcollective.org"]
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.INTERNET"
-      ],
       "intentFilters": [
         {
           "action": "VIEW",
@@ -48,10 +32,7 @@
               "pathPrefix": "/login"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
@@ -61,10 +42,7 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": [
-      "expo-router",
-      "expo-secure-store"
-    ],
+    "plugins": ["expo-router", "expo-secure-store"],
     "experiments": {
       "typedRoutes": true
     },
