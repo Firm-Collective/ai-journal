@@ -3,7 +3,7 @@ import 'react-native-url-polyfill/auto';
 import * as SecureStore from 'expo-secure-store';
 import {createClient} from '@supabase/supabase-js';
 import {deflate, inflate} from 'pako';
-import {decode as atob, encode as btoa} from 'base-64';
+import {encode as btoa, decode as atob} from 'base-64';
 
 const CompressedSecureStore = {
   getItem: async (key: string) => {

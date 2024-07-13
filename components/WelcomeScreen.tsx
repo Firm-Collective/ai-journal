@@ -1,7 +1,6 @@
 import {Image, StyleSheet, View, Text, Dimensions} from 'react-native';
-import SignupButton from '@/components/welcome-screen/buttons/SignupButton';
-import SigninButton from '@/components/welcome-screen/buttons/SigninButton';
-
+import SignupButton from '@/components/auth/buttons/SignupButtonToSignup';
+import LoginButton from '@/components/auth/buttons/LoginButtonToLogin';
 const {width, height} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
@@ -10,28 +9,28 @@ const WelcomeScreen = () => {
       <Image
         style={styles.gradientIcon}
         resizeMode="cover"
-        source={require('../../assets/images/welcome-screen/gradient.png')}
+        source={require('../assets/images/welcome-screen/gradient.png')}
       />
       <Image
         style={styles.gradientIcon1}
         resizeMode="cover"
-        source={require('../../assets/images/welcome-screen/gradient1.png')}
+        source={require('../assets/images/welcome-screen/gradient1.png')}
       />
       <View style={styles.welcomeContainer}>
         <Image
           style={styles.logosIcon}
           resizeMode="contain"
-          source={require('../../assets/images/welcome-screen/logos.png')}
+          source={require('../assets/images/welcome-screen/logos.png')}
         />
         <Text style={styles.welcomeTo}>Welcome to</Text>
         <Image
           style={styles.onevoiceJournalLogo1}
-          source={require('../../assets/images/welcome-screen/onevoice-journal-logo-text.png')}
+          source={require('../assets/images/welcome-screen/onevoice-journal-logo-text.png')}
           resizeMode="cover"
         />
       </View>
       <View style={styles.buttonContainer}>
-        <SigninButton />
+        <LoginButton />
         <SignupButton />
       </View>
     </View>

@@ -1,12 +1,7 @@
-import {View} from 'react-native';
-import Signup from '@/components/auth/Signup';
+import LoginScreen from '@/components/auth/LoginScreen';
 
-function Login() {
-  return (
-    <View>
-      <Signup />
-    </View>
-  );
+function Page() {
+  return <LoginScreen />;
 }
 
-export default Login;
+export default Page;
