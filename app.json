@@ -14,11 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-<<<<<<< HEAD
-      "associatedDomains": [
-        "applinks:firmcollective.org"
-      ]
-=======
+      "associatedDomains": ["applinks:firmcollective.org"],
       "infoPlist": {
         "SKAdNetworkItems": [
           {
@@ -30,12 +26,9 @@
         ]
       },
       "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
->>>>>>> fcf4495 (partial 3rd party login solution. Currently supports Fb on Android and Apple auth on ios)
     },
     "android": {
-      "permissions": [
-        "android.permission.INTERNET"
-      ],
+      "permissions": ["android.permission.INTERNET"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -51,10 +44,7 @@
               "pathPrefix": "/login"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
@@ -66,19 +56,14 @@
     },
     "plugins": [
       "expo-router",
-<<<<<<< HEAD
-      "expo-secure-store"
-=======
       [
         "expo-secure-store",
         {
           "faceIDPermission": "Please allow One Voice Echo to access your Face ID biometric data for logging in."
         }
       ]
->>>>>>> fcf4495 (partial 3rd party login solution. Currently supports Fb on Android and Apple auth on ios)
     ],
-    "experiments": {
-    },
+    "experiments": {},
     "extra": {
       "router": {
         "origin": false
