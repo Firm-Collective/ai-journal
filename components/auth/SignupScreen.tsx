@@ -7,6 +7,8 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  Platform,
+  Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CheckBox} from '@rneui/themed';
@@ -15,7 +17,8 @@ import {Link, router} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
-import {signupWithEmail} from '@/lib/Auth';
+import {signInWithApple, signInWithFacebook, signupWithEmail} from '@/lib/Auth';
+import {useRoute} from '@react-navigation/core';
 
 const {width, height} = Dimensions.get('window');
 
@@ -27,6 +30,8 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  const routeNow = useRoute();
 
   /**
    * Handles the logic after a user clicks the signup button
@@ -128,14 +133,29 @@ export default function LoginScreen() {
                 />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log('FB auth')}>
+            <TouchableOpacity
+              onPress={() => {
+                return signInWithFacebook(routeNow.name);
+              }}
+            >
               <Image
                 style={[styles.logo]}
                 resizeMode="contain"
                 source={require('../../assets/images/User/auth-facebook-logo.jpg')}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log('Apple auth')}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('Apple auth');
+                if (Platform.OS === 'ios') {
+                  return signInWithApple;
+                } else {
+                  // toDo: implement android apple login
+                  console.log('Origin ', Location);
+                  Alert.alert('Apple auth is currently available for ios only');
+                }
+              }}
+            >
               <View style={[styles.logoAppleContainer]}>
                 <Image
                   style={[styles.logo, styles.logoApple]}

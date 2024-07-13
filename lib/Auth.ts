@@ -3,6 +3,7 @@ import {supabase} from './supabase';
 import {makeRedirectUri} from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
+import openAuthLink from '@/lib/webLinkOpen';
 
 /**
  * Signs up the user with an email and password
@@ -72,9 +73,11 @@ export async function loginWithEmail(email: string, password: string) {
 /**
  * Signs in the user with Facebook
  */
-export async function signInWithFacebook() {
+export async function signInWithFacebook(originRoute: string) {
+  await WebBrowser.warmUpAsync();
+
   const redirectOnAuthLocation = makeRedirectUri({
-    path: '/home',
+    path: originRoute,
   });
   const {
     data: {url: supabaseFacebookUrl},
@@ -142,7 +145,8 @@ const signInWithAppleNative = async () => {
       console.log('No id token');
       throw new Error('No identityToken.');
     }
-  } catch (e) {
+  } catch (e: any) {
+    Alert.alert('An error occurred. Please try a different sign in method');
     if (e.code === 'ERR_REQUEST_CANCELED') {
       // handle that the user canceled the sign-in flow
       console.log('flow canceled');

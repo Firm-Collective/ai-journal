@@ -7,6 +7,8 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  Platform,
+  Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LoginButton from '@/components/auth/buttons/LoginButtonFromLogin';
@@ -14,7 +16,8 @@ import {Link} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
-import {loginWithEmail, signInWithFacebook} from '@/lib/Auth';
+import {loginWithEmail, signInWithApple, signInWithFacebook} from '@/lib/Auth';
+import {useRoute} from '@react-navigation/core';
 
 const {width, height} = Dimensions.get('window');
 
@@ -25,6 +28,8 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  const routeNow = useRoute();
 
   /**
    * Handles logic after user clicks on login
@@ -88,7 +93,11 @@ export default function LoginScreen() {
             <Divider inset={true} width={100} color="black" />
           </View>
           <View style={styles.buttonContainer3}>
-            <TouchableOpacity onPress={() => console.log('G auth')}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('G auth : login');
+              }}
+            >
               <View style={styles.logoGContainer}>
                 <Image
                   style={[styles.logo, styles.logoG]}
@@ -98,7 +107,11 @@ export default function LoginScreen() {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={signInWithFacebook}>
+            <TouchableOpacity
+              onPress={() => {
+                return signInWithFacebook(routeNow.name);
+              }}
+            >
               <View>
                 <Image
                   style={styles.logo}
@@ -107,7 +120,17 @@ export default function LoginScreen() {
                 />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log('Apple auth')}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('Apple auth : login');
+                if (Platform.OS === 'ios') {
+                  return signInWithApple;
+                } else {
+                  // toDo: implement android apple login
+                  Alert.alert('Apple auth is currently available for ios only');
+                }
+              }}
+            >
               <View style={styles.logoAppleContainer}>
                 <Image
                   style={[styles.logo, styles.logoApple]}

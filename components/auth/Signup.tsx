@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Input} from '@rneui/themed';
-import {signInWithEmail, signInWithFacebook, signUpWithEmail} from '@/lib/Auth';
+import {loginWithEmail, signInWithFacebook, signupWithEmail} from '@/lib/Auth';
+import {useRoute} from '@react-navigation/core';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const routeNow = useRoute();
 
   return (
     <View style={styles.container}>
@@ -35,21 +38,23 @@ export default function Auth() {
         <Button
           title="Sign in"
           disabled={loading}
-          onPress={() => signInWithEmail(email, password)}
+          onPress={() => loginWithEmail(email, password)}
         />
       </View>
       <View style={styles.verticallySpaced}>
         <Button
           title="Sign up"
           disabled={loading}
-          onPress={() => signUpWithEmail(email, password)}
+          onPress={() => signupWithEmail(email, password)}
         />
       </View>
       <View style={styles.verticallySpaced}>
         <Button
           title="Sign in with facebook"
           disabled={loading}
-          onPress={signInWithFacebook}
+          onPress={() => {
+            return signInWithFacebook(routeNow.name);
+          }}
         />
       </View>
     </View>
