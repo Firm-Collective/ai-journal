@@ -23,12 +23,8 @@
     "@expo-google-fonts/poppins": "^0.2.3",
     "@expo/multipart-body-parser": "^1.1.0",
     "@expo/vector-icons": "^14.0.0",
-<<<<<<< HEAD
-    "@react-native-async-storage/async-storage": "^1.23.1",
-=======
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-google-signin/google-signin": "^12.2.1",
->>>>>>> 363cba2 (Create google sign-in)
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.9.26",
     "@rneui/themed": "^4.0.0-rc.8",
