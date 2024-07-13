@@ -1,13 +1,7 @@
-import {View} from 'react-native';
-import Signup from '@/components/auth/Signup';
 import EmailVerification from '@/components/auth/EmailVerification';
 
 function Page() {
-  return (
-    <View>
-      <EmailVerification />
-    </View>
-  );
+  return <EmailVerification />;
 }
 
 export default Page;

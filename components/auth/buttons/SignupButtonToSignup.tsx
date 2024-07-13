@@ -4,11 +4,7 @@ import {Link} from 'expo-router';
 
 const SignupButton = () => {
   return (
-<<<<<<< HEAD:components/auth/buttons/SignupButtonToSignup.tsx
-    <Link href="/(auth)/signup" asChild>
-=======
-    <Link href="/email-verification" asChild>
->>>>>>> 932fb56 (had to redo verification page):components/welcome-screen/buttons/SignupButton.tsx
+    <Link href="/signup" asChild>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.text}>Sign up</Text>
       </TouchableOpacity>

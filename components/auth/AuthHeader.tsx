@@ -13,6 +13,8 @@ const AuthHeader = () => {
           onPress={() => router.navigate('/')}
         />
       </TouchableOpacity>
+
+      {/* Contains the header logo */}
       <Image
         source={require('../../assets/images/onevoice-journal-updated-logo.png')}
         style={styles.logo}

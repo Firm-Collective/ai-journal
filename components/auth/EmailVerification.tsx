@@ -8,27 +8,18 @@ import {
   Dimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Link} from 'expo-router';
+import AuthHeader from './AuthHeader';
 
 const windowHeight = Dimensions.get('window').height;
 
 const EmailVerification = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Link href={'/'} asChild>
-          <TouchableOpacity style={styles.backButtonContainer}>
-            <Text style={styles.backButton}>←</Text>
-          </TouchableOpacity>
-        </Link>
-        <Image
-          source={require('../../assets/images/onevoice-journal-logo-1.png')}
-          style={styles.logo}
-        />
-      </View>
+      <AuthHeader />
       <View style={styles.content}>
         <Text style={styles.title}>Verification email sent!</Text>
-        {/* Image here */}
+
+        {/* Contains the email logo icon */}
         <Image
           source={require('../../assets/images/email-icon.png')}
           style={styles.emailIcon}
@@ -40,7 +31,7 @@ const EmailVerification = () => {
         </Text>
 
         <Text style={styles.resendInstruction}>
-          Didn't receieve an email? Check your spam folder or
+          Didn't receive an email? Check your spam folder or
         </Text>
 
         <TouchableOpacity>
@@ -59,26 +50,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     backgroundColor: 'white',
     minHeight: windowHeight,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-  },
-  backButtonContainer: {
-    position: 'absolute',
-    left: 15,
-  },
-  backButton: {
-    fontSize: 24,
-    marginRight: 10,
-    marginLeft: 10,
-  },
-  logo: {
-    width: 180,
-    height: 100,
-    resizeMode: 'contain',
   },
   content: {
     justifyContent: 'center',

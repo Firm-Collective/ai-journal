@@ -34,8 +34,8 @@ export default function LoginScreen() {
   const handleSignup = async () => {
     const isSuccess = await signupWithEmail(email, password);
 
-    // TODO: if success, route to email verification page
-    if (isSuccess) router.push('/');
+    // if success, route to email verification page
+    if (isSuccess) router.push('/email-verification');
   };
 
   const handleCheckboxChange = () => {
