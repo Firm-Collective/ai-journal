@@ -2,27 +2,32 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import { supabase } from '@/lib/supabase';
 import useFetchUser from '@/lib/hooks/useFetchUser';
+import { TouchableOpacity } from 'react-native';
 
 const TextEntryScreen = () => {
+  const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
+  const [date, setDate] = useState(new Date());
   const user = useFetchUser();
 
   const handleSubmit = async () => {
-    if (!user) {
-        Alert.alert('Error', 'User not found');
-        return;
-      }
+    // if (!user) {
+    //     Alert.alert('Error', 'User not found');
+    //     return;
+    //   }
     try {
       const { error } = await supabase.from('journal_entry').insert([
         {
             Text: text,
-            id: (user as any)?.id,
+            Owner: (user as any).id,
+            created_at: date.toISOString(),
         },
       ]);
       if (error) {
         throw error;
       }
       setText('');
+      setTitle('');
       Alert.alert('Success', 'Entry submitted successfully');
     } catch (error) {
       console.error('Error submitting entry:', error);
@@ -32,15 +37,24 @@ const TextEntryScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Enter your text:</Text>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={handleSubmit}>
+          <Text style={styles.saveText}>Save</Text>
+        </TouchableOpacity>
+      </View>
       <TextInput
-        style={styles.input}
+        style={styles.titleInput}
+        value={title}
+        onChangeText={setTitle}
+        placeholder="Title"
+      />
+      <TextInput
+        style={styles.textInput}
         value={text}
         onChangeText={setText}
-        placeholder="Type here..."
+        placeholder="What is God speaking to you?"
         multiline
       />
-      <Button title="Submit" onPress={handleSubmit} />
     </View>
   );
 };
@@ -48,21 +62,30 @@ const TextEntryScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
     padding: 16,
   },
-  label: {
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  saveText: {
     fontSize: 18,
+    color: 'purple',
+  },
+  titleInput: {
+    fontSize: 24,
+    fontWeight: 'bold',
     marginBottom: 8,
   },
-  input: {
-    height: 150,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 16,
-    padding: 8,
-    borderRadius: 4,
-  },
+  textInput: {
+    flex: 1,
+    fontSize: 18,
+    color: '#333',
+    textAlignVertical: 'top',
+  }
 });
 
 export default TextEntryScreen;

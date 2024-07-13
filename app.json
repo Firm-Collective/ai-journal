@@ -16,7 +16,12 @@
       "supportsTablet": true,
       "associatedDomains": [
         "applinks:firmcollective.org"
+<<<<<<< HEAD
       ]
+=======
+      ],
+      "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
+>>>>>>> 13541ee (change text entry page ui)
     },
     "android": {
       "adaptiveIcon": {
