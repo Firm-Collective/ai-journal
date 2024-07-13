@@ -151,7 +151,6 @@ export default function LoginScreen() {
                   return signInWithApple;
                 } else {
                   // toDo: implement android apple login
-                  console.log('Origin ', Location);
                   Alert.alert('Apple auth is currently available for ios only');
                 }
               }}
