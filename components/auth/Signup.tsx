@@ -2,12 +2,11 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Input} from '@rneui/themed';
 import {
+  loginWithEmail,
   signInWithApple,
-  signInWithEmail,
   signInWithFacebook,
-  signUpWithEmail,
+  signupWithEmail,
 } from '@/lib/Auth';
-import {loginWithEmail, signInWithFacebook, signupWithEmail} from '@/lib/Auth';
 import {useRoute} from '@react-navigation/native';
 
 export default function Auth() {
