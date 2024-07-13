@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Alert } from 'react-native';
 import { supabase } from '@/lib/supabase';
 import useFetchUser from '@/lib/hooks/useFetchUser';
 import { TouchableOpacity } from 'react-native';
@@ -7,20 +7,20 @@ import { TouchableOpacity } from 'react-native';
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
-  const [date, setDate] = useState(new Date());
   const user = useFetchUser();
 
   const handleSubmit = async () => {
-    // if (!user) {
-    //     Alert.alert('Error', 'User not found');
-    //     return;
-    //   }
+    if (!user) {
+      Alert.alert('Error', 'User not found');
+      return;
+    }
     try {
-      const { error } = await supabase.from('journal_entry').insert([
+      const {error} = await supabase.from('journal_entry').insert([
         {
-            Text: text,
-            Owner: (user as any).id,
-            created_at: date.toISOString(),
+          Title: title,
+          Text: text,
+          id:(user as any).id,
+          Owner: (user as any).id,
         },
       ]);
       if (error) {
@@ -47,12 +47,14 @@ const TextEntryScreen = () => {
         value={title}
         onChangeText={setTitle}
         placeholder="Title"
+        placeholderTextColor="#696969"
       />
       <TextInput
         style={styles.textInput}
         value={text}
         onChangeText={setText}
         placeholder="What is God speaking to you?"
+        placeholderTextColor="#696969"
         multiline
       />
     </View>
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     marginBottom: 16,
   },
@@ -78,14 +80,15 @@ const styles = StyleSheet.create({
   titleInput: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#272727',
     marginBottom: 8,
   },
   textInput: {
     flex: 1,
     fontSize: 18,
-    color: '#333',
+    color: '#272727',
     textAlignVertical: 'top',
-  }
+  },
 });
 
 export default TextEntryScreen;
