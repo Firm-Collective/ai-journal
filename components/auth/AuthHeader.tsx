@@ -1,3 +1,7 @@
+/**
+ * This component represents the header of the Authentication pages.
+ */
+
 import {TouchableOpacity, View, Image, StyleSheet} from 'react-native';
 import {router} from 'expo-router';
 import Icon from 'react-native-vector-icons/Ionicons';
