@@ -15,6 +15,7 @@ import {Link, router} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
+import AuthFooter from './AuthFooter';
 import {signupWithEmail} from '@/lib/Auth';
 
 const {width, height} = Dimensions.get('window');
@@ -145,9 +146,7 @@ export default function LoginScreen() {
               <Text style={styles.linkText}>Log in</Text>
             </Link>
           </Text>
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Terms of Use | Privacy Policy</Text>
-          </View>
+          <AuthFooter />
         </View>
       </View>
     </SafeAreaView>
@@ -290,18 +289,5 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     zIndex: 2,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 5,
-    left: 0,
-    right: 0,
-    padding: 20,
-  },
-  footerText: {
-    textAlign: 'center',
-    color: '#1177C7',
-    fontFamily: 'Poppins',
-    fontSize: 14,
   },
 });

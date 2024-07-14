@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AuthHeader from './AuthHeader';
+import AuthFooter from './AuthFooter';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -38,9 +39,7 @@ const EmailVerification = () => {
           <Text style={styles.resendLink}>Re-send email</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Terms of Use | Privacy Policy</Text>
-      </View>
+      <AuthFooter />
     </SafeAreaView>
   );
 };
@@ -79,18 +78,6 @@ const styles = StyleSheet.create({
   },
   resendLink: {
     fontSize: 12,
-    color: 'blue',
-    textDecorationLine: 'underline',
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    padding: 20,
-  },
-  footerText: {
-    textAlign: 'center',
     color: 'blue',
     textDecorationLine: 'underline',
   },
