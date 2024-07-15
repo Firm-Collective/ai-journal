@@ -16,7 +16,7 @@ import {Link} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
-import {loginWithEmail, signInWithApple, signInWithFacebook} from '@/lib/Auth';
+import {loginWithEmail, signInWithApple, signInWithFacebook, signInWithGoogle} from '@/lib/Auth';
 import {useRoute} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
@@ -95,7 +95,8 @@ export default function LoginScreen() {
           <View style={styles.buttonContainer3}>
             <TouchableOpacity
               onPress={() => {
-                console.log('G auth : login');
+                console.log('G auth : login')
+                signInWithGoogle();
               }}
             >
               <View style={styles.logoGContainer}>

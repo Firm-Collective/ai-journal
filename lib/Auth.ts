@@ -3,6 +3,10 @@ import {supabase} from './supabase';
 import {makeRedirectUri} from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import openAuthLink from '@/lib/webLinkOpen';
 
 /**
@@ -193,6 +197,65 @@ const signInWithAppleAndroid = async () => {
   }
 };
 
+/**
+ * Signs in the user with Google
+ */
+
+//Todo: change oauth key to firmcollective's
+GoogleSignin.configure({
+  // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
+  webClientId:
+    '64478294171-estk2fbh8o55du2uidrt6l2h4s10vn8v.apps.googleusercontent.com',
+  // what API you want to access on behalf of the user, default is email and profile
+  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+  // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+  iosClientId:
+    '64478294171-ehjcv2i43egrjdcggpm3n4c0a7l5jkk9.apps.googleusercontent.com',
+});
+
+export async function signInWithGoogle() {
+  try {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    if (userInfo.idToken) {
+      const {data, error} = await supabase.auth.signInWithIdToken({
+        provider: 'google',
+        token: userInfo.idToken,
+      });
+      if (error) {
+        Alert.alert('Error signing in with Google', error.message);
+        return false;
+      } else {
+        Alert.alert('Success signing in with Google');
+        return true;
+      }
+    } else {
+      throw new Error('no ID token present!');
+    }
+  } catch (error: any) {
+    if (error.code) {
+      switch (error.code) {
+        case statusCodes.SIGN_IN_CANCELLED:
+          console.log('User cancelled the login flow');
+          break;
+        case statusCodes.IN_PROGRESS:
+          console.log('Operation (e.g. sign in) already in progress');
+          break;
+        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+          console.log('Play services not available or outdated');
+          break;
+        default:
+          console.log('Some other error happened', error);
+      }
+    } else {
+      console.log(
+        "An error that's not related to Google sign-in occurred",
+        error
+      );
+    }
+  }
+  return false;
+}
 export async function signOut() {
   const {error} = await supabase.auth.signOut();
   if (error) {
