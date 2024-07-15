@@ -75,16 +75,15 @@
         "origin": false
       },
       "eas": {
-        "projectId": "b6865e23-e26f-40d9-8b77-d42d219c18c7"
+        "projectId": "b150b9e0-b584-4976-8560-e1b23b830871"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/b6865e23-e26f-40d9-8b77-d42d219c18c7"
+      "url": "https://u.expo.dev/ca2a4644-0c86-4092-b1f9-d554abfc52cf"
     },
-    "owner": "one-voice-journal",
-    "jsEngine": "hermes"
+    "owner": "ai-journal"
   }
 }
