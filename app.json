@@ -74,7 +74,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "ca2a4644-0c86-4092-b1f9-d554abfc52cf"
+        "projectId": "b150b9e0-b584-4976-8560-e1b23b830871"
       }
     },
     "runtimeVersion": {
@@ -83,6 +83,7 @@
     "updates": {
       "url": "https://u.expo.dev/ca2a4644-0c86-4092-b1f9-d554abfc52cf"
     },
+    "owner": "ai-journal",
     "jsEngine": "hermes"
   }
 }
