@@ -43,6 +43,7 @@ yarn-error.*
 .idea/
 /android
 /ios
+<<<<<<< HEAD
 
 # ignore builds
 *.apk
@@ -55,3 +56,6 @@ yarn-error.*
 
 expo-env.d.ts
 # @end expo-cli
+=======
+*.apk
+>>>>>>> 9a60468 (ignore apk builds)
