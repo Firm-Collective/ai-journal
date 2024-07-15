@@ -84,6 +84,7 @@
     "updates": {
       "url": "https://u.expo.dev/b6865e23-e26f-40d9-8b77-d42d219c18c7"
     },
-    "owner": "one-voice-journal"
+    "owner": "one-voice-journal",
+    "jsEngine": "hermes"
   }
 }
