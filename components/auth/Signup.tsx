@@ -1,9 +1,18 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Input} from '@rneui/themed';
+<<<<<<< HEAD
 import {signInWithApple, signInWithFacebook} from '@/lib/Auth';
+=======
+import {
+  loginWithEmail,
+  signInWithApple,
+  signInWithFacebook,
+  signInWithGoogle,
+  signupWithEmail,
+} from '@/lib/Auth';
+>>>>>>> e35e5ae (merge google signin function ti Auth and update sign up/ login screen buttons)
 import {useRoute} from '@react-navigation/native';
-import GoogleSignInButton from '../auth/buttons/GoogleSigninButton';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -57,7 +66,6 @@ export default function Auth() {
           onPress={signInWithApple}
         />
       </View>
-      <GoogleSignInButton />
     </View>
   );
 }
