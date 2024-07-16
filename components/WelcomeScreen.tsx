@@ -23,11 +23,19 @@ const WelcomeScreen = () => {
           source={require('../assets/images/welcome-screen/logos.png')}
         />
         <Image
+<<<<<<< HEAD
           style={styles.onevoiceJournalLogo}
           source={require('../assets/images/welcome-screen/onevoice-journal-updated-logo-text-only.png')}
           resizeMode="cover"
         />
         <Text style={styles.sloganText}>Your Faith. Guided by AI</Text>
+=======
+          style={styles.onevoiceJournalLogo1}
+          source={require('../assets/images/welcome-screen/onevoice-journal-updated-logo-text-only.png')}
+          resizeMode="cover"
+        />
+        <Text style={styles.welcomeTo}>Your Faith. Guided by AI</Text>
+>>>>>>> 5dd5f8b (replace logo and fix navigation)
       </View>
       <View style={styles.buttonContainer}>
         <LoginButton />
@@ -67,9 +75,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+<<<<<<< HEAD
   logosIcon: {
     width: 114,
     height: 114,
+=======
+  welcomeTo: {
+    fontSize: 22,
+    fontFamily: 'Poppins',
+    marginTop: 50,
+>>>>>>> 5dd5f8b (replace logo and fix navigation)
   },
   onevoiceJournalLogo: {
     width: 288,
