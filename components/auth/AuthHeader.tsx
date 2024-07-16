@@ -10,11 +10,11 @@ const AuthHeader = () => {
           name="arrow-back"
           size={24}
           color="black"
-          onPress={() => router.back()}
+          onPress={() => router.navigate('/')}
         />
       </TouchableOpacity>
       <Image
-        source={require('../../assets/images/onevoice-header-logo.png')}
+        source={require('../../assets/images/onevoice-journal-updated-logo.png')}
         style={styles.logo}
       />
     </View>

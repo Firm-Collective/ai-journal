@@ -22,12 +22,12 @@ const WelcomeScreen = () => {
           resizeMode="contain"
           source={require('../assets/images/welcome-screen/logos.png')}
         />
-        <Text style={styles.welcomeTo}>Welcome to</Text>
         <Image
           style={styles.onevoiceJournalLogo1}
-          source={require('../assets/images/welcome-screen/onevoice-journal-logo-text.png')}
+          source={require('../assets/images/welcome-screen/onevoice-journal-updated-logo-text-only.png')}
           resizeMode="cover"
         />
+        <Text style={styles.welcomeTo}>Your Faith. Guided by AI</Text>
       </View>
       <View style={styles.buttonContainer}>
         <LoginButton />
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
   },
   welcomeTo: {
     fontSize: 22,
-    textAlign: 'center',
     fontFamily: 'Poppins',
     marginTop: 50,
   },
