@@ -1,13 +1,15 @@
+// toDo: implement PKCE flow
 import {Alert, Platform} from 'react-native';
 import {supabase} from './supabase';
 import {makeRedirectUri} from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
+import * as QueryParams from 'expo-auth-session/build/QueryParams';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import openAuthLink from '@/lib/webLinkOpen';
+import {Provider, Session} from '@supabase/supabase-js';
 
 /**
  * Signs up the user with an email and password
@@ -75,45 +77,48 @@ export async function loginWithEmail(email: string, password: string) {
 }
 
 /**
- * Signs in the user with Facebook
+ * Signs in the user with Facebook using the OAuth flow
  */
-export async function signInWithFacebook(originRoute: string) {
-  await WebBrowser.warmUpAsync();
-
-  const redirectOnAuthLocation = makeRedirectUri({
-    path: originRoute,
-  });
-  const {
-    data: {url: supabaseFacebookUrl},
-    error: supabaseError,
-  } = await supabase.auth.signInWithOAuth({
-    provider: 'facebook',
-    options: {
-      redirectTo: redirectOnAuthLocation,
-    },
-  });
-
-  if (supabaseFacebookUrl) {
-    const authResult =
-      await WebBrowser.openAuthSessionAsync(supabaseFacebookUrl);
-    // If the user does not permit the application to authenticate with the given url, the Promise fulfills with { type: 'cancel' } object.
-    // If the user closed the web browser, the Promise fulfills with { type: 'cancel' } object.
-    // If the browser is closed using dismissBrowser, the Promise fulfills with { type: 'dismiss' } object.
-
-    if (authResult.type === 'cancel') {
-      //   toDo: handle cancel -- some sort of error
-      Alert.alert('You disallowed the app; please allow');
-    } else if (authResult.type === 'dismiss') {
-      //   toDo: handle dismiss -- also a case of success with supabase
-    } else if (authResult.type === 'success') {
-      //   toDo: handle success
-    }
-  } else if (supabaseError) console.log('An error occurred with supabase');
-  else {
-    //   toDo: handle case of other error
-  }
+export async function signInWithFacebook() {
+  await signInWithOAuthProvider('facebook');
 }
 
+/**
+ * This function creates a supabase session from the provided url. It parses the required
+ * parameters from the url and sets the session with those
+ * @param url the url to parse
+ */
+export const createSessionFromUrl = async (
+  url: string
+): Promise<Session | null> => {
+  const {params, errorCode} = QueryParams.getQueryParams(url);
+
+  if (errorCode) throw new Error(errorCode);
+
+  const {access_token, refresh_token} = params;
+
+  if (!access_token) {
+    console.log('No acc token');
+    throw new Error('No access token');
+  }
+
+  const {data, error} = await supabase.auth.setSession({
+    access_token,
+    refresh_token,
+  });
+
+  if (error) {
+    console.log('Supabase error occurred');
+  }
+
+  console.log('Data session info: ', data);
+
+  return data.session;
+};
+
+/**
+ * Signs in a user with their necessary implementation
+ */
 export async function signInWithApple() {
   if (Platform.OS === 'ios') {
     await signInWithAppleNative();
@@ -122,6 +127,9 @@ export async function signInWithApple() {
   }
 }
 
+/**
+ * Signs in an iphone user using the native apple authentication system
+ */
 const signInWithAppleNative = async () => {
   try {
     const credential = await AppleAuthentication.signInAsync({
@@ -161,41 +169,48 @@ const signInWithAppleNative = async () => {
   }
 };
 
+/**
+ * Signs in an android user using the apple provider
+ */
 const signInWithAppleAndroid = async () => {
-  const redirectOnAuthLocation = makeRedirectUri();
-  console.log('We will redirect to ', redirectOnAuthLocation);
+  await signInWithOAuthProvider('apple');
+};
 
-  const {
-    data: {url: supabaseAppleUrl},
-    error: supabaseError,
-  } = await supabase.auth.signInWithOAuth({
-    provider: 'apple',
+export async function signInWithOAuthProvider(authProvider: Provider) {
+  const redirectTo = makeRedirectUri();
+
+  const {data, error} = await supabase.auth.signInWithOAuth({
+    provider: authProvider,
     options: {
-      redirectTo: redirectOnAuthLocation,
+      redirectTo,
+      skipBrowserRedirect: true,
     },
   });
 
-  if (supabaseAppleUrl) {
-    const authResult = await openAuthLink(supabaseAppleUrl);
-    // If the user does not permit the application to authenticate with the given url, the Promise fulfills with { type: 'cancel' } object.
-    // If the user closed the web browser, the Promise fulfills with { type: 'cancel' } object.
-    // If the browser is closed using dismissBrowser, the Promise fulfills with { type: 'dismiss' } object.
-
-    if (authResult.type === 'cancel') {
-      console.log('Browser event canceled');
-      //   toDo: handle cancel -- some sort of error
-    } else if (authResult.type === 'dismiss') {
-      //   toDo: handle dismiss --
-      console.log('Browser dismissed');
-    } else if (authResult.type === 'success') {
-      //   toDo: handle success
-      console.log('Browser event success');
-    }
-  } else if (supabaseError) console.log('An error occurred with supabase');
-  else {
-    //   toDo: handle case of other error
+  if (error) {
+    console.log('Supabase Oauth error');
   }
-};
+
+  const res = await WebBrowser.openAuthSessionAsync(
+    data?.url ?? '',
+    redirectTo
+  );
+
+  if (res.type === 'success') {
+    console.log('Success res ', res);
+    const {url} = res;
+    await createSessionFromUrl(url);
+  } else if (res.type === 'dismiss') {
+    //   toDo: dismissBrowser function called
+    console.log('Web auth browser dismissed');
+  } else if (res.type === 'cancel') {
+    //   toDo: handle cancelling -- user did not allow/give permission OR they closed browser
+    console.log('Web auth browser: canceled');
+  } else if (res.type === 'locked') {
+    //   toDo: handle locked device
+    console.log('Web auth browser: locked');
+  }
+}
 
 /**
  * Signs in the user with Google
@@ -256,6 +271,7 @@ export async function signInWithGoogle() {
   }
   return false;
 }
+
 export async function signOut() {
   const {error} = await supabase.auth.signOut();
   if (error) {

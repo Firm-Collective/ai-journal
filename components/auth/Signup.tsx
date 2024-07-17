@@ -15,8 +15,6 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const routeNow = useRoute();
-
   return (
     <View style={styles.container}>
       <View style={[styles.verticallySpaced, styles.mt20]}>
@@ -59,7 +57,7 @@ export default function Auth() {
           title="Sign in with facebook"
           disabled={loading}
           onPress={() => {
-            return signInWithFacebook(routeNow.name);
+            return signInWithFacebook();
           }}
         />
       </View>
