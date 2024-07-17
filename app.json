@@ -14,6 +14,9 @@
     },
     "ios": {
       "supportsTablet": true,
+      "associatedDomains": [
+        "applinks:firmcollective.org"
+      ],
       "infoPlist": {
         "SKAdNetworkItems": [
           {
@@ -43,7 +46,10 @@
               "pathPrefix": "/login"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
@@ -68,7 +74,9 @@
         }
       ]
     ],
-    "experiments": {},
+    "experiments": {
+      "typedRoutes": true
+    },
     "extra": {
       "router": {
         "origin": false
@@ -77,11 +85,9 @@
         "projectId": "b150b9e0-b584-4976-8560-e1b23b830871"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "updates": {
-      "url": "https://u.expo.dev/ca2a4644-0c86-4092-b1f9-d554abfc52cf"
+      "url": "https://u.expo.dev/b150b9e0-b584-4976-8560-e1b23b830871"
     },
     "owner": "ai-journal",
     "jsEngine": "hermes"
