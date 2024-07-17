@@ -60,6 +60,7 @@ export default function LoginScreen() {
                 onChangeText={(text: string) => setEmail(text)}
                 value={email}
                 placeholder="Email"
+                placeholderTextColor="rgba(50, 54, 62, 1)"
               />
             </View>
             <View>
@@ -69,6 +70,7 @@ export default function LoginScreen() {
                 onChangeText={(text: string) => setPassword(text)}
                 value={password}
                 placeholder="Password"
+                placeholderTextColor="rgba(50, 54, 62, 1)"
               />
               <TouchableOpacity
                 style={{
