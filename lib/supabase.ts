@@ -1,15 +1,26 @@
 import {AppState} from 'react-native';
+import 'react-native-url-polyfill';
+import * as SecureStore from 'expo-secure-store';
 import {createClient} from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SecureStore from 'expo-secure-store';
 import * as aesjs from 'aes-js';
 import 'react-native-get-random-values';
 
-// As Expo's SecureStore does not support values larger than 2048
-// bytes, an AES-256 key is generated and stored in SecureStore, while
-// it is used to encrypt/decrypt values stored in AsyncStorage.
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
+
+/**
+ * Combination of SecureStore and AsyncStorage to securely handling storage and retrieval
+ */
 class LargeSecureStore {
-  private async _encrypt(key: string, value: string) {
+  /**
+   * Encrypts a value and stores the encryption key in SecureStore.
+   * @param {string} key - The key to identify the stored value.
+   * @param {string} value - The value to be encrypted and stored.
+   * @returns {Promise<string>} - The encrypted value in hexadecimal format.
+   * @private
+   */
+  private async _encrypt(key: string, value: string): Promise<string> {
     const encryptionKey = crypto.getRandomValues(new Uint8Array(256 / 8));
 
     const cipher = new aesjs.ModeOfOperation.ctr(
@@ -26,7 +37,14 @@ class LargeSecureStore {
     return aesjs.utils.hex.fromBytes(encryptedBytes);
   }
 
-  private async _decrypt(key: string, value: string) {
+  /**
+   * Decrypts a value using the encryption key stored in SecureStore.
+   * @param {string} key - The key to identify the stored encryption key.
+   * @param {string} value - The encrypted value to be decrypted.
+   * @returns {Promise<string | null>} - The decrypted value.
+   * @private
+   */
+  private async _decrypt(key: string, value: string): Promise<string | null> {
     const encryptionKeyHex = await SecureStore.getItemAsync(key);
     if (!encryptionKeyHex) {
       return encryptionKeyHex;
@@ -41,6 +59,11 @@ class LargeSecureStore {
     return aesjs.utils.utf8.fromBytes(decryptedBytes);
   }
 
+  /**
+   * Retrieves a value from storage and decrypts it.
+   * @param {string} key - The key to identify the stored value.
+   * @returns {Promise<string | null>} - The decrypted value or null if not found.
+   */
   async getItem(key: string) {
     const encrypted = await AsyncStorage.getItem(key);
     if (!encrypted) {
@@ -50,11 +73,22 @@ class LargeSecureStore {
     return await this._decrypt(key, encrypted);
   }
 
+  /**
+   * Removes a value from both AsyncStorage and SecureStore.
+   * @param {string} key - The key to identify the stored value.
+   * @returns {Promise<void>}
+   */
   async removeItem(key: string) {
     await AsyncStorage.removeItem(key);
     await SecureStore.deleteItemAsync(key);
   }
 
+  /**
+   * Encrypts and stores a value in AsyncStorage.
+   * @param {string} key - The key to identify the stored value.
+   * @param {string} value - The value to be encrypted and stored.
+   * @returns {Promise<void>}
+   */
   async setItem(key: string, value: string) {
     const encrypted = await this._encrypt(key, value);
 
@@ -62,15 +96,12 @@ class LargeSecureStore {
   }
 }
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
-
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     storage: new LargeSecureStore(),
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: false,
+    detectSessionInUrl: true,
   },
 });
 
