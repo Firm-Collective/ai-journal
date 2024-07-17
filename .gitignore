@@ -46,3 +46,6 @@ yarn-error.*
 
 # ignore builds
 *.apk
+
+#expo
+/expo-env.d.ts
