@@ -1,4 +1,11 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {
+  KeyboardAvoidingView,
+  StatusBar,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 import {DarkTheme, DefaultTheme, ThemeProvider} from '@react-navigation/native';
 import {useFonts} from 'expo-font';
 import {Stack, useRouter} from 'expo-router';
@@ -77,13 +84,31 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AuthProvider>
-        <Stack>
-          <Stack.Screen name="index" options={{headerShown: false}} />
-          <Stack.Screen name="(auth)" options={{headerShown: false}} />
-          <Stack.Screen name="(user)" options={{headerShown: false}} />
-        </Stack>
-      </AuthProvider>
+      <StatusBar
+        backgroundColor="transparent"
+        translucent={true}
+        barStyle="dark-content"
+      />
+      <SafeAreaProvider>
+        <KeyboardAvoidingView
+          style={styles.keyboardContainer}
+          enabled
+        >
+          <AuthProvider>
+            <Stack>
+              <Stack.Screen name="index" options={{headerShown: false}} />
+              <Stack.Screen name="(auth)" options={{headerShown: false}} />
+              <Stack.Screen name="(user)" options={{headerShown: false}} />
+            </Stack>
+          </AuthProvider>
+        </KeyboardAvoidingView>
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  keyboardContainer: {
+    flex: 1,
+  },
+});

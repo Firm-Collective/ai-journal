@@ -49,9 +49,9 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={[styles.view]}>
-      <AuthHeader />
       <View style={styles.container}>
-        <View style={styles.container2}>
+        <AuthHeader />
+        <View style={styles.signupFieldsContainer}>
           <Text style={styles.textCreate}>Create an Account</Text>
           <View>
             <View>
@@ -112,7 +112,7 @@ export default function LoginScreen() {
           </View>
         </View>
 
-        <View style={[styles.container3]}>
+        <View style={[styles.signupButtonsContainer]}>
           <View style={[styles.buttonContainer1]}>
             <SignupButton onPress={handleSignup} />
           </View>
@@ -157,21 +157,20 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   view: {
-    display: 'flex',
+    flex: 1,
     backgroundColor: 'white',
-    minWidth: window_width,
-    minHeight: window_height,
+    alignItems: 'center',
   },
   container: {
-    flexDirection: 'column',
     flex: 1,
-    marginTop: 15,
+    width: '85%',
   },
-  container1: {
-    flex: 1,
+  signupFieldsContainer: {
+    marginBottom: 20,
+  },
+  signupButtonsContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    alignSelf: 'center',
   },
   checkbox: {
     marginRight: 0,
@@ -218,19 +217,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 13,
-  },
-  container2: {
-    flex: 6,
-    flexDirection: 'column',
-    alignSelf: 'center',
-    width: '80%',
-  },
-  container3: {
-    flex: 6.8,
-    flexDirection: 'column',
-    alignItems: 'center',
-    alignSelf: 'center',
-    width: '80%',
   },
   buttonContainer1: {
     flexDirection: 'column',
