@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Text, Alert } from 'react-native';
-import { supabase } from '@/lib/supabase';
+import React, {useState} from 'react';
+import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
+import {supabase} from '@/lib/supabase';
 import useFetchUser from '@/lib/hooks/useFetchUser';
-import { TouchableOpacity } from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
@@ -15,13 +15,16 @@ const TextEntryScreen = () => {
       return;
     }
     try {
-      const {data, error} = await supabase.from('journal_entry').insert([
-        {
-          Title: title,
-          Text: text,
-          Owner: (user as any).id,
-        },
-      ]).select('id');
+      const {data, error} = await supabase
+        .from('journal_entry')
+        .insert([
+          {
+            Title: title,
+            Text: text,
+            Owner: (user as any).id,
+          },
+        ])
+        .select('id');
       if (error) {
         throw error;
       }
