@@ -15,14 +15,13 @@ const TextEntryScreen = () => {
       return;
     }
     try {
-      const {error} = await supabase.from('journal_entry').insert([
+      const {data, error} = await supabase.from('journal_entry').insert([
         {
           Title: title,
           Text: text,
-          id:(user as any).id,
           Owner: (user as any).id,
         },
-      ]);
+      ]).select('id');
       if (error) {
         throw error;
       }
