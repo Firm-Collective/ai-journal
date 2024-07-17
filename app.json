@@ -24,7 +24,10 @@
           }
         ]
       },
-      "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
+      "bundleIdentifier": "com.firmcollective.OneVoiceEcho",
+      "associatedDomains": [
+        "applinks:firmcollective.org"
+      ]
     },
     "android": {
       "permissions": [
@@ -73,7 +76,9 @@
         }
       ]
     ],
-    "experiments": {},
+    "experiments": {
+      "typedRoutes": true
+    },
     "extra": {
       "router": {
         "origin": false
@@ -86,8 +91,9 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/ca2a4644-0c86-4092-b1f9-d554abfc52cf"
+      "url": "https://u.expo.dev/b150b9e0-b584-4976-8560-e1b23b830871"
     },
     "owner": "ai-journal"
+
   }
 }
