@@ -14,9 +14,6 @@
     },
     "ios": {
       "supportsTablet": true,
-      "associatedDomains": [
-        "applinks:firmcollective.org"
-      ],
       "infoPlist": {
         "SKAdNetworkItems": [
           {
@@ -27,10 +24,15 @@
           }
         ]
       },
-      "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
+      "bundleIdentifier": "com.firmcollective.OneVoiceEcho",
+      "associatedDomains": [
+        "applinks:firmcollective.org"
+      ]
     },
     "android": {
-      "permissions": ["android.permission.INTERNET"],
+      "permissions": [
+        "android.permission.INTERNET"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -85,11 +87,13 @@
         "projectId": "b150b9e0-b584-4976-8560-e1b23b830871"
       }
     },
-    "runtimeVersion": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "updates": {
       "url": "https://u.expo.dev/b150b9e0-b584-4976-8560-e1b23b830871"
     },
-    "owner": "ai-journal",
-    "jsEngine": "hermes"
+    "owner": "ai-journal"
+
   }
 }
