@@ -19,30 +19,19 @@ import {Link, router} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
-<<<<<<< HEAD
 import AuthFooter from './AuthFooter';
-<<<<<<< HEAD
 import {
   signInWithApple,
   signInWithFacebook,
   signupWithEmail,
   signInWithGoogle,
 } from '@/lib/Auth';
-=======
-import {signInWithApple, signInWithFacebook, signupWithEmail} from '@/lib/Auth';
-=======
-import {signInWithApple, signInWithFacebook, signInWithGoogle, signupWithEmail} from '@/lib/Auth';
->>>>>>> e35e5ae (merge google signin function ti Auth and update sign up/ login screen buttons)
->>>>>>> 5dfdf12 (merge google signin function ti Auth and update sign up/ login screen buttons)
-import {useRoute} from '@react-navigation/native';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-
-  const routeNow = useRoute();
 
   /**
    * Handles the logic after a user clicks the signup button
@@ -203,76 +192,9 @@ export default function LoginScreen() {
             </View>
             <AuthFooter />
           </View>
-<<<<<<< HEAD
         </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
-=======
-        </View>
-
-        <View style={[styles.container3]}>
-          <View style={[styles.buttonContainer1]}>
-            <SignupButton onPress={handleSignup} />
-          </View>
-          <View style={[styles.buttonContainer2]}>
-            <Divider inset={true} width={100} color="black" />
-            <Text style={[styles.textSmall]}>or sign up with</Text>
-            <Divider inset={true} width={100} color="black" />
-          </View>
-          <View style={[styles.buttonContainer3]}>
-            <TouchableOpacity onPress={() => {
-                return signInWithGoogle();
-              }}>
-              <View style={styles.logoGContainer}>
-                <Image
-                  style={[styles.logo, styles.logoG]}
-                  resizeMode="contain"
-                  source={require('../../assets/images/User/auth-google-logo.png')}
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                return signInWithFacebook(routeNow.name);
-              }}
-            >
-              <Image
-                style={[styles.logo]}
-                resizeMode="contain"
-                source={require('../../assets/images/User/auth-facebook-logo.jpg')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('Apple auth');
-                if (Platform.OS === 'ios') {
-                  return signInWithApple;
-                } else {
-                  // toDo: implement android apple login
-                  Alert.alert('Apple auth is currently available for ios only');
-                }
-              }}
-            >
-              <View style={[styles.logoAppleContainer]}>
-                <Image
-                  style={[styles.logo, styles.logoApple]}
-                  resizeMode="contain"
-                  source={require('../../assets/images/User/auth-apple-logo.png')}
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <Text style={[styles.textSmall, styles.textGrey]}>
-            Already have an account?{' '}
-            <Link href={'/login'} asChild>
-              <Text style={styles.linkText}>Log in</Text>
-            </Link>
-          </Text>
-          <AuthFooter />
-        </View>
-      </View>
-    </SafeAreaView>
->>>>>>> 5dfdf12 (merge google signin function ti Auth and update sign up/ login screen buttons)
   );
 }
 

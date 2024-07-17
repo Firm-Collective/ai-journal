@@ -19,22 +19,13 @@ import {Link} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
-<<<<<<< HEAD
 import AuthFooter from './AuthFooter';
-<<<<<<< HEAD
 import {
   loginWithEmail,
   signInWithApple,
   signInWithFacebook,
   signInWithGoogle,
 } from '@/lib/Auth';
-=======
-import {loginWithEmail, signInWithApple, signInWithFacebook} from '@/lib/Auth';
-=======
-import {loginWithEmail, signInWithApple, signInWithFacebook, signInWithGoogle} from '@/lib/Auth';
->>>>>>> e35e5ae (merge google signin function ti Auth and update sign up/ login screen buttons)
-import {useRoute} from '@react-navigation/native';
->>>>>>> 5dfdf12 (merge google signin function ti Auth and update sign up/ login screen buttons)
 
 const {width, height} = Dimensions.get('window');
 
@@ -58,7 +49,6 @@ export default function LoginScreen() {
   };
 
   return (
-<<<<<<< HEAD
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
@@ -68,78 +58,6 @@ export default function LoginScreen() {
           <View style={styles.container}>
             <View style={styles.container2}>
               <Text style={styles.textCreate}>Login</Text>
-=======
-    <SafeAreaView style={styles.view}>
-      <AuthHeader />
-      <View style={styles.container}>
-        <View style={styles.container2}>
-          <Text style={styles.textCreate}>Login</Text>
-          <View>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(text: string) => setEmail(text)}
-              value={email}
-              placeholder="Email"
-            />
-          </View>
-          <View>
-            <TextInput
-              style={styles.textInput}
-              secureTextEntry={!showPassword}
-              onChangeText={(text: string) => setPassword(text)}
-              value={password}
-              placeholder="Password"
-            />
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: 15,
-                right: 10,
-                padding: 5,
-              }}
-              onPress={togglePasswordVisibility}
-            >
-              <Feather
-                name={showPassword ? 'eye' : 'eye-off'}
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainer1}>
-            <LoginButton onPress={handleLogin} />
-          </View>
-          <Text style={styles.textMiddle}>Forgot Password?</Text>
-        </View>
-
-        <View style={styles.container3}>
-          <View style={styles.buttonContainer2}>
-            <Divider inset={true} width={100} color="black" />
-            <Text style={styles.textSmall}>or sign in with</Text>
-            <Divider inset={true} width={100} color="black" />
-          </View>
-          <View style={styles.buttonContainer3}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('G auth : login')
-                signInWithGoogle();
-              }}
-            >
-              <View style={styles.logoGContainer}>
-                <Image
-                  style={[styles.logo, styles.logoG]}
-                  resizeMode="contain"
-                  source={require('../../assets/images/User/auth-google-logo.png')}
-                />
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                return signInWithFacebook(routeNow.name);
-              }}
-            >
->>>>>>> 5dfdf12 (merge google signin function ti Auth and update sign up/ login screen buttons)
               <View>
                 <TextInput
                   style={styles.textInput}
