@@ -43,4 +43,9 @@ yarn-error.*
 .idea/
 /android
 /ios
+
+# ignore builds
 *.apk
+
+#expo
+/expo-env.d.ts

@@ -17,7 +17,12 @@ import {Link, router} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
-import {signInWithApple, signInWithFacebook, signupWithEmail} from '@/lib/Auth';
+import {
+  signInWithApple,
+  signInWithFacebook,
+  signInWithGoogle,
+  signupWithEmail,
+} from '@/lib/Auth';
 import {useRoute} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
@@ -124,7 +129,11 @@ export default function LoginScreen() {
             <Divider inset={true} width={100} color="black" />
           </View>
           <View style={[styles.buttonContainer3]}>
-            <TouchableOpacity onPress={() => console.log('G auth')}>
+            <TouchableOpacity
+              onPress={() => {
+                return signInWithGoogle();
+              }}
+            >
               <View style={styles.logoGContainer}>
                 <Image
                   style={[styles.logo, styles.logoG]}
@@ -135,7 +144,7 @@ export default function LoginScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                return signInWithFacebook(routeNow.name);
+                return signInWithFacebook();
               }}
             >
               <Image
