@@ -78,7 +78,9 @@ export default function LoginScreen() {
           <View style={styles.buttonContainer1}>
             <LoginButton onPress={handleLogin} />
           </View>
-          <Text style={styles.textMiddle}>Forgot Password?</Text>
+          <Link href="/reset-password">
+            <Text style={styles.textMiddle}>Forgot Password?</Text>
+          </Link>
         </View>
 
         <View style={styles.container3}>
