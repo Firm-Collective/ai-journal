@@ -3,7 +3,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StatusBar} from 'react-native';
 import {DefaultTheme, ThemeProvider} from '@react-navigation/native';
 import {useFonts} from 'expo-font';
-import {Stack, useRouter} from 'expo-router';
+import {Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import 'react-native-reanimated';
@@ -12,10 +12,15 @@ import AuthProvider from '@/providers/AuthProvider';
 
 =======
 import {useColorScheme} from '@/components/useColorScheme';
+<<<<<<< HEAD
 >>>>>>> a6cd5aa (partial 3rd party login solution. Currently supports Fb on Android and Apple auth on ios)
 import {Linking} from 'react-native';
 import parseAuthURLString from '@/lib/deepLinkHelper';
 import {supabase} from '@/lib/supabase';
+=======
+import * as Linking from 'expo-linking';
+import {createSessionFromUrl} from '@/lib/Auth';
+>>>>>>> d49b099 (changed oauth implementation)
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -57,42 +62,18 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+<<<<<<< HEAD
   const router = useRouter();
+=======
+  const colorScheme = useColorScheme();
+>>>>>>> bb64f6f (changed oauth implementation)
 
-  useEffect(() => {
-    const handleDeepLink = async (event: {url: string}) => {
-      const url = new URL(event.url);
-      const path = url.pathname.slice(1);
-
-      if (url.toString().includes('access_token')) {
-        const {access_token, refresh_token} = parseAuthURLString(
-          url.toString()
-        );
-        await supabase.auth.setSession({
-          access_token,
-          refresh_token,
-        });
-      }
-
-      if (path === 'login') {
-        router.push('/login');
-      }
-    };
-
-    // Handle incoming url
-    Linking.getInitialURL().then(url => {
-      if (url) {
-        handleDeepLink({url});
-      }
-    });
-
-    // Listen for new urls
-    const subscription = Linking.addEventListener('url', handleDeepLink);
-
-    return () => {
-      subscription.remove();
-    };
-  }, [router]);
+  // this monitors for incoming urls and sets the session if it's an auth url
+  const url = Linking.useURL();
+  if (url) {
+    console.log('Url is ', url);
+    createSessionFromUrl(url);
+  }
 
   return (
     <ThemeProvider value={DefaultTheme}>

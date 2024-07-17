@@ -26,7 +26,6 @@ import {
   signupWithEmail,
   signInWithGoogle,
 } from '@/lib/Auth';
-import {useRoute} from '@react-navigation/native';
 
 export default function SignupScreen() {
   const [email, setEmail] = useState('');
@@ -45,8 +44,6 @@ export default function SignupScreen() {
     const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     return re.test(password);
   };
-
-  const routeNow = useRoute();
 
   /**
    * Handles the logic after a user clicks the signup button

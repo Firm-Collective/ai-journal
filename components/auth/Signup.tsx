@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Input} from '@rneui/themed';
-<<<<<<< HEAD
-import {signInWithApple, signInWithFacebook} from '@/lib/Auth';
-=======
 import {
   loginWithEmail,
   signInWithApple,
@@ -11,15 +8,12 @@ import {
   signInWithGoogle,
   signupWithEmail,
 } from '@/lib/Auth';
->>>>>>> e35e5ae (merge google signin function ti Auth and update sign up/ login screen buttons)
 import {useRoute} from '@react-navigation/native';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const routeNow = useRoute();
 
   return (
     <View style={styles.container}>
@@ -55,7 +49,7 @@ export default function Auth() {
           title="Sign in with facebook"
           disabled={loading}
           onPress={() => {
-            return signInWithFacebook(routeNow.name);
+            return signInWithFacebook();
           }}
         />
       </View>
