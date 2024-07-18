@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, DimensionValue} from 'react-native';
 
 interface Divider {
   inset: boolean;
-  width: number;
+  width: DimensionValue;
   color: string;
 }
 

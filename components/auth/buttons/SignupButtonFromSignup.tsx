@@ -1,13 +1,13 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
-
+import { TouchableOpacity, Text, StyleSheet, TouchableOpacityProps, StyleProp, ViewStyle } from 'react-native';
 interface SignupButtonProps {
   onPress: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
-const SignupButton: React.FC<SignupButtonProps> = ({onPress}) => {
+const SignupButton: React.FC<SignupButtonProps> = ({onPress, style}) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
       <Text style={styles.text}>Sign Up</Text>
     </TouchableOpacity>
   );
@@ -15,8 +15,8 @@ const SignupButton: React.FC<SignupButtonProps> = ({onPress}) => {
 
 const styles = StyleSheet.create({
   button: {
-    width: 324,
-    height: 56,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     borderRadius: 28,
     backgroundColor: 'black',
     justifyContent: 'center',

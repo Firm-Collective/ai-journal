@@ -113,14 +113,14 @@ export default function LoginScreen() {
         </View>
 
         <View style={[styles.signupButtonsContainer]}>
-          <View style={[styles.buttonContainer1]}>
-            <SignupButton onPress={handleSignup} />
-          </View>
-          <View style={[styles.buttonContainer2]}>
+          <SignupButton onPress={handleSignup} style={styles.signupButton} />
+
+          <View style={[styles.dividerContainer]}>
             <Divider inset={true} width={100} color="black" />
             <Text style={[styles.textSmall]}>or sign up with</Text>
             <Divider inset={true} width={100} color="black" />
           </View>
+
           <View style={[styles.buttonContainer3]}>
             <View style={styles.logoGContainer}>
               <Image
@@ -148,8 +148,8 @@ export default function LoginScreen() {
               <Text style={styles.linkText}>Log in</Text>
             </Link>
           </Text>
-          <AuthFooter />
         </View>
+        <AuthFooter />
       </View>
     </SafeAreaView>
   );
@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
@@ -167,10 +168,35 @@ const styles = StyleSheet.create({
   },
   signupFieldsContainer: {
     marginBottom: 20,
+    width: '100%',
   },
   signupButtonsContainer: {
     alignItems: 'center',
     alignSelf: 'center',
+    width: '100%',
+  },
+  signupButton: {
+    width: '100%',
+  },
+  dividerContainer: {
+    marginTop: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    gap: 10,
+  },
+  divider: {
+    width: '100%',
+  },
+  buttonContainer3: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 20,
+    marginBottom: 40,
+    paddingHorizontal: '10%',
   },
   checkbox: {
     marginRight: 0,
@@ -217,30 +243,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 13,
-  },
-  buttonContainer1: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-    gap: 10,
-  },
-  buttonContainer2: {
-    marginTop: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-    gap: 10,
-  },
-  buttonContainer3: {
-    marginTop: 20,
-    marginBottom: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '60%',
-    gap: 10,
   },
   logo: {
     width: 35,
