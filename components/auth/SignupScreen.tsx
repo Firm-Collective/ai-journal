@@ -148,8 +148,8 @@ export default function LoginScreen() {
               <Text style={styles.linkText}>Log in</Text>
             </Link>
           </Text>
+          <AuthFooter />
         </View>
-        <AuthFooter />
       </View>
     </SafeAreaView>
   );

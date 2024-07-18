@@ -14,7 +14,6 @@ const AuthFooter = () => {
 
 const styles = StyleSheet.create({
   footer: {
-    position: 'absolute',
     bottom: 10,
     left: 0,
     right: 0,
