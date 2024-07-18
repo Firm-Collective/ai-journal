@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "One Voice Echo",
-    "slug": "One-Voice-Echo",
+    "slug": "one-voice-journal",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -84,16 +84,15 @@
         "origin": false
       },
       "eas": {
-        "projectId": "b150b9e0-b584-4976-8560-e1b23b830871"
+        "projectId": "b6865e23-e26f-40d9-8b77-d42d219c18c7"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/b150b9e0-b584-4976-8560-e1b23b830871"
+      "url": "https://u.expo.dev/b6865e23-e26f-40d9-8b77-d42d219c18c7"
     },
-    "owner": "ai-journal"
-
+    "owner": "one-voice-journal"
   }
 }

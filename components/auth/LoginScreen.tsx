@@ -23,6 +23,7 @@ import {
   signInWithGoogle,
 } from '@/lib/Auth';
 import {useRoute} from '@react-navigation/native';
+import AuthFooter from './AuthFooter';
 
 const {width, height} = Dimensions.get('window');
 
@@ -152,9 +153,7 @@ export default function LoginScreen() {
               <Text style={styles.linkText}>Sign Up</Text>
             </Link>
           </Text>
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Terms of Use | Privacy Policy</Text>
-          </View>
+          <AuthFooter />
         </View>
       </View>
     </SafeAreaView>

@@ -24,6 +24,7 @@ import {
   signupWithEmail,
 } from '@/lib/Auth';
 import {useRoute} from '@react-navigation/native';
+import AuthFooter from './AuthFooter';
 
 const {width, height} = Dimensions.get('window');
 
@@ -44,8 +45,8 @@ export default function LoginScreen() {
   const handleSignup = async () => {
     const isSuccess = await signupWithEmail(email, password);
 
-    // TODO: if success, route to email verification page
-    if (isSuccess) router.push('/');
+    // if success, route to email verification page
+    if (isSuccess) router.push('/email-verification');
   };
 
   const handleCheckboxChange = () => {
@@ -179,9 +180,7 @@ export default function LoginScreen() {
               <Text style={styles.linkText}>Log in</Text>
             </Link>
           </Text>
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Terms of Use | Privacy Policy</Text>
-          </View>
+          <AuthFooter />
         </View>
       </View>
     </SafeAreaView>
@@ -324,18 +323,5 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     zIndex: 2,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 5,
-    left: 0,
-    right: 0,
-    padding: 20,
-  },
-  footerText: {
-    textAlign: 'center',
-    color: '#1177C7',
-    fontFamily: 'Poppins',
-    fontSize: 14,
   },
 });

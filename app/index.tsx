@@ -15,5 +15,5 @@ export default function IndexPage() {
     return <WelcomeScreen />;
   }
 
-  return <Redirect href={'/(user)/home'} />;
+  return <Redirect href={'/home'} />;
 }

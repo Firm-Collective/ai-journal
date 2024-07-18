@@ -1,3 +1,7 @@
+/**
+ * This component represents the header of the Authentication pages.
+ */
+
 import {TouchableOpacity, View, Image, StyleSheet} from 'react-native';
 import {router} from 'expo-router';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -13,6 +17,8 @@ const AuthHeader = () => {
           onPress={() => router.navigate('/')}
         />
       </TouchableOpacity>
+
+      {/* Contains the header logo */}
       <Image
         source={require('../../assets/images/onevoice-journal-updated-logo.png')}
         style={styles.logo}
