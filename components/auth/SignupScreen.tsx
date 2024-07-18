@@ -20,21 +20,55 @@ import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';
 import {signupWithEmail} from '@/lib/Auth';
+import {Dimensions} from 'react-native';
 
-export default function LoginScreen() {
+const {width, height} = Dimensions.get('window');
+
+const window_width = width;
+const window_height = height;
+
+export default function SignupScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-  /**
-   * Handles the logic after a user clicks the signup button
-   */
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validatePassword = (password: string) => {
+    // Check if password meets criteria: at least 8 characters, contains a letter and a number
+    const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return re.test(password);
+  };
+
   const handleSignup = async () => {
-    const isSuccess = await signupWithEmail(email, password);
+    if (!validateEmail(email)) {
+      setEmailError('Please enter a valid email address.');
+      return;
+    } else {
+      setEmailError('');
+    }
 
-    // if success, route to email verification page
-    if (isSuccess) router.push('/email-verification');
+    if (!validatePassword(password)) {
+      setPasswordError(
+        'Password must be at least 8 characters and contain a letter and a number.'
+      );
+      return;
+    } else {
+      setPasswordError('');
+    }
+
+    const isSuccess = await signupWithEmail(email, password);
+    if (!isSuccess) {
+      setEmailError('This email is already in use.');
+    } else {
+      router.push('/email-verification');
+    }
   };
 
   const handleCheckboxChange = () => {
@@ -44,6 +78,9 @@ export default function LoginScreen() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const isSignupDisabled =
+    !email || !password || !isChecked || !!emailError || !!passwordError;
 
   return (
     <KeyboardAvoidingView
@@ -65,8 +102,19 @@ export default function LoginScreen() {
                     value={email}
                     placeholder="Email"
                     placeholderTextColor="rgba(50, 54, 62, 1)"
+                    onBlur={() => {
+                      if (!validateEmail(email)) {
+                        setEmailError('Please enter a valid email address.');
+                      } else {
+                        setEmailError('');
+                      }
+                    }}
                   />
+                  {emailError ? (
+                    <Text style={styles.errorText}>{emailError}</Text>
+                  ) : null}
                 </View>
+
                 <View>
                   <TextInput
                     style={styles.textInput}
@@ -75,6 +123,15 @@ export default function LoginScreen() {
                     value={password}
                     placeholder="Password"
                     placeholderTextColor="rgba(50, 54, 62, 1)"
+                    onBlur={() => {
+                      if (!validatePassword(password)) {
+                        setPasswordError(
+                          'Password must be at least 8 characters and contain a letter and a number.'
+                        );
+                      } else {
+                        setPasswordError('');
+                      }
+                    }}
                   />
                   <TouchableOpacity
                     style={{
@@ -91,74 +148,79 @@ export default function LoginScreen() {
                       color="black"
                     />
                   </TouchableOpacity>
+                  {passwordError ? (
+                    <Text style={styles.errorText}>{passwordError}</Text>
+                  ) : (
+                    <Text style={[styles.textSmall, styles.textGrey]}>
+                      Password must be at least 8 characters and contain a
+                      letter and a number.
+                    </Text>
+                  )}
+
+                  <View style={styles.containercheckbox}>
+                    <CheckBox
+                      checked={isChecked}
+                      onPress={handleCheckboxChange}
+                      style={styles.checkbox}
+                      containerStyle={{marginRight: 0, paddingRight: 5}}
+                    />
+                    <Text style={[styles.textSmall, styles.inlineText]}>
+                      <Text style={[styles.textGrey]}>
+                        By clicking Sign Up, you acknowledge that you have read
+                        the
+                      </Text>
+                      <Text style={[styles.textBlue]}> Privacy Policy</Text>
+                      <Text style={[styles.textGrey]}> and agree to the</Text>
+                      <Text style={[styles.textBlue]}> Terms of Service</Text>
+                    </Text>
+                  </View>
+                </View>
+              </View>
+
+              <View style={[styles.signupButtonsContainer]}>
+                <SignupButton
+                  onPress={handleSignup}
+                  style={styles.signupButton}
+                  disabled={isSignupDisabled}
+                />
+
+                <View style={styles.dividerContainer}>
+                  <Divider inset flex={1} />
+                  <Text style={styles.textSmall}>or sign up with</Text>
+                  <Divider inset flex={1} />
+                </View>
+
+                <View style={[styles.otherSignupButtonsContainer]}>
+                  <View style={styles.logoGContainer}>
+                    <Image
+                      style={[styles.logo, styles.logoG]}
+                      resizeMode="contain"
+                      source={require('../../assets/images/User/auth-google-logo.png')}
+                    />
+                  </View>
+                  <Image
+                    style={[styles.logo]}
+                    resizeMode="contain"
+                    source={require('../../assets/images/User/auth-facebook-logo.jpg')}
+                  />
+                  <View style={styles.logoAppleContainer}>
+                    <Image
+                      style={[styles.logo, styles.logoApple]}
+                      resizeMode="contain"
+                      source={require('../../assets/images/User/auth-apple-logo.png')}
+                    />
+                  </View>
                 </View>
 
                 <Text style={[styles.textSmall, styles.textGrey]}>
-                  Password must be at least 8 characters and contain a letter
-                  and a number.
+                  Already have an account?{' '}
+                  <Link href={'/login'} asChild>
+                    <Text style={styles.linkText}>Log in</Text>
+                  </Link>
                 </Text>
-                <View style={styles.containercheckbox}>
-                  <CheckBox
-                    checked={isChecked}
-                    onPress={handleCheckboxChange}
-                    style={styles.checkbox}
-                    containerStyle={{marginRight: 0, paddingRight: 5}}
-                  />
-                  <Text style={[styles.textSmall, styles.inlineText]}>
-                    <Text style={[styles.textGrey]}>
-                      By clicking Sign Up, you acknowledge that you have read
-                      the
-                    </Text>
-                    <Text style={[styles.textBlue]}> Privacy Policy</Text>
-                    <Text style={[styles.textGrey]}> and agree to the</Text>
-                    <Text style={[styles.textBlue]}> Terms of Service</Text>
-                  </Text>
-                </View>
               </View>
+              <AuthFooter />
             </View>
-
-            <View style={[styles.signupButtonsContainer]}>
-              <SignupButton
-                onPress={handleSignup}
-                style={styles.signupButton}
-              />
-
-              <View style={styles.dividerContainer}>
-                <Divider inset flex={1} />
-                <Text style={styles.textSmall}>or sign up with</Text>
-                <Divider inset flex={1} />
-              </View>
-
-              <View style={[styles.otherSignupButtonsContainer]}>
-                <View style={styles.logoGContainer}>
-                  <Image
-                    style={[styles.logo, styles.logoG]}
-                    resizeMode="contain"
-                    source={require('../../assets/images/User/auth-google-logo.png')}
-                  />
-                </View>
-                <Image
-                  style={[styles.logo]}
-                  resizeMode="contain"
-                  source={require('../../assets/images/User/auth-facebook-logo.jpg')}
-                />
-                <View style={styles.logoAppleContainer}>
-                  <Image
-                    style={[styles.logo, styles.logoApple]}
-                    resizeMode="contain"
-                    source={require('../../assets/images/User/auth-apple-logo.png')}
-                  />
-                </View>
-              </View>
-
-              <Text style={[styles.textSmall, styles.textGrey]}>
-                Already have an account?{' '}
-                <Link href={'/login'} asChild>
-                  <Text style={styles.linkText}>Log in</Text>
-                </Link>
-              </Text>
-            </View>
-            <AuthFooter />
           </View>
         </SafeAreaView>
       </TouchableWithoutFeedback>
@@ -206,6 +268,8 @@ const styles = StyleSheet.create({
     width: '60%',
     marginTop: 20,
     marginBottom: 40,
+    minWidth: window_width,
+    minHeight: window_height,
   },
   checkbox: {
     marginRight: 0,
@@ -252,6 +316,47 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 13,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+  },
+  container2: {
+    flex: 6,
+    flexDirection: 'column',
+    alignSelf: 'center',
+    width: '80%',
+  },
+  container3: {
+    flex: 6.8,
+    flexDirection: 'column',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '80%',
+  },
+  buttonContainer1: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    gap: 10,
+  },
+  buttonContainer2: {
+    marginTop: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    gap: 10,
+  },
+  buttonContainer3: {
+    marginTop: 20,
+    marginBottom: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '60%',
+    gap: 10,
   },
   logo: {
     width: 35,

@@ -1,6 +1,8 @@
+import React from 'react';
 import {Image, StyleSheet, View, Text, Dimensions} from 'react-native';
 import SignupButton from '@/components/auth/buttons/SignupButtonToSignup';
 import LoginButton from '@/components/auth/buttons/LoginButtonToLogin';
+
 const {width, height} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
@@ -27,7 +29,7 @@ const WelcomeScreen = () => {
           source={require('../assets/images/welcome-screen/onevoice-journal-updated-logo-text-only.png')}
           resizeMode="cover"
         />
-        <Text style={styles.sloganText}>Your Faith. Guided by AI</Text>
+        <Text style={styles.sloganText}>Your Faith. Guided by AI.</Text>
       </View>
       <View style={styles.buttonContainer}>
         <LoginButton />

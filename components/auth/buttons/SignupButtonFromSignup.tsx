@@ -1,13 +1,29 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, TouchableOpacityProps, StyleProp, ViewStyle } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
+
 interface SignupButtonProps {
   onPress: () => void;
+  disabled?: boolean; // Add disabled prop to interface
   style?: StyleProp<ViewStyle>;
 }
 
-const SignupButton: React.FC<SignupButtonProps> = ({onPress, style}) => {
+const SignupButton: React.FC<SignupButtonProps> = ({
+  onPress,
+  disabled,
+  style,
+}) => {
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.button, style, disabled && styles.disabledButton]} // Apply styles conditionally based on disabled state
+      onPress={onPress}
+      disabled={disabled} // Disable button if disabled prop is true
+    >
       <Text style={styles.text}>Sign Up</Text>
     </TouchableOpacity>
   );
@@ -15,12 +31,15 @@ const SignupButton: React.FC<SignupButtonProps> = ({onPress, style}) => {
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    width: 324,
+    height: 56,
     borderRadius: 28,
     backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  disabledButton: {
+    backgroundColor: 'gray', // Change the background color to indicate disabled state
   },
   text: {
     color: 'white',
