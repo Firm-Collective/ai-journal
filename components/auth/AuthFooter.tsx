@@ -6,21 +6,22 @@ import {View, StyleSheet, Text} from 'react-native';
 
 const AuthFooter = () => {
   return (
-    <View style={styles.footer}>
+    <View style={styles.footerContainer}>
       <Text style={styles.footerText}>Terms of Use | Privacy Policy</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  footer: {
-    bottom: 10,
-    left: 0,
-    right: 0,
-    padding: 20,
+  footerContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
   },
   footerText: {
-    textAlign: 'center',
+    bottom: 25,
+    left: 0,
+    right: 0,
+    textAlign:'center',
     color: '#1177C7',
   },
 });

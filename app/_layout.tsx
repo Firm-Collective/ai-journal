@@ -1,6 +1,8 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {StatusBar, StyleSheet} from 'react-native';
+import {
+  StatusBar,
+} from 'react-native';
 import {DarkTheme, DefaultTheme, ThemeProvider} from '@react-navigation/native';
 import {useFonts} from 'expo-font';
 import {Stack, useRouter} from 'expo-router';

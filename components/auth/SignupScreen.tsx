@@ -7,6 +7,10 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CheckBox} from '@rneui/themed';
@@ -48,110 +52,123 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.view]}>
-      <View style={styles.container}>
-        <AuthHeader />
-        <View style={styles.signupFieldsContainer}>
-          <Text style={styles.textCreate}>Create an Account</Text>
-          <View>
-            <View>
-              <TextInput
-                style={styles.textInput}
-                onChangeText={(text: string) => setEmail(text)}
-                value={email}
-                placeholder="Email"
-                placeholderTextColor="rgba(50, 54, 62, 1)"
-              />
-            </View>
-            <View>
-              <TextInput
-                style={styles.textInput}
-                secureTextEntry={!showPassword}
-                onChangeText={(text: string) => setPassword(text)}
-                value={password}
-                placeholder="Password"
-                placeholderTextColor="rgba(50, 54, 62, 1)"
-              />
-              <TouchableOpacity
-                style={{
-                  position: 'absolute',
-                  top: 15,
-                  right: 10,
-                  padding: 5,
-                }}
-                onPress={togglePasswordVisibility}
-              >
-                <Feather
-                  name={showPassword ? 'eye' : 'eye-off'}
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}
+      enabled
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={[styles.view]}>
+          <View style={styles.container}>
+            <AuthHeader />
+            <View style={styles.signupFieldsContainer}>
+              <Text style={styles.textCreate}>Create an Account</Text>
+              <View>
+                <View>
+                  <TextInput
+                    style={styles.textInput}
+                    onChangeText={(text: string) => setEmail(text)}
+                    value={email}
+                    placeholder="Email"
+                    placeholderTextColor="rgba(50, 54, 62, 1)"
+                  />
+                </View>
+                <View>
+                  <TextInput
+                    style={styles.textInput}
+                    secureTextEntry={!showPassword}
+                    onChangeText={(text: string) => setPassword(text)}
+                    value={password}
+                    placeholder="Password"
+                    placeholderTextColor="rgba(50, 54, 62, 1)"
+                  />
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      top: 15,
+                      right: 10,
+                      padding: 5,
+                    }}
+                    onPress={togglePasswordVisibility}
+                  >
+                    <Feather
+                      name={showPassword ? 'eye' : 'eye-off'}
+                      size={24}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                <Text style={[styles.textSmall, styles.textGrey]}>
+                  Password must be at least 8 characters and contain a letter
+                  and a number.
+                </Text>
+                <View style={styles.containercheckbox}>
+                  <CheckBox
+                    checked={isChecked}
+                    onPress={handleCheckboxChange}
+                    style={styles.checkbox}
+                    containerStyle={{marginRight: 0, paddingRight: 5}}
+                  />
+                  <Text style={[styles.textSmall, styles.inlineText]}>
+                    <Text style={[styles.textGrey]}>
+                      By clicking Sign Up, you acknowledge that you have read
+                      the
+                    </Text>
+                    <Text style={[styles.textBlue]}> Privacy Policy</Text>
+                    <Text style={[styles.textGrey]}> and agree to the</Text>
+                    <Text style={[styles.textBlue]}> Terms of Service</Text>
+                  </Text>
+                </View>
+              </View>
             </View>
 
-            <Text style={[styles.textSmall, styles.textGrey]}>
-              Password must be at least 8 characters and contain a letter and a
-              number.
-            </Text>
-            <View style={styles.containercheckbox}>
-              <CheckBox
-                checked={isChecked}
-                onPress={handleCheckboxChange}
-                style={styles.checkbox}
-                containerStyle={{marginRight: 0, paddingRight: 5}}
+            <View style={[styles.signupButtonsContainer]}>
+              <SignupButton
+                onPress={handleSignup}
+                style={styles.signupButton}
               />
-              <Text style={[styles.textSmall, styles.inlineText]}>
-                <Text style={[styles.textGrey]}>
-                  By clicking Sign Up, you acknowledge that you have read the
-                </Text>
-                <Text style={[styles.textBlue]}> Privacy Policy</Text>
-                <Text style={[styles.textGrey]}> and agree to the</Text>
-                <Text style={[styles.textBlue]}> Terms of Service</Text>
+
+              <View style={[styles.dividerContainer]}>
+                <Divider inset={true} width={100} color="black" />
+                <Text style={[styles.textSmall]}>or sign up with</Text>
+                <Divider inset={true} width={100} color="black" />
+              </View>
+
+              <View style={[styles.otherSignupButtonsContainer]}>
+                <View style={styles.logoGContainer}>
+                  <Image
+                    style={[styles.logo, styles.logoG]}
+                    resizeMode="contain"
+                    source={require('../../assets/images/User/auth-google-logo.png')}
+                  />
+                </View>
+                <Image
+                  style={[styles.logo]}
+                  resizeMode="contain"
+                  source={require('../../assets/images/User/auth-facebook-logo.jpg')}
+                />
+                <View style={styles.logoAppleContainer}>
+                  <Image
+                    style={[styles.logo, styles.logoApple]}
+                    resizeMode="contain"
+                    source={require('../../assets/images/User/auth-apple-logo.png')}
+                  />
+                </View>
+              </View>
+
+              <Text style={[styles.textSmall, styles.textGrey]}>
+                Already have an account?{' '}
+                <Link href={'/login'} asChild>
+                  <Text style={styles.linkText}>Log in</Text>
+                </Link>
               </Text>
             </View>
+            <AuthFooter />
           </View>
-        </View>
-
-        <View style={[styles.signupButtonsContainer]}>
-          <SignupButton onPress={handleSignup} style={styles.signupButton} />
-
-          <View style={[styles.dividerContainer]}>
-            <Divider inset={true} width={100} color="black" />
-            <Text style={[styles.textSmall]}>or sign up with</Text>
-            <Divider inset={true} width={100} color="black" />
-          </View>
-
-          <View style={[styles.buttonContainer3]}>
-            <View style={styles.logoGContainer}>
-              <Image
-                style={[styles.logo, styles.logoG]}
-                resizeMode="contain"
-                source={require('../../assets/images/User/auth-google-logo.png')}
-              />
-            </View>
-            <Image
-              style={[styles.logo]}
-              resizeMode="contain"
-              source={require('../../assets/images/User/auth-facebook-logo.jpg')}
-            />
-            <View style={styles.logoAppleContainer}>
-              <Image
-                style={[styles.logo, styles.logoApple]}
-                resizeMode="contain"
-                source={require('../../assets/images/User/auth-apple-logo.png')}
-              />
-            </View>
-          </View>
-          <Text style={[styles.textSmall, styles.textGrey]}>
-            Already have an account?{' '}
-            <Link href={'/login'} asChild>
-              <Text style={styles.linkText}>Log in</Text>
-            </Link>
-          </Text>
-          <AuthFooter />
-        </View>
-      </View>
-    </SafeAreaView>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -189,7 +206,7 @@ const styles = StyleSheet.create({
   divider: {
     width: '100%',
   },
-  buttonContainer3: {
+  otherSignupButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
