@@ -131,7 +131,7 @@ export default function LoginScreen() {
               onPress={() => {
                 console.log('Apple auth : login');
                 if (Platform.OS === 'ios') {
-                  return signInWithApple;
+                  signInWithApple();
                 } else {
                   // toDo: implement android apple login
                   Alert.alert('Apple auth is currently available for ios only');
