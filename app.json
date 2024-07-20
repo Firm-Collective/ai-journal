@@ -16,7 +16,8 @@
       "supportsTablet": true,
       "associatedDomains": [
         "applinks:firmcollective.org"
-      ]
+      ],
+      "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
     },
     "android": {
       "adaptiveIcon": {
