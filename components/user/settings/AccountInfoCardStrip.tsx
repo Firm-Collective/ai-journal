@@ -16,7 +16,7 @@ export default function AccountInfoCardStrip({toLocation, userProperty}) {
   return (
     <Pressable
       onPress={() => {
-        console.log('Strip password/about me');
+        router.push(toLocation);
       }}
       style={({pressed}) => [
         styles.pressableStyles,

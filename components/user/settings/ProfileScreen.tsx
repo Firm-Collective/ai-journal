@@ -84,7 +84,10 @@ export default function ProfileScreen() {
               userPropertyValue={'English'}
               externalStyles={{borderTopWidth: 0}}
             />
-            <AccountInfoCardStrip userProperty={'About me'} toLocation={'/'} />
+            <AccountInfoCardStrip
+              userProperty={'About me'}
+              toLocation={'/profile/about_me'}
+            />
           </View>
         </View>
       </ScrollView>

@@ -8,7 +8,6 @@ export default function AccountInfoAccordion({
   externalStyles = {},
 }) {
   const [expanded, setExpanded] = useState(false);
-  console.log('EXT ', externalStyles);
   const handleChangeProperty = () => {
     // function to handle the property change logic
   };
