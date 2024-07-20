@@ -6,19 +6,22 @@ import {
   StyleSheet,
   useWindowDimensions,
 } from 'react-native';
+import {navigate} from 'expo-router/build/global-state/routing';
+import {router} from 'expo-router';
 
-export default function StripCard({cardStyles, toLocation, iconSrc, text}) {
+export default function AccountInfoCardStrip({toLocation, userProperty}) {
   const {width} = useWindowDimensions();
   const cardWidth = 0.9 * width;
 
   return (
     <Pressable
-      onPress={() => console.log('Strip ', text)}
+      onPress={() => {
+        console.log('Strip password/about me');
+      }}
       style={({pressed}) => [
         styles.pressableStyles,
         {width: cardWidth},
         {maxWidth: cardWidth},
-        cardStyles,
         {backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white'},
       ]}
       android_ripple={{
@@ -27,9 +30,8 @@ export default function StripCard({cardStyles, toLocation, iconSrc, text}) {
         radius: 10,
       }}
     >
-      <View style={styles.iconText}>
-        <Image source={iconSrc} style={styles.iconLogo} />
-        <Text>{text}</Text>
+      <View>
+        <Text>{userProperty}</Text>
       </View>
       <Image
         style={styles.arrowLogo}
@@ -45,25 +47,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#ffffff',
     flexWrap: 'nowrap',
-    padding: 5,
-    borderBottomColor: '#E9E9E9',
-    borderBottomWidth: 1,
+    padding: 15,
+    borderColor: '#E9E9E9',
+    borderWidth: 2,
     justifyContent: 'space-between',
-  },
-  iconText: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    alignItems: 'center',
-    flex: 2,
-    gap: 20,
-  },
-  iconLogo: {
-    width: 18,
-    resizeMode: 'contain',
+    borderTopWidth: 0,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
   arrowLogo: {
     resizeMode: 'contain',
-    width: 18,
+    width: 20,
   },
 });

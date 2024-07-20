@@ -10,12 +10,12 @@ import {
   Platform,
   StatusBar,
 } from 'react-native';
-import SettingsHeader from '@/components/user/settings/SettingsHeader';
+import SettingsMainHeader from '@/components/user/settings/SettingsMainHeader';
 import UserAvatar from '@/components/user/settings/UserAvatar';
 import useFetchUser from '@/lib/hooks/useFetchUser';
 import {supabase} from '@/lib/supabase';
 import {useEffect, useState} from 'react';
-import StripCard from '@/components/user/settings/StripCard';
+import SettingsMainStripCard from '@/components/user/settings/SettingsMainStripCard';
 import ScrollView = Animated.ScrollView;
 
 interface userData {
@@ -67,7 +67,7 @@ export default function SettingsScreen() {
     <SafeAreaView
       style={[styles.container, {minHeight: height, minWidth: width}]}
     >
-      <SettingsHeader />
+      <SettingsMainHeader />
       <View style={styles.userPreviewCont}>
         <View style={styles.profileSummary}>
           <UserAvatar />
@@ -79,31 +79,31 @@ export default function SettingsScreen() {
           </View>
         </View>
         <View style={styles.stripContainer}>
-          <StripCard
+          <SettingsMainStripCard
             cardStyles={[styles.topStrip, styles.strips]}
-            toLocation={'/'}
+            toLocation={'/profile/profile_info'}
             iconSrc={require('../../../assets/images/User/profile-icon.png')}
             text={'Profile'}
           />
-          <StripCard
+          <SettingsMainStripCard
             cardStyles={styles.middleStrip}
             toLocation={'/'}
             iconSrc={require('../../../assets/images/User/notifications-icon.png')}
             text={'Notifications'}
           />
-          <StripCard
+          <SettingsMainStripCard
             cardStyles={styles.middleStrip}
             toLocation={'/'}
             iconSrc={require('../../../assets/images/User/payments-icon.png')}
             text={'Payments and Linked Accounts'}
           />
-          <StripCard
+          <SettingsMainStripCard
             cardStyles={styles.middleStrip}
             toLocation={'/'}
             iconSrc={require('../../../assets/images/User/faq-icon.png')}
             text={'Help and Support'}
           />
-          <StripCard
+          <SettingsMainStripCard
             cardStyles={styles.bottomStrip}
             toLocation={'/'}
             iconSrc={require('../../../assets/images/User/log-out-icon.png')}

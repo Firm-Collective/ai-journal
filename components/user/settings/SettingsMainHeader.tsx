@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Image, StyleSheet} from 'react-native';
 
-export default function SettingsHeader() {
+export default function SettingsMainHeader() {
   return (
     <View style={styles.imgContainer}>
       <Image
