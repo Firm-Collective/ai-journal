@@ -10,13 +10,18 @@ import {
 import UserAvatar from '@/components/user/settings/UserAvatar';
 import ProfileEditGeneral from '@/components/user/settings/ProfileEditGeneral';
 import {ContainedUserAttribute} from '@/components/user/settings/ContainedUserAttribute';
+import {useState} from 'react';
 
 export default function AboutMeScreen() {
+  const [userFullName, setUserFullName] = useState('John Doe');
+
   const userLanguages = ['🇧🇷 Brazil', '🇵🇾 Paraguay'];
   const userAffiliations = ['Bethel', 'BSSM', 'Firm'];
   const userInterests = ['Music', 'Sports', 'Concerts'];
 
-  const name = <Text>John Doe</Text>;
+  console.log('Name is ', userFullName);
+
+  const name = <Text>{userFullName}</Text>;
   const about = (
     <Text>
       {'I am a devoted Christian who finds great joy and purpose through my faith. My' +
@@ -26,6 +31,10 @@ export default function AboutMeScreen() {
   const languages = <ContainedUserAttribute attributes={userLanguages} />;
   const affiliations = <ContainedUserAttribute attributes={userAffiliations} />;
   const interests = <ContainedUserAttribute attributes={userInterests} />;
+
+  const handleNameChange = async () => {
+    console.log('Changing names');
+  };
 
   return (
     <SafeAreaView style={styles.mainContainer}>

@@ -1,6 +1,10 @@
 import {StyleSheet, Text, View} from 'react-native';
 
-function ContainedUserAttribute({attributes}) {
+interface attributePropType {
+  attributes: string[];
+}
+
+function ContainedUserAttribute({attributes}: attributePropType) {
   return (
     <View style={[styles.itemCont]}>
       {attributes.map((userAttribute, key) => {

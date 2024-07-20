@@ -1,10 +1,16 @@
 import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
 
+interface ProfileOverviewStripCardPropTypes {
+  userProp: string;
+  propValue: string;
+  // extStyles: {};
+}
+
 export default function ProfileOverviewStripCard({
   userProp,
   propValue,
-  extStyles = {},
-}) {
+  // extStyles = {},
+}: ProfileOverviewStripCardPropTypes) {
   const {width: windowWidth} = useWindowDimensions();
 
   return (

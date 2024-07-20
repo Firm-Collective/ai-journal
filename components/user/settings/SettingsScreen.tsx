@@ -1,14 +1,11 @@
 import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-  TouchableOpacity,
-  Animated,
-  Pressable,
   Platform,
+  SafeAreaView,
   StatusBar,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
 } from 'react-native';
 import SettingsMainHeader from '@/components/user/settings/SettingsMainHeader';
 import UserAvatar from '@/components/user/settings/UserAvatar';
@@ -16,7 +13,6 @@ import useFetchUser from '@/lib/hooks/useFetchUser';
 import {supabase} from '@/lib/supabase';
 import {useEffect, useState} from 'react';
 import SettingsMainStripCard from '@/components/user/settings/SettingsMainStripCard';
-import ScrollView = Animated.ScrollView;
 
 interface userData {
   last_name: string;
@@ -41,15 +37,15 @@ export default function SettingsScreen() {
       const getName = async () => {
         console.log('Using id: ', user.id);
         const {data, error} = await supabase
-          .from<userData, null>('users')
+          .from('users')
           .select('first_name, last_name, email_address')
-          .eq('id', user.id);
+          .eq('id', user?.id);
 
         if (!error) {
           if (data && data.length > 0) {
             console.log('Data ', data);
-            const {first_name, last_name, email_address} = data[0];
-            setUserData(data[0]);
+            const userData: userData = data[0];
+            setUserData(userData);
             return;
           } else {
             console.log('No user found');

@@ -1,15 +1,22 @@
 import {
-  View,
-  Text,
   Image,
   Pressable,
   StyleSheet,
+  Text,
   useWindowDimensions,
+  View,
 } from 'react-native';
-import {navigate} from 'expo-router/build/global-state/routing';
 import {router} from 'expo-router';
 
-export default function AccountInfoCardStrip({toLocation, userProperty}) {
+interface AccountInfoCardStripPropType {
+  toLocation: string;
+  userProperty: string;
+}
+
+export default function AccountInfoCardStrip({
+  toLocation,
+  userProperty,
+}: AccountInfoCardStripPropType) {
   const {width} = useWindowDimensions();
   const cardWidth = 0.9 * width;
 

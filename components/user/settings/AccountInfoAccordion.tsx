@@ -1,12 +1,18 @@
 import {ListItem} from '@rneui/themed';
 import {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, ViewStyle} from 'react-native';
+
+interface AccountInfoAccordionPropType {
+  userProperty: string;
+  userPropertyValue: string;
+  externalStyles: ViewStyle;
+}
 
 export default function AccountInfoAccordion({
   userProperty,
   userPropertyValue,
   externalStyles = {},
-}) {
+}: AccountInfoAccordionPropType) {
   const [expanded, setExpanded] = useState(false);
   const handleChangeProperty = () => {
     // function to handle the property change logic

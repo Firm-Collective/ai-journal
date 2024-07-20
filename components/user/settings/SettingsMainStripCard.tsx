@@ -1,20 +1,26 @@
 import {
-  View,
-  Text,
   Image,
   Pressable,
   StyleSheet,
+  Text,
   useWindowDimensions,
+  View,
 } from 'react-native';
-import {navigate} from 'expo-router/build/global-state/routing';
 import {router} from 'expo-router';
+
+interface SettingsMainStripCardProps {
+  cardStyles: {};
+  toLocation: string;
+  iconSrc: string;
+  text: string;
+}
 
 export default function SettingsMainStripCard({
   cardStyles,
   toLocation,
   iconSrc,
   text,
-}) {
+}: SettingsMainStripCardProps) {
   const {width} = useWindowDimensions();
   const cardWidth = 0.9 * width;
 
@@ -38,7 +44,7 @@ export default function SettingsMainStripCard({
       }}
     >
       <View style={styles.iconText}>
-        <Image source={iconSrc} style={styles.iconLogo} />
+        <Image source={{uri: iconSrc}} style={styles.iconLogo} />
         <Text>{text}</Text>
       </View>
       <Image

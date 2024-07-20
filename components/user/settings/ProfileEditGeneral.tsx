@@ -6,12 +6,19 @@ import {
   StyleSheet,
   useWindowDimensions,
 } from 'react-native';
+import React from 'react';
+
+interface ProfileEditGeneralProps {
+  userProperty: string;
+  userPropertyValue: React.JSX.Element;
+  handleEdit: () => void;
+}
 
 export default function ProfileEditGeneral({
   userProperty,
   userPropertyValue,
   handleEdit,
-}) {
+}: ProfileEditGeneralProps) {
   const {width: windoWdith} = useWindowDimensions();
   return (
     <View style={[styles.container, {width: windoWdith * 0.9}]}>
