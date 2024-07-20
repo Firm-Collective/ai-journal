@@ -27,19 +27,26 @@ const window_width = width;
 const window_height = height;
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState(''); // State to manage email input
+  const [password, setPassword] = useState(''); // State to manage password input
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [errorMessage, setErrorMessage] = useState(''); // State to manage error message
 
   /**
    * Handles logic after user clicks on login
    */
-  const handleLogin = () => {
-    loginWithEmail(email, password);
+  const handleLogin = async () => {
+    const result = await loginWithEmail(email, password);
+    if (!result.success) {
+      setErrorMessage(result.message); // Set the specific error message here
+    } else {
+      setErrorMessage('');
+      // Redirect to another screen or perform other actions upon successful login
+    }
   };
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    setShowPassword(!showPassword); // Toggle password visibility
   };
 
   return (
@@ -86,6 +93,9 @@ export default function LoginScreen() {
                   />
                 </TouchableOpacity>
               </View>
+              {errorMessage ? (
+                <Text style={styles.errorText}>{errorMessage}</Text> // Conditionally render error message
+              ) : null}
               <View style={styles.buttonContainer1}>
                 <LoginButton onPress={handleLogin} />
               </View>
@@ -192,13 +202,11 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontFamily: 'Poppins',
   },
-  textBottom: {
-    marginTop: 120,
-    fontSize: 12,
-  },
-  textBottom2: {
-    marginTop: 180,
-    fontSize: 12,
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginBottom: 10,
+    textAlign: 'center',
   },
   container2: {
     flex: 6,

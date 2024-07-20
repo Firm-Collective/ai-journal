@@ -10,6 +10,7 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CheckBox} from '@rneui/themed';
@@ -20,10 +21,8 @@ import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';
 import {signupWithEmail} from '@/lib/Auth';
-import {Dimensions} from 'react-native';
 
 const {width, height} = Dimensions.get('window');
-
 const window_width = width;
 const window_height = height;
 
@@ -41,14 +40,13 @@ export default function SignupScreen() {
   };
 
   const validatePassword = (password: string) => {
-    // Check if password meets criteria: at least 8 characters, contains a letter and a number
     const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     return re.test(password);
   };
 
   const handleSignup = async () => {
     if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email address.');
+      setEmailError('This is an invalid email, please try again.');
       return;
     } else {
       setEmailError('');
@@ -63,9 +61,9 @@ export default function SignupScreen() {
       setPasswordError('');
     }
 
-    const isSuccess = await signupWithEmail(email, password);
-    if (!isSuccess) {
-      setEmailError('This email is already in use.');
+    const result = await signupWithEmail(email, password);
+    if (!result.success) {
+      setEmailError(result.message);
     } else {
       router.push('/email-verification');
     }
@@ -95,31 +93,31 @@ export default function SignupScreen() {
             <View style={styles.signupFieldsContainer}>
               <Text style={styles.textCreate}>Create an Account</Text>
               <View>
-                <View>
-                  <TextInput
-                    style={styles.textInput}
-                    onChangeText={(text: string) => setEmail(text)}
-                    value={email}
-                    placeholder="Email"
-                    placeholderTextColor="rgba(50, 54, 62, 1)"
-                    onBlur={() => {
-                      if (!validateEmail(email)) {
-                        setEmailError('Please enter a valid email address.');
-                      } else {
-                        setEmailError('');
-                      }
-                    }}
-                  />
-                  {emailError ? (
-                    <Text style={styles.errorText}>{emailError}</Text>
-                  ) : null}
-                </View>
+                <TextInput
+                  style={styles.textInput}
+                  onChangeText={setEmail}
+                  value={email}
+                  placeholder="Email"
+                  placeholderTextColor="rgba(50, 54, 62, 1)"
+                  onBlur={() => {
+                    if (!validateEmail(email)) {
+                      setEmailError(
+                        'This is an invalid email, please try again.'
+                      );
+                    } else {
+                      setEmailError('');
+                    }
+                  }}
+                />
+                {emailError ? (
+                  <Text style={styles.errorText}>{emailError}</Text>
+                ) : null}
 
                 <View>
                   <TextInput
                     style={styles.textInput}
                     secureTextEntry={!showPassword}
-                    onChangeText={(text: string) => setPassword(text)}
+                    onChangeText={setPassword}
                     value={password}
                     placeholder="Password"
                     placeholderTextColor="rgba(50, 54, 62, 1)"
@@ -134,12 +132,7 @@ export default function SignupScreen() {
                     }}
                   />
                   <TouchableOpacity
-                    style={{
-                      position: 'absolute',
-                      top: 15,
-                      right: 10,
-                      padding: 5,
-                    }}
+                    style={styles.eyeIcon}
                     onPress={togglePasswordVisibility}
                   >
                     <Feather
@@ -148,80 +141,80 @@ export default function SignupScreen() {
                       color="black"
                     />
                   </TouchableOpacity>
-                  {passwordError ? (
-                    <Text style={styles.errorText}>{passwordError}</Text>
-                  ) : (
-                    <Text style={[styles.textSmall, styles.textGrey]}>
-                      Password must be at least 8 characters and contain a
-                      letter and a number.
-                    </Text>
-                  )}
-
-                  <View style={styles.containercheckbox}>
-                    <CheckBox
-                      checked={isChecked}
-                      onPress={handleCheckboxChange}
-                      style={styles.checkbox}
-                      containerStyle={{marginRight: 0, paddingRight: 5}}
-                    />
-                    <Text style={[styles.textSmall, styles.inlineText]}>
-                      <Text style={[styles.textGrey]}>
-                        By clicking Sign Up, you acknowledge that you have read
-                        the
-                      </Text>
-                      <Text style={[styles.textBlue]}> Privacy Policy</Text>
-                      <Text style={[styles.textGrey]}> and agree to the</Text>
-                      <Text style={[styles.textBlue]}> Terms of Service</Text>
-                    </Text>
-                  </View>
                 </View>
-              </View>
+                {passwordError ? (
+                  <Text style={styles.errorText}>{passwordError}</Text>
+                ) : (
+                  <Text style={[styles.textSmall, styles.textGrey]}>
+                    Password must be at least 8 characters and contain a letter
+                    and a number.
+                  </Text>
+                )}
 
-              <View style={[styles.signupButtonsContainer]}>
-                <SignupButton
-                  onPress={handleSignup}
-                  style={styles.signupButton}
-                  disabled={isSignupDisabled}
-                />
-
-                <View style={styles.dividerContainer}>
-                  <Divider inset flex={1} />
-                  <Text style={styles.textSmall}>or sign up with</Text>
-                  <Divider inset flex={1} />
-                </View>
-
-                <View style={[styles.otherSignupButtonsContainer]}>
-                  <View style={styles.logoGContainer}>
-                    <Image
-                      style={[styles.logo, styles.logoG]}
-                      resizeMode="contain"
-                      source={require('../../assets/images/User/auth-google-logo.png')}
-                    />
-                  </View>
-                  <Image
-                    style={[styles.logo]}
-                    resizeMode="contain"
-                    source={require('../../assets/images/User/auth-facebook-logo.jpg')}
+                <View style={styles.containercheckbox}>
+                  <CheckBox
+                    checked={isChecked}
+                    onPress={handleCheckboxChange}
+                    style={styles.checkbox}
+                    containerStyle={{marginRight: 0, paddingRight: 5}}
                   />
-                  <View style={styles.logoAppleContainer}>
-                    <Image
-                      style={[styles.logo, styles.logoApple]}
-                      resizeMode="contain"
-                      source={require('../../assets/images/User/auth-apple-logo.png')}
-                    />
-                  </View>
+                  <Text style={[styles.textSmall, styles.inlineText]}>
+                    <Text style={[styles.textGrey]}>
+                      By clicking Sign Up, you acknowledge that you have read
+                      the{' '}
+                    </Text>
+                    <Text style={[styles.textBlue]}>Privacy Policy</Text>
+                    <Text style={[styles.textGrey]}> and agree to the </Text>
+                    <Text style={[styles.textBlue]}>Terms of Service</Text>
+                  </Text>
                 </View>
-
-                <Text style={[styles.textSmall, styles.textGrey]}>
-                  Already have an account?{' '}
-                  <Link href={'/login'} asChild>
-                    <Text style={styles.linkText}>Log in</Text>
-                  </Link>
-                </Text>
               </View>
-              <AuthFooter />
+            </View>
+
+            <View style={styles.signupButtonsContainer}>
+              <SignupButton
+                onPress={handleSignup}
+                style={styles.signupButton}
+                disabled={isSignupDisabled}
+              />
+
+              <View style={styles.dividerContainer}>
+                <Divider inset flex={1} />
+                <Text style={styles.textSmall}>or sign up with</Text>
+                <Divider inset flex={1} />
+              </View>
+
+              <View style={styles.otherSignupButtonsContainer}>
+                <View style={styles.logoGContainer}>
+                  <Image
+                    style={[styles.logo, styles.logoG]}
+                    resizeMode="contain"
+                    source={require('../../assets/images/User/auth-google-logo.png')}
+                  />
+                </View>
+                <Image
+                  style={[styles.logo]}
+                  resizeMode="contain"
+                  source={require('../../assets/images/User/auth-facebook-logo.jpg')}
+                />
+                <View style={styles.logoAppleContainer}>
+                  <Image
+                    style={[styles.logo, styles.logoApple]}
+                    resizeMode="contain"
+                    source={require('../../assets/images/User/auth-apple-logo.png')}
+                  />
+                </View>
+              </View>
+
+              <Text style={[styles.textSmall, styles.textGrey]}>
+                Already have an account?{' '}
+                <Link href={'/login'} asChild>
+                  <Text style={styles.linkText}>Log in</Text>
+                </Link>
+              </Text>
             </View>
           </View>
+          <AuthFooter />
         </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -234,6 +227,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  eyeIcon: {
+    position: 'absolute',
+    top: 15,
+    right: 10,
+    padding: 5,
   },
   container: {
     flex: 1,
