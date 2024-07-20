@@ -1,14 +1,7 @@
 import {Text, View} from 'react-native';
 import React, {Component} from 'react';
+import HomeScreen from '@/components/user/home-screen';
 
-export class Home extends Component {
-  render() {
-    return (
-      <View>
-        <Text>Home</Text>
-      </View>
-    );
-  }
+export default function Page() {
+  return <HomeScreen />;
 }
-
-export default Home;
