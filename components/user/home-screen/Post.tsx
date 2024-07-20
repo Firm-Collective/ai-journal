@@ -12,11 +12,17 @@ type PostProps = {
   tags: string[];
 };
 
-export default function Post({title}: PostProps) {
+export default function Post({
+  date,
+  title,
+  imagePath,
+  content,
+  tags,
+}: PostProps) {
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.cardTop}>
-        <MonoText style={styles.date}>Date</MonoText>
+        <MonoText style={styles.date}>{date}</MonoText>
         <TouchableOpacity>
           <Image
             resizeMode="contain"
@@ -26,10 +32,13 @@ export default function Post({title}: PostProps) {
       </View>
       <TextSemiBold style={styles.title}>{title}</TextSemiBold>
       <View style={styles.contentContainer}>
-        <MonoText>Post content</MonoText>
+        {/* multiple line text */}
+        <MonoText>{content}</MonoText>
       </View>
       <View style={styles.tagsContainer}>
-        <Tag name="tag" />
+        {tags.map((tag, i) => {
+          return <Tag key={i} name={tag} />;
+        })}
       </View>
     </Card>
   );
