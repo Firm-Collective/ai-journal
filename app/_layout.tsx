@@ -9,6 +9,7 @@ import AuthProvider from '@/providers/AuthProvider';
 import {useColorScheme} from '@/components/useColorScheme';
 import * as Linking from 'expo-linking';
 import {createSessionFromUrl} from '@/lib/Auth';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -59,13 +60,15 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AuthProvider>
-        <Stack>
-          <Stack.Screen name="index" options={{headerShown: false}} />
-          <Stack.Screen name="(auth)" options={{headerShown: false}} />
-          <Stack.Screen name="(user)" options={{headerShown: false}} />
-        </Stack>
-      </AuthProvider>
+      <GestureHandlerRootView>
+        <AuthProvider>
+          <Stack>
+            <Stack.Screen name="index" options={{headerShown: false}} />
+            <Stack.Screen name="(auth)" options={{headerShown: false}} />
+            <Stack.Screen name="(user)" options={{headerShown: false}} />
+          </Stack>
+        </AuthProvider>
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 }
