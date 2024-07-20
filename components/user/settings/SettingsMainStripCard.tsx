@@ -1,5 +1,6 @@
 import {
   Image,
+  ImageSourcePropType,
   Pressable,
   StyleSheet,
   Text,
@@ -11,7 +12,7 @@ import {router} from 'expo-router';
 interface SettingsMainStripCardProps {
   cardStyles: {};
   toLocation: string;
-  iconSrc: string;
+  iconSrc: ImageSourcePropType;
   text: string;
 }
 
@@ -44,7 +45,7 @@ export default function SettingsMainStripCard({
       }}
     >
       <View style={styles.iconText}>
-        <Image source={{uri: iconSrc}} style={styles.iconLogo} />
+        <Image source={iconSrc} style={styles.iconLogo} />
         <Text>{text}</Text>
       </View>
       <Image
