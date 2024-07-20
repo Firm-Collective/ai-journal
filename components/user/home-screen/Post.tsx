@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {Card} from '@rneui/themed';
-import {MonoText} from '@/components/StyledText';
+import {MonoText, TextSemiBold} from '@/components/StyledText';
 import Tag from './Tag';
 
 type PostProps = {
@@ -24,7 +24,7 @@ export default function Post({title}: PostProps) {
           />
         </TouchableOpacity>
       </View>
-      <MonoText style={styles.title}>{title}</MonoText>
+      <TextSemiBold style={styles.title}>{title}</TextSemiBold>
       <View style={styles.contentContainer}>
         <MonoText>Post content</MonoText>
       </View>
