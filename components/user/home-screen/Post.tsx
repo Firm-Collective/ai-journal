@@ -4,6 +4,8 @@ import {Card} from '@rneui/themed';
 import {MonoText, TextSemiBold} from '@/components/StyledText';
 import Tag from './Tag';
 
+const CONTENT_LENGTH = 200;
+
 type PostProps = {
   date: string; //TODO: or date object?
   title: string;
@@ -32,8 +34,14 @@ export default function Post({
       </View>
       <TextSemiBold style={styles.title}>{title}</TextSemiBold>
       <View style={styles.contentContainer}>
+        <Image
+          style={styles.singleImage}
+          source={require('../../../assets/images/mockup-post-img.jpeg')}
+        />
         {/* multiple line text */}
-        <MonoText>{content}</MonoText>
+        <MonoText style={styles.content}>
+          {content.substring(0, CONTENT_LENGTH)}
+        </MonoText>
       </View>
       <View style={styles.tagsContainer}>
         {tags.map((tag, i) => {
@@ -79,7 +87,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   contentContainer: {
+    flex: 1,
+    gap: 10,
     marginBottom: 20,
+  },
+  content: {
+    fontSize: 12,
+  },
+  singleImage: {
+    borderRadius: 8,
+    width: '100%',
+    height: 111,
+    resizeMode: 'cover',
   },
   tagsContainer: {
     flex: 1,
