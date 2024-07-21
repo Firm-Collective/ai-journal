@@ -12,17 +12,27 @@ const timestampConverter = (isoString: string): string => {
   });
 };
 
+export type UseFetchJournalEntriesResult = {
+  /** All journal entries fetched from DB */
+  journalEntries: IJournalPost[] | undefined;
+  /** Whether journal entries are loading */
+  isLoading: boolean;
+  /** List all journal entries by date (most recent) from DB*/
+  listJournalEntriesMostRecent: () => void;
+  /** Refresh the home page to get any potential new entries */
+  refreshJournalEntries: () => void;
+};
+
 /**
  * Hook to load all journal entries on the home page
  *
  */
-const useFetchJournalEntries = () => {
+const useFetchJournalEntries = (): UseFetchJournalEntriesResult => {
   const [journalEntries, setJournalEntries] = useState<
     IJournalPost[] | undefined
   >([]);
   const [isLoading, setisLoading] = useState<boolean>(true);
 
-  /** list all journal entries by date (most recent) from DB*/
   const listJournalEntriesMostRecent = useCallback(async () => {
     try {
       const {data, error} = await supabase
@@ -38,7 +48,7 @@ const useFetchJournalEntries = () => {
         id: item.id.toString(),
         title: item.title,
         content: item.text,
-        tags: [], // If 'tags' is not provided, initialize as an empty array
+        tags: [], // TODO: If 'tags' is not provided, initialize as an empty array
       }));
 
       setJournalEntries(mappedData);
@@ -50,7 +60,6 @@ const useFetchJournalEntries = () => {
     }
   }, [setJournalEntries]);
 
-  /** Refresh the home page to get any potential new entries */
   const refreshJournalEntries = useCallback(async () => {
     setJournalEntries(undefined);
     await listJournalEntriesMostRecent();
