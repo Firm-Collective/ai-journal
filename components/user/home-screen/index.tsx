@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {StyleSheet, FlatList, View} from 'react-native';
 import Post from './Post';
+import useFetchJournalEntries from '@/lib/hooks/useFetchJournalEntries';
 
 const DATA = [
   {
@@ -31,10 +32,20 @@ const DATA = [
 ];
 
 export default function HomeScreen() {
+  const {journalEntries, isLoading, refreshJournalEntries} =
+    useFetchJournalEntries();
+  const [isRefreshing, setisRefreshing] = useState<boolean>(false);
+
+  const handleRefresh = () => {
+    setisRefreshing(true);
+    refreshJournalEntries();
+    setisRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={styles.view}>
       <FlatList
-        data={DATA}
+        data={journalEntries}
         renderItem={({item}) => (
           <Post
             date={item.date}
@@ -45,6 +56,8 @@ export default function HomeScreen() {
         )}
         keyExtractor={item => item.id}
         style={styles.list}
+        refreshing={isRefreshing}
+        onRefresh={handleRefresh}
       />
     </SafeAreaView>
   );
