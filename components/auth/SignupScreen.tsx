@@ -123,9 +123,9 @@ export default function LoginScreen() {
                 style={styles.signupButton}
               />
 
-              <View style={[styles.dividerContainer]}>
+              <View style={styles.dividerContainer}>
                 <Divider inset flex={1} />
-                <Text style={[styles.textSmall]}>or sign up with</Text>
+                <Text style={styles.textSmall}>or sign up with</Text>
                 <Divider inset flex={1} />
               </View>
 
@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
-    gap: 10,
   },
   divider: {
     width: '100%',
