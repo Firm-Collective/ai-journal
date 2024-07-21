@@ -6,7 +6,11 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LoginButton from '@/components/auth/buttons/LoginButtonFromLogin';
@@ -39,88 +43,94 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.view}>
-      <AuthHeader />
-      <View style={styles.container}>
-        <View style={styles.container2}>
-          <Text style={styles.textCreate}>Login</Text>
-          <View>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(text: string) => setEmail(text)}
-              value={email}
-              placeholder="Email"
-              placeholderTextColor="rgba(50, 54, 62, 1)"
-            />
-          </View>
-          <View>
-            <TextInput
-              style={styles.textInput}
-              secureTextEntry={!showPassword}
-              onChangeText={(text: string) => setPassword(text)}
-              value={password}
-              placeholder="Password"
-              placeholderTextColor="rgba(50, 54, 62, 1)"
-            />
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: 15,
-                right: 10,
-                padding: 5,
-              }}
-              onPress={togglePasswordVisibility}
-            >
-              <Feather
-                name={showPassword ? 'eye' : 'eye-off'}
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainer1}>
-            <LoginButton onPress={handleLogin} />
-          </View>
-          <Text style={styles.textMiddle}>Forgot Password?</Text>
-        </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={styles.view}>
+          <AuthHeader />
+          <View style={styles.container}>
+            <View style={styles.container2}>
+              <Text style={styles.textCreate}>Login</Text>
+              <View>
+                <TextInput
+                  style={styles.textInput}
+                  onChangeText={(text: string) => setEmail(text)}
+                  value={email}
+                  placeholder="Email"
+                  placeholderTextColor="rgba(50, 54, 62, 1)"
+                />
+              </View>
+              <View>
+                <TextInput
+                  style={styles.textInput}
+                  secureTextEntry={!showPassword}
+                  onChangeText={(text: string) => setPassword(text)}
+                  value={password}
+                  placeholder="Password"
+                  placeholderTextColor="rgba(50, 54, 62, 1)"
+                />
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    top: 15,
+                    right: 10,
+                    padding: 5,
+                  }}
+                  onPress={togglePasswordVisibility}
+                >
+                  <Feather
+                    name={showPassword ? 'eye' : 'eye-off'}
+                    size={24}
+                    color="black"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.buttonContainer1}>
+                <LoginButton onPress={handleLogin} />
+              </View>
+              <Text style={styles.textMiddle}>Forgot Password?</Text>
+            </View>
 
-        <View style={styles.container3}>
-          <View style={styles.buttonContainer2}>
-            <Divider inset={true} width={100} color="black" />
-            <Text style={styles.textSmall}>or sign in with</Text>
-            <Divider inset={true} width={100} color="black" />
-          </View>
-          <View style={styles.buttonContainer3}>
-            <View style={styles.logoGContainer}>
-              <Image
-                style={[styles.logo, styles.logoG]}
-                resizeMode="contain"
-                source={require('../../assets/images/User/auth-google-logo.png')}
-              />
+            <View style={styles.container3}>
+              <View style={styles.buttonContainer2}>
+                <Divider inset flex={1} />
+                <Text style={styles.textSmall}>or sign in with</Text>
+                <Divider inset flex={1} />
+              </View>
+              <View style={styles.buttonContainer3}>
+                <View style={styles.logoGContainer}>
+                  <Image
+                    style={[styles.logo, styles.logoG]}
+                    resizeMode="contain"
+                    source={require('../../assets/images/User/auth-google-logo.png')}
+                  />
+                </View>
+                <Image
+                  style={styles.logo}
+                  resizeMode="contain"
+                  source={require('../../assets/images/User/auth-facebook-logo.jpg')}
+                />
+                <View style={styles.logoAppleContainer}>
+                  <Image
+                    style={[styles.logo, styles.logoApple]}
+                    resizeMode="contain"
+                    source={require('../../assets/images/User/auth-apple-logo.png')}
+                  />
+                </View>
+              </View>
+              <Text style={[styles.textSmall, styles.greyText]}>
+                Don’t have an account?{' '}
+                <Link href="/signup">
+                  <Text style={styles.linkText}>Sign Up</Text>
+                </Link>
+              </Text>
+              <AuthFooter />
             </View>
-            <Image
-              style={styles.logo}
-              resizeMode="contain"
-              source={require('../../assets/images/User/auth-facebook-logo.jpg')}
-            />
-            <View style={styles.logoAppleContainer}>
-              <Image
-                style={[styles.logo, styles.logoApple]}
-                resizeMode="contain"
-                source={require('../../assets/images/User/auth-apple-logo.png')}
-              />
-            </View>
           </View>
-          <Text style={[styles.textSmall, styles.greyText]}>
-            Don’t have an account?{' '}
-            <Link href="/signup">
-              <Text style={styles.linkText}>Sign Up</Text>
-            </Link>
-          </Text>
-          <AuthFooter />
-        </View>
-      </View>
-    </SafeAreaView>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 

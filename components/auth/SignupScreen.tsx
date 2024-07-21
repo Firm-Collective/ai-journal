@@ -4,7 +4,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Dimensions,
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
@@ -21,11 +20,6 @@ import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';
 import {signupWithEmail} from '@/lib/Auth';
-
-const {width, height} = Dimensions.get('window');
-
-const window_width = width;
-const window_height = height;
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -53,14 +47,14 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}
       enabled
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={[styles.view]}>
+        <SafeAreaView style={styles.view}>
+          <AuthHeader />
           <View style={styles.container}>
-            <AuthHeader />
             <View style={styles.signupFieldsContainer}>
               <Text style={styles.textCreate}>Create an Account</Text>
               <View>
@@ -130,9 +124,9 @@ export default function LoginScreen() {
               />
 
               <View style={[styles.dividerContainer]}>
-                <Divider inset={true} width={100} color="black" />
+                <Divider inset flex={1} />
                 <Text style={[styles.textSmall]}>or sign up with</Text>
-                <Divider inset={true} width={100} color="black" />
+                <Divider inset flex={1} />
               </View>
 
               <View style={[styles.otherSignupButtonsContainer]}>

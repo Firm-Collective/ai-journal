@@ -1,18 +1,26 @@
+// Divider.tsx
 import React from 'react';
 import {View, StyleSheet, DimensionValue} from 'react-native';
 
-interface Divider {
-  inset: boolean;
-  width: DimensionValue;
-  color: string;
+interface DividerProps {
+  inset?: boolean;
+  width?: DimensionValue | 'flex';
+  color?: string;
+  flex?: number;
 }
 
-const Divider: React.FC<Divider> = ({inset, width, color}) => {
-  const insetStyle = inset ? {marginHorizontal: 5} : {};
+const Divider: React.FC<DividerProps> = ({
+  inset = false,
+  width = 'flex',
+  color = 'black',
+  flex = 1,
+}) => {
+  const insetStyle = inset ? {marginHorizontal: 10} : {};
+  const flexStyle = width === 'flex' ? {flex} : {width};
 
   return (
     <View
-      style={[styles.divider, {width, backgroundColor: color}, insetStyle]}
+      style={[styles.divider, {backgroundColor: color}, insetStyle, flexStyle]}
     />
   );
 };

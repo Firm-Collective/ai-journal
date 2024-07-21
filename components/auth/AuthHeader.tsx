@@ -33,10 +33,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
   },
   backButtonContainer: {
     position: 'absolute',
     left: 20,
+    zIndex: 1,
   },
   logo: {
     width: 180,
