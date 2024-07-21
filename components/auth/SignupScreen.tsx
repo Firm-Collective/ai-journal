@@ -203,10 +203,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    width: '100%',
+    width: '60%',
     marginTop: 20,
     marginBottom: 40,
-    paddingHorizontal: '10%',
   },
   checkbox: {
     marginRight: 0,
