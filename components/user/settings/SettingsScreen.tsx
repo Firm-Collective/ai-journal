@@ -30,12 +30,10 @@ export default function SettingsScreen() {
     email_address: '',
   });
   const user = useFetchUser();
-  console.log('User info', user);
 
   useEffect(() => {
     if (user) {
       const getName = async () => {
-        console.log('Using id: ', user.id);
         const {data, error} = await supabase
           .from('users')
           .select('first_name, last_name, email_address')
@@ -43,7 +41,6 @@ export default function SettingsScreen() {
 
         if (!error) {
           if (data && data.length > 0) {
-            console.log('Data ', data);
             const userData: userData = data[0];
             setUserData(userData);
             return;

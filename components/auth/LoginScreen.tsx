@@ -20,7 +20,7 @@ import {
   loginWithEmail,
   signInWithApple,
   signInWithFacebook,
-  signInWithGoogle,
+  // signInWithGoogle,
 } from '@/lib/Auth';
 import {useRoute} from '@react-navigation/native';
 import AuthFooter from './AuthFooter';
@@ -34,8 +34,6 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
-  const routeNow = useRoute();
 
   /**
    * Handles logic after user clicks on login
@@ -102,7 +100,7 @@ export default function LoginScreen() {
             <TouchableOpacity
               onPress={() => {
                 console.log('G auth : login');
-                signInWithGoogle();
+                // signInWithGoogle();
               }}
             >
               <View style={styles.logoGContainer}>

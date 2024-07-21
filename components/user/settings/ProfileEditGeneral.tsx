@@ -14,14 +14,14 @@ interface ProfileEditGeneralProps {
   handleEdit: () => void;
 }
 
-export default function ProfileEditGeneral({
+const ProfileEditGeneral: React.FC<ProfileEditGeneralProps> = ({
   userProperty,
   userPropertyValue,
   handleEdit,
-}: ProfileEditGeneralProps) {
-  const {width: windoWdith} = useWindowDimensions();
+}) => {
+  const {width: windowWidth} = useWindowDimensions();
   return (
-    <View style={[styles.container, {width: windoWdith * 0.9}]}>
+    <View style={[styles.container, {width: windowWidth * 0.9}]}>
       <View style={{flex: 10}}>
         <Text style={[styles.propertyText]}>{userProperty}</Text>
         <View style={{display: 'flex', flexDirection: 'row'}}>
@@ -36,7 +36,7 @@ export default function ProfileEditGeneral({
       </Pressable>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -60,3 +60,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default ProfileEditGeneral;

@@ -17,13 +17,7 @@ import {Link, router} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
-import {
-  signInWithApple,
-  signInWithFacebook,
-  signInWithGoogle,
-  signupWithEmail,
-} from '@/lib/Auth';
-import {useRoute} from '@react-navigation/native';
+import {signInWithApple, signInWithFacebook, signupWithEmail} from '@/lib/Auth';
 import AuthFooter from './AuthFooter';
 
 const {width, height} = Dimensions.get('window');
@@ -36,8 +30,6 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-
-  const routeNow = useRoute();
 
   /**
    * Handles the logic after a user clicks the signup button
@@ -132,7 +124,8 @@ export default function LoginScreen() {
           <View style={[styles.buttonContainer3]}>
             <TouchableOpacity
               onPress={() => {
-                return signInWithGoogle();
+                // return signInWithGoogle();
+                console.log('Sign in with Google');
               }}
             >
               <View style={styles.logoGContainer}>

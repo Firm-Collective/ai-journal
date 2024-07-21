@@ -38,7 +38,7 @@ export default function ProfileScreen() {
           />
           <ProfileOverviewStripCard
             userProp={'Location'}
-            propValue={'Anywhere, city, USA'}
+            propValue={'City, USA'}
           />
         </View>
 
