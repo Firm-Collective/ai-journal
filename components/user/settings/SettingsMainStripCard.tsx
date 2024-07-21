@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import {router} from 'expo-router';
+import {supabase} from '@/lib/supabase';
 
 interface SettingsMainStripCardProps {
   cardStyles: {};
@@ -27,8 +28,9 @@ export default function SettingsMainStripCard({
 
   return (
     <Pressable
-      onPress={() => {
+      onPress={async () => {
         console.log('Strip ', text);
+        if (text === 'Log out') await supabase.auth.signOut();
         router.push(toLocation);
       }}
       style={({pressed}) => [
