@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {StyleSheet, FlatList, View} from 'react-native';
+import {StyleSheet, FlatList, ImageBackground} from 'react-native';
 import Post from './Post';
 import useFetchJournalEntries from '@/lib/hooks/useFetchJournalEntries';
 
@@ -44,21 +44,27 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.view}>
-      <FlatList
-        data={journalEntries}
-        renderItem={({item}) => (
-          <Post
-            date={item.date}
-            title={item.title}
-            content={item.content}
-            tags={item.tags}
-          />
-        )}
-        keyExtractor={item => item.id}
-        style={styles.list}
-        refreshing={isRefreshing}
-        onRefresh={handleRefresh}
-      />
+      <ImageBackground
+        style={styles.imageBg}
+        resizeMode="cover"
+        source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
+      >
+        <FlatList
+          data={journalEntries}
+          renderItem={({item}) => (
+            <Post
+              date={item.date}
+              title={item.title}
+              content={item.content}
+              tags={item.tags}
+            />
+          )}
+          style={styles.list}
+          keyExtractor={item => item.id}
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+        />
+      </ImageBackground>
     </SafeAreaView>
   );
 }
@@ -69,10 +75,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 20,
+  },
+  imageBg: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
   },
   list: {
     flex: 1,
-    width: '95%',
   },
 });

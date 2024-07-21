@@ -28,7 +28,7 @@ export default function Post({
         <TouchableOpacity>
           <Image
             resizeMode="contain"
-            source={require('../../../assets/images/more-icon.png')}
+            source={require('../../../assets/images/home-screen/more-icon.png')}
           />
         </TouchableOpacity>
       </View>
