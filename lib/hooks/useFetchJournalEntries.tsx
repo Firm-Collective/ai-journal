@@ -22,10 +22,13 @@ const useFetchJournalEntries = () => {
   >([]);
   const [isLoading, setisLoading] = useState<boolean>(true);
 
-  /** list all journal entries from DB*/
-  const listJournalEntries = useCallback(async () => {
+  /** list all journal entries by date (most recent) from DB*/
+  const listJournalEntriesMostRecent = useCallback(async () => {
     try {
-      const {data, error} = await supabase.from('journal_entry').select();
+      const {data, error} = await supabase
+        .from('journal_entry')
+        .select()
+        .order('created_at', {ascending: false});
       if (error) {
         throw error;
       }
@@ -50,14 +53,19 @@ const useFetchJournalEntries = () => {
   /** Refresh the home page to get any potential new entries */
   const refreshJournalEntries = useCallback(async () => {
     setJournalEntries(undefined);
-    await listJournalEntries();
+    await listJournalEntriesMostRecent();
   }, []);
 
   useEffect(() => {
-    listJournalEntries();
+    listJournalEntriesMostRecent();
   }, []);
 
-  return {journalEntries, isLoading, listJournalEntries, refreshJournalEntries};
+  return {
+    journalEntries,
+    isLoading,
+    listJournalEntriesMostRecent,
+    refreshJournalEntries,
+  };
 };
 
 export default useFetchJournalEntries;
