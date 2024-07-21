@@ -26,7 +26,6 @@ import {
   signInWithFacebook,
   signInWithGoogle,
 } from '@/lib/Auth';
-
 const {width, height} = Dimensions.get('window');
 
 const window_width = width;
