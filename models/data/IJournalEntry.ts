@@ -1,6 +1,6 @@
 // Journal Post
 export interface IJournalEntry {
-  date: string; //TODO: or date object?
+  date: Date; //TODO: or date object?
   id: string;
   title: string;
   content: string;

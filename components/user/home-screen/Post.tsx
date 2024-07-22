@@ -3,16 +3,10 @@ import {Image, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {Card} from '@rneui/themed';
 import {MonoText, TextSemiBold} from '@/components/StyledText';
 import Tag from './Tag';
+import {IJournalEntry} from '@/models/data/IJournalEntry';
+import {dateToStringConverter} from '@/util';
 
 const CONTENT_LENGTH = 200;
-
-type PostProps = {
-  date: string; //TODO: or date object?
-  title: string;
-  imagePath?: string; // TODO: double check what supabase store image under
-  content: string;
-  tags: string[];
-};
 
 export default function Post({
   date,
@@ -20,11 +14,11 @@ export default function Post({
   imagePath,
   content,
   tags,
-}: PostProps) {
+}: IJournalEntry) {
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.cardTop}>
-        <MonoText style={styles.date}>{date}</MonoText>
+        <MonoText style={styles.date}>{dateToStringConverter(date)}</MonoText>
         <TouchableOpacity>
           <Image
             resizeMode="contain"
@@ -59,8 +53,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingVertical: 14,
     paddingHorizontal: 15,
-    marginBottom: 15,
-    shadowColor: 'rgba(0, 0, 0, 0.15)',
+    marginBottom: 5,
+    shadowColor: 'rgba(0, 0, 0, 0.6)',
     //ios
     shadowOffset: {
       width: 0,

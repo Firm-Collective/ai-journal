@@ -53,6 +53,7 @@ export default function HomeScreen() {
           data={journalEntries}
           renderItem={({item}) => (
             <Post
+              id={item.id}
               date={item.date}
               title={item.title}
               content={item.content}

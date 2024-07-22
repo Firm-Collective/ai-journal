@@ -2,14 +2,7 @@ import {useEffect, useState, useCallback} from 'react';
 import {supabase} from '@/lib/supabase';
 import {Alert} from 'react-native';
 import {IJournalEntry, IDBJournalEntry} from '@/models/data/IJournalEntry';
-const timestampConverter = (isoString: string): string => {
-  return new Date(isoString).toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-};
+
 
 export type UseFetchJournalEntriesResult = {
   /** All journal entries fetched from DB */
@@ -43,7 +36,7 @@ const useFetchJournalEntries = (): UseFetchJournalEntriesResult => {
       }
 
       const mappedData = data.map((item: IDBJournalEntry) => ({
-        date: timestampConverter(item.created_at),
+        date: new Date(item.created_at),
         id: item.id.toString(),
         title: item.title,
         content: item.text,
