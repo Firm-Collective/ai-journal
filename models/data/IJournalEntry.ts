@@ -1,5 +1,5 @@
 // Journal Post
-export interface IJournalPost {
+export interface IJournalEntry {
   date: string; //TODO: or date object?
   id: string;
   title: string;
@@ -9,7 +9,7 @@ export interface IJournalPost {
 }
 
 // Supabase model
-export interface IDBJournalPost {
+export interface IDBJournalEntry {
   /** ISO 8601 string format **/
   created_at: string;
   id: number;

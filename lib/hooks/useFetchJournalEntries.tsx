@@ -1,8 +1,7 @@
 import {useEffect, useState, useCallback} from 'react';
 import {supabase} from '@/lib/supabase';
 import {Alert} from 'react-native';
-import {IJournalPost, IDBJournalPost} from '@/models/data/IJournalPost';
-
+import {IJournalEntry, IDBJournalEntry} from '@/models/data/IJournalEntry';
 const timestampConverter = (isoString: string): string => {
   return new Date(isoString).toLocaleDateString('en-US', {
     weekday: 'long',
@@ -14,7 +13,7 @@ const timestampConverter = (isoString: string): string => {
 
 export type UseFetchJournalEntriesResult = {
   /** All journal entries fetched from DB */
-  journalEntries: IJournalPost[] | undefined;
+  journalEntries: IJournalEntry[] | undefined;
   /** Whether journal entries are loading */
   isLoading: boolean;
   /** List all journal entries by date (most recent) from DB*/
@@ -29,7 +28,7 @@ export type UseFetchJournalEntriesResult = {
  */
 const useFetchJournalEntries = (): UseFetchJournalEntriesResult => {
   const [journalEntries, setJournalEntries] = useState<
-    IJournalPost[] | undefined
+    IJournalEntry[] | undefined
   >([]);
   const [isLoading, setisLoading] = useState<boolean>(true);
 
@@ -43,7 +42,7 @@ const useFetchJournalEntries = (): UseFetchJournalEntriesResult => {
         throw error;
       }
 
-      const mappedData = data.map((item: IDBJournalPost) => ({
+      const mappedData = data.map((item: IDBJournalEntry) => ({
         date: timestampConverter(item.created_at),
         id: item.id.toString(),
         title: item.title,
