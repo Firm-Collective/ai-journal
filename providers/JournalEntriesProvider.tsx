@@ -1,10 +1,16 @@
-import {useEffect, useState, useCallback} from 'react';
+import {
+  useEffect,
+  useState,
+  useCallback,
+  createContext,
+  useContext,
+  ReactNode,
+} from 'react';
 import {supabase} from '@/lib/supabase';
 import {Alert} from 'react-native';
 import {IJournalEntry, IDBJournalEntry} from '@/models/data/IJournalEntry';
 
-
-export type UseFetchJournalEntriesResult = {
+export type JournalEntriesContextProps = {
   /** All journal entries fetched from DB */
   journalEntries: IJournalEntry[] | undefined;
   /** Whether journal entries are loading */
@@ -15,11 +21,12 @@ export type UseFetchJournalEntriesResult = {
   refreshJournalEntries: () => void;
 };
 
-/**
- * Hook to load all journal entries on the home page
- *
- */
-const useFetchJournalEntries = (): UseFetchJournalEntriesResult => {
+const JournalEntriesContext = createContext<
+  JournalEntriesContextProps | undefined
+>(undefined);
+
+/** Context Provider allows its children to access journal entries fetched from db */
+export const JournalEntriesProvider = ({children}: {children: ReactNode}) => {
   const [journalEntries, setJournalEntries] = useState<
     IJournalEntry[] | undefined
   >([]);
@@ -61,12 +68,27 @@ const useFetchJournalEntries = (): UseFetchJournalEntriesResult => {
     listJournalEntriesMostRecent();
   }, []);
 
-  return {
-    journalEntries,
-    isLoading,
-    listJournalEntriesMostRecent,
-    refreshJournalEntries,
-  };
+  return (
+    <JournalEntriesContext.Provider
+      value={{
+        journalEntries,
+        isLoading,
+        listJournalEntriesMostRecent,
+        refreshJournalEntries,
+      }}
+    >
+      {children}
+    </JournalEntriesContext.Provider>
+  );
 };
 
-export default useFetchJournalEntries;
+/** Context hook that allows children wrapped in this provider to use all of its values (journalEnties, isLoading, etc.) */
+export const useJournalEntries = () => {
+  const context = useContext(JournalEntriesContext);
+  if (context === undefined) {
+    throw new Error(
+      'useJournalEntries must be used within a JournalEntriesProvider'
+    );
+  }
+  return context;
+};

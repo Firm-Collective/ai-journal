@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {StyleSheet, FlatList, ImageBackground} from 'react-native';
 import Post from './Post';
-import useFetchJournalEntries from '@/lib/hooks/useFetchJournalEntries';
+import {useJournalEntries} from '@/providers/JournalEntriesProvider';
 
 const DATA = [
   {
@@ -33,13 +33,10 @@ const DATA = [
 
 export default function HomeScreen() {
   const {journalEntries, isLoading, refreshJournalEntries} =
-    useFetchJournalEntries();
-  const [isRefreshing, setisRefreshing] = useState<boolean>(false);
+    useJournalEntries();
 
   const handleRefresh = () => {
-    setisRefreshing(true);
     refreshJournalEntries();
-    setisRefreshing(false);
   };
 
   return (
@@ -62,7 +59,7 @@ export default function HomeScreen() {
           )}
           style={styles.list}
           keyExtractor={item => item.id}
-          refreshing={isRefreshing}
+          refreshing={isLoading}
           onRefresh={handleRefresh}
         />
       </ImageBackground>

@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Text, Alert } from 'react-native';
-import { supabase } from '@/lib/supabase';
+import React, {useState} from 'react';
+import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
+import {supabase} from '@/lib/supabase';
 import useFetchUser from '@/lib/hooks/useFetchUser';
-import { TouchableOpacity } from 'react-native';
+import {TouchableOpacity} from 'react-native';
+import useFetchJournalEntries from '@/lib/hooks/useFetchJournalEntries';
+import {useJournalEntries} from '@/providers/JournalEntriesProvider';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
   const user = useFetchUser();
+  const {refreshJournalEntries} = useJournalEntries();
 
   const handleSubmit = async () => {
     if (!user) {
@@ -15,7 +18,7 @@ const TextEntryScreen = () => {
       return;
     }
     try {
-      const { data, error } = await supabase
+      const {data, error} = await supabase
         .from('journal_entry')
         .insert([
           {
@@ -34,6 +37,8 @@ const TextEntryScreen = () => {
     } catch (error) {
       console.error('Error submitting entry:', error);
       Alert.alert('Error', 'Failed to submit entry');
+    } finally {
+      refreshJournalEntries();
     }
   };
 
