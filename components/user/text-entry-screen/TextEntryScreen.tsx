@@ -3,7 +3,6 @@ import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
 import {supabase} from '@/lib/supabase';
 import useFetchUser from '@/lib/hooks/useFetchUser';
 import {TouchableOpacity} from 'react-native';
-import useFetchJournalEntries from '@/lib/hooks/useFetchJournalEntries';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
 
 const TextEntryScreen = () => {
