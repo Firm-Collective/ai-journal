@@ -1,6 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {Link, Redirect, Tabs} from 'expo-router';
-import {Pressable} from 'react-native';
+import {Redirect, Tabs} from 'expo-router';
+
 import Colors from '@/constants/Colors';
 import {useClientOnlyValue} from '@/components/useClientOnlyValue';
 import {useAuth} from '@/providers/AuthProvider';
@@ -26,7 +26,7 @@ export default function TabLayout() {
     <JournalEntriesProvider>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+          tabBarActiveTintColor: Colors['light'].tint,
           // Disable the static render of the header on web
           // to prevent a hydration error in React Navigation v6.
           headerShown: useClientOnlyValue(false, true),

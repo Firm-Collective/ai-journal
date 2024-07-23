@@ -40,7 +40,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.view}>
+    <SafeAreaView style={styles.view} edges={['left', 'right']}>
       <ImageBackground
         style={styles.imageBg}
         resizeMode="cover"
