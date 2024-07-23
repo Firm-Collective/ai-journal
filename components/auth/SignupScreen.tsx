@@ -39,6 +39,7 @@ export default function SignupScreen() {
   };
 
   const handleSignup = async () => {
+<<<<<<< HEAD
     if (!validateEmail(email)) {
       setEmailError('This is an invalid email, please try again.');
       return;
@@ -61,6 +62,11 @@ export default function SignupScreen() {
     } else {
       router.push('/email-verification');
     }
+=======
+    const isSuccess = await signupWithEmail(email, password);
+    // if success, route to email verification page
+    if (isSuccess) router.push('/email-verification');
+>>>>>>> f6c8ac8 (create tell-us-about-yourself screen)
   };
 
   const handleCheckboxChange = () => {

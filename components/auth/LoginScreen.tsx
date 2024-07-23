@@ -14,10 +14,21 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LoginButton from '@/components/auth/buttons/LoginButtonFromLogin';
-import {Link} from 'expo-router';
+import {Link, router} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
+<<<<<<< HEAD
+=======
+import {
+  loginWithEmail,
+  signInWithApple,
+  signInWithFacebook,
+  signInWithGoogle,
+} from '@/lib/Auth';
+import useFetchUser from '@/lib/hooks/useFetchUser';
+import { supabase } from '@/lib/supabase';
+>>>>>>> f6c8ac8 (create tell-us-about-yourself screen)
 import AuthFooter from './AuthFooter';
 import {loginWithEmail} from '@/lib/Auth';
 
@@ -30,6 +41,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+<<<<<<< HEAD
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -56,6 +68,36 @@ export default function LoginScreen() {
       setErrorMessage('');
       // Redirect to another screen or perform other actions upon successful login
     }
+=======
+  const user = useFetchUser();
+
+  /**
+   * Handles logic after user clicks on login
+   */
+  const handleLogin = async () => {
+    const isSuccess = await loginWithEmail(email, password);
+    if(isSuccess) {
+      try {
+        const { data, error } = await supabase
+        .from('users')
+        .select('is_onboarding')
+        .eq('id', (user as any).id)
+        .single()
+        if (error) {
+          console.error('Error fetching user data:', error);
+          return;
+        }
+        if (data?.is_onboarding) {
+          router.push('/');
+        } else {
+          router.push('/tell-us-about-yourself');
+        }
+      } catch (error: any) {
+        Alert.alert('Error', error.message);
+      }
+    }
+    
+>>>>>>> f6c8ac8 (create tell-us-about-yourself screen)
   };
 
   const togglePasswordVisibility = () => {
