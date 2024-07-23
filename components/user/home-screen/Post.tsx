@@ -4,7 +4,7 @@ import {Card} from '@rneui/themed';
 import {MonoText, TextSemiBold} from '@/components/StyledText';
 import Tag from './Tag';
 import {IJournalEntry} from '@/models/data/IJournalEntry';
-import {dateToStringConverter} from '@/util';
+import {dateToStringConverter} from '@/lib/util';
 
 const CONTENT_LENGTH = 200;
 
