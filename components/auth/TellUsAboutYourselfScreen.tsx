@@ -14,18 +14,23 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import AuthHeader from './AuthHeader';
 import { supabase } from '@/lib/supabase';
 import useFetchUser from '@/lib/hooks/useFetchUser';
+import { router } from 'expo-router';
+import { title } from 'process';
 
 const { width: window_width, height: window_height } = Dimensions.get('window');
 
 const countries = [
+  { label: 'Australia', value: 'AU' },
   { label: 'Canada', value: 'CA' },
+  { label: 'China', value: 'CN' },
   { label: 'United State', value: 'USA' },
   { label: 'United Kingdom', value: 'UK' },
-  { label: 'Russia', value: 'RU' },
+  { label: 'China', value: 'CN' },
   { label: 'Spain', value: 'spain' },
-  { label: 'Italy', value: 'italy' },
+  { label: 'Other', value: 'other' },
   { label: 'Prefer not to say', value: 'N/A' },
 ];
+
 
 export default function TellUsAboutYourselfScreen() {
   const [firstName, setFirstName] = useState('');
@@ -52,8 +57,8 @@ export default function TellUsAboutYourselfScreen() {
           first_name: firstName,
           last_name: lastName,
           birth_year: birthYear,
-          country: country,
-          city: city,
+          // country: country,
+          // city: city,
           is_onboarding: true,
         })
         .eq('id', (user as any).id);
@@ -63,6 +68,7 @@ export default function TellUsAboutYourselfScreen() {
       }
 
       Alert.alert('Success', 'User info added successfully');
+      router.push('/');
     } catch (error) {
       console.error('Continue Error:', error);
       Alert.alert('Error', 'Failed to insert detail user data');
@@ -77,7 +83,7 @@ export default function TellUsAboutYourselfScreen() {
     <SafeAreaView style={styles.view}>
       <AuthHeader />
       <View style={styles.container}>
-        <Text style={styles.textCreate}>Tell us about yourself</Text>
+        <Text style={styles.title}>Tell us about yourself</Text>
         <Text style={styles.subHeader}>
           <Text style={styles.required}>*</Text> indicates required
         </Text>
@@ -86,38 +92,41 @@ export default function TellUsAboutYourselfScreen() {
             style={[styles.textInput, firstName ? styles.filledInput : null]}
             onChangeText={setFirstName}
             value={firstName}
-            placeholder="First Name"
+            placeholder="First Name *"
+            placeholderTextColor="#32363E"
           />
           <TextInput
             style={[styles.textInput, lastName ? styles.filledInput : null]}
             onChangeText={setLastName}
             value={lastName}
-            placeholder="Last Name"
+            placeholder="Last Name *"
+            placeholderTextColor="#32363E"
           />
           <DropDownPicker
+            style={[styles.textInput, country ? styles.filledInput : null]}
             open={open}
             value={country}
             items={countries}
             setOpen={setOpen}
             setValue={setCountry}
             setItems={() => {}}
+            placeholder="Country"
+            placeholderStyle={styles.placeholder}
           />
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, city ? styles.filledInput : null]}
             onChangeText={setCity}
             value={city}
             placeholder="City"
+            placeholderTextColor="#32363E"
           />
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, birthYear ? styles.filledInput : null]}
             onChangeText={setBirthYear}
             value={birthYear}
             placeholder="Birth Year"
+            placeholderTextColor="#32363E"
           />
-          <Text style={[styles.textSmall, styles.textGrey]}>
-            Password must be at least 8 characters and contain a letter and a
-            number.
-          </Text>
           <View style={styles.containerCheckbox}>
             <CheckBox
               checked={isChecked}
@@ -150,17 +159,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
   },
   subHeader: {
     fontSize: 14,
     color: 'gray',
-    marginBottom: 20,
+    textAlign: 'right',
   },
-  textCreate: {
+  title: {
     fontSize: 28,
     fontWeight: 'bold',
     fontFamily: 'Poppins',
+    textAlign: 'center',
     marginBottom: 10,
   },
   required: {
@@ -168,7 +178,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 48,
-    borderColor: 'black',
+    borderColor: '#A3ABB7',
     borderWidth: 1,
     borderRadius: 8,
     marginTop: 8,
@@ -177,7 +187,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
   },
   filledInput: {
-    borderColor: '#A9A9A9',
+    borderColor: '#EDEDED',
+    backgroundColor: '#FCFCFC',
   },
   textSmall: {
     fontSize: 12,
@@ -191,10 +202,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginTop: 13,
   },
+  placeholder: {
+    color: '#32363E',
+  },
   containerCheckbox: {
+    left: -20,
     flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
+    width: '88%',
   },
   button: {
     height: 56,

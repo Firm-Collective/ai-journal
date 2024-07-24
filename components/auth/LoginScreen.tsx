@@ -50,15 +50,17 @@ export default function LoginScreen() {
     } else {
       setEmailError('');
     }
+
     const isSuccess = await loginWithEmail(email, password);
     if(isSuccess) {
-      
+      // router.push('/tell-us-about-yourself');
       try {
         const { data, error } = await supabase
         .from('users')
         .select('is_onboarding')
         // .eq('id', (user as any).id)
         .single()
+        console.log(data);
         if (error) {
           console.error('Error fetching user data:', error);
           return;
@@ -70,6 +72,7 @@ export default function LoginScreen() {
         }
       } catch (error: any) {
         Alert.alert('Error', error.message);
+        console.log(error.message)
       }
 
     }
