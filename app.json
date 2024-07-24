@@ -14,9 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "associatedDomains": [
-        "applinks:firmcollective.org"
-      ]
+      "associatedDomains": ["applinks:firmcollective.org"]
     },
     "android": {
       "adaptiveIcon": {
@@ -34,10 +32,7 @@
               "pathPrefix": "/login"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
@@ -48,8 +43,24 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "extraPods": [
+              {
+                "name": "simdjson",
+                "configurations": ["Debug", "Release"],
+                "path": "../node_modules/@nozbe/simdjson",
+                "modular_headers": true
+              }
+            ]
+          }
+        }
+      ],
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true
