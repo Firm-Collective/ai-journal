@@ -1,6 +1,5 @@
 import {Model} from '@nozbe/watermelondb';
 import {field, date, text} from '@nozbe/watermelondb/decorators';
-import {number, uuid} from './decorators';
 import {Database} from '@nozbe/watermelondb';
 
 export class Post extends Model {
