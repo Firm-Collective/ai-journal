@@ -1,8 +1,5 @@
-import {Text} from '@/components/Themed';
-
-import {Model, Q, Relation} from '@nozbe/watermelondb';
-import {date, readonly, text} from '@nozbe/watermelondb/decorators';
+import WatermelonScreen from '@/components/user/Watermelon';
 
 export default function Page() {
-  return <Text>HEllo World</Text>;
+  return <WatermelonScreen />;
 }
