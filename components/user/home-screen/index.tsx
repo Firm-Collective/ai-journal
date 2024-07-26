@@ -1,9 +1,11 @@
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {StyleSheet, FlatList, ImageBackground} from 'react-native';
+import {StyleSheet, FlatList, ImageBackground, Text} from 'react-native';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
+import {useNetInfo} from '@react-native-community/netinfo';
 
 export default function HomeScreen() {
+  const {type, isConnected} = useNetInfo();
   const {journalEntries, isLoading, refreshJournalEntries} =
     useJournalEntries();
 
@@ -24,22 +26,26 @@ export default function HomeScreen() {
         resizeMode="cover"
         source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
       >
-        <FlatList
-          data={journalEntries}
-          renderItem={({item}) => (
-            <Post
-              id={item.id}
-              date={item.date}
-              title={item.title}
-              content={item.content}
-              tags={item.tags}
-            />
-          )}
-          style={styles.list}
-          keyExtractor={item => item.id}
-          refreshing={isLoading}
-          onRefresh={handleRefresh}
-        />
+        {isConnected ? (
+          <FlatList
+            data={journalEntries}
+            renderItem={({item}) => (
+              <Post
+                id={item.id}
+                date={item.date}
+                title={item.title}
+                content={item.content}
+                tags={item.tags}
+              />
+            )}
+            style={styles.list}
+            keyExtractor={item => item.id}
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
+          />
+        ) : (
+          <Text>You're offline</Text>
+        )}
       </ImageBackground>
     </SafeAreaView>
   );
