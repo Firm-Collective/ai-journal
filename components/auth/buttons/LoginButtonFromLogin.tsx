@@ -3,11 +3,16 @@ import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 interface LoginButtonProps {
   onPress: () => void;
+  disabled?: boolean; // Add disabled prop
 }
 
-const LoginButton: React.FC<LoginButtonProps> = ({onPress}) => {
+const LoginButton: React.FC<LoginButtonProps> = ({onPress, disabled}) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.button, disabled && styles.disabledButton]}
+      onPress={onPress}
+      disabled={disabled}
+    >
       <Text style={styles.text}>Login</Text>
     </TouchableOpacity>
   );
@@ -21,6 +26,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  disabledButton: {
+    backgroundColor: 'gray', // Change the background color to indicate disabled state
   },
   text: {
     color: 'white',

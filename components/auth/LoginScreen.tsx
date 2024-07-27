@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Image,
   StyleSheet,
@@ -31,6 +31,19 @@ export default function LoginScreen() {
   const [password, setPassword] = useState(''); // State to manage password input
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [errorMessage, setErrorMessage] = useState(''); // State to manage error message
+  const [emailError, setEmailError] = useState(''); // State to manage email error
+  const [passwordError, setPasswordError] = useState(''); // State to manage password error
+
+  // Email validation function
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  // Password validation function
+  const validatePassword = (password: string) => {
+    return password.length > 0;
+  };
 
   /**
    * Handles logic after user clicks on login
@@ -46,8 +59,24 @@ export default function LoginScreen() {
   };
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword); // Toggle password visibility
+    setShowPassword(!showPassword);
   };
+
+  // Update validation states
+  useEffect(() => {
+    setEmailError(
+      !validateEmail(email) && email
+        ? 'This is an invalid email, please try again.'
+        : ''
+    );
+    setPasswordError(
+      !validatePassword(password) && password ? 'Password cannot be blank.' : ''
+    );
+  }, [email, password]);
+
+  // Determine if login button should be disabled
+  const isLoginDisabled =
+    !email || !password || !!emailError || !!passwordError;
 
   return (
     <KeyboardAvoidingView
@@ -62,17 +91,32 @@ export default function LoginScreen() {
               <View>
                 <TextInput
                   style={styles.textInput}
-                  onChangeText={(text: string) => setEmail(text)}
+                  onChangeText={(text: string) => {
+                    setEmail(text);
+                    setEmailError(
+                      !validateEmail(text)
+                        ? 'This is an invalid email, please try again.'
+                        : ''
+                    );
+                  }}
                   value={email}
                   placeholder="Email"
                   placeholderTextColor="rgba(50, 54, 62, 1)"
                 />
+                {emailError ? (
+                  <Text style={styles.errorText}>{emailError}</Text>
+                ) : null}
               </View>
               <View>
                 <TextInput
                   style={styles.textInput}
                   secureTextEntry={!showPassword}
-                  onChangeText={(text: string) => setPassword(text)}
+                  onChangeText={(text: string) => {
+                    setPassword(text);
+                    setPasswordError(
+                      !validatePassword(text) ? 'Password cannot be blank.' : ''
+                    );
+                  }}
                   value={password}
                   placeholder="Password"
                   placeholderTextColor="rgba(50, 54, 62, 1)"
@@ -92,6 +136,9 @@ export default function LoginScreen() {
                     color="black"
                   />
                 </TouchableOpacity>
+                {passwordError ? (
+                  <Text style={styles.errorText}>{passwordError}</Text>
+                ) : null}
               </View>
               {errorMessage ? (
                 <Text style={styles.errorText}>{errorMessage}</Text> // Conditionally render error message
@@ -101,7 +148,6 @@ export default function LoginScreen() {
               </View>
               <Text style={styles.textMiddle}>Forgot Password?</Text>
             </View>
-
             <View style={styles.container3}>
               <View style={styles.buttonContainer2}>
                 <Divider inset flex={1} />
@@ -203,7 +249,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
   },
   errorText: {
-    color: 'red',
+    color: '#A82424',
     fontSize: 14,
     marginBottom: 10,
     textAlign: 'center',

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Image,
   StyleSheet,
@@ -77,6 +77,20 @@ export default function SignupScreen() {
     setShowPassword(!showPassword);
   };
 
+  // Determine if signup button should be disabled
+  useEffect(() => {
+    setEmailError(
+      !validateEmail(email) && email
+        ? 'This is an invalid email, please try again.'
+        : ''
+    );
+    setPasswordError(
+      !validatePassword(password) && password
+        ? 'Password must be at least 8 characters and contain a letter and a number.'
+        : ''
+    );
+  }, [email, password]);
+
   const isSignupDisabled =
     !email || !password || !isChecked || !!emailError || !!passwordError;
 
@@ -95,7 +109,14 @@ export default function SignupScreen() {
               <View>
                 <TextInput
                   style={styles.textInput}
-                  onChangeText={setEmail}
+                  onChangeText={(text: string) => {
+                    setEmail(text);
+                    setEmailError(
+                      !validateEmail(text)
+                        ? 'This is an invalid email, please try again.'
+                        : ''
+                    );
+                  }}
                   value={email}
                   placeholder="Email"
                   placeholderTextColor="rgba(50, 54, 62, 1)"
@@ -117,7 +138,14 @@ export default function SignupScreen() {
                   <TextInput
                     style={styles.textInput}
                     secureTextEntry={!showPassword}
-                    onChangeText={setPassword}
+                    onChangeText={(text: string) => {
+                      setPassword(text);
+                      setPasswordError(
+                        !validatePassword(text)
+                          ? 'Password must be at least 8 characters and contain a letter and a number.'
+                          : ''
+                      );
+                    }}
                     value={password}
                     placeholder="Password"
                     placeholderTextColor="rgba(50, 54, 62, 1)"
