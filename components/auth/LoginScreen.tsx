@@ -31,8 +31,8 @@ export default function LoginScreen() {
   const [password, setPassword] = useState(''); // State to manage password input
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [errorMessage, setErrorMessage] = useState(''); // State to manage error message
-  const [emailError, setEmailError] = useState(''); // State to manage email error
-  const [passwordError, setPasswordError] = useState(''); // State to manage password error
+  const [emailError, setEmailError] = useState(''); // State for email error message
+  const [passwordError, setPasswordError] = useState(''); // State for password error message
 
   // Email validation function
   const validateEmail = (email: string) => {
@@ -42,13 +42,30 @@ export default function LoginScreen() {
 
   // Password validation function
   const validatePassword = (password: string) => {
-    return password.length > 0;
+    // Check if password meets criteria: at least 8 characters, contains a letter and a number
+    const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return re.test(password);
   };
 
-  /**
-   * Handles logic after user clicks on login
-   */
   const handleLogin = async () => {
+    // Validate email and set error message if invalid
+    if (!validateEmail(email)) {
+      setEmailError('This is an invalid email, please try again.');
+      return;
+    } else {
+      setEmailError('');
+    }
+
+    // Validate password and set error message if invalid
+    if (!validatePassword(password)) {
+      setPasswordError(
+        'Password must be at least 8 characters and contain a letter and a number.'
+      );
+      return;
+    } else {
+      setPasswordError('');
+    }
+
     const result = await loginWithEmail(email, password);
     if (!result.success) {
       setErrorMessage(result.message); // Set the specific error message here
@@ -61,18 +78,6 @@ export default function LoginScreen() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  // Update validation states
-  useEffect(() => {
-    setEmailError(
-      !validateEmail(email) && email
-        ? 'This is an invalid email, please try again.'
-        : ''
-    );
-    setPasswordError(
-      !validatePassword(password) && password ? 'Password cannot be blank.' : ''
-    );
-  }, [email, password]);
 
   // Determine if login button should be disabled
   const isLoginDisabled =
@@ -114,7 +119,9 @@ export default function LoginScreen() {
                   onChangeText={(text: string) => {
                     setPassword(text);
                     setPasswordError(
-                      !validatePassword(text) ? 'Password cannot be blank.' : ''
+                      !validatePassword(text)
+                        ? 'Password must be at least 8 characters and contain a letter and a number.'
+                        : ''
                     );
                   }}
                   value={password}
@@ -249,7 +256,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
   },
   errorText: {
-    color: '#A82424',
+    color: 'red',
     fontSize: 14,
     marginBottom: 10,
     textAlign: 'center',

@@ -23,8 +23,6 @@ import AuthFooter from './AuthFooter';
 import {signupWithEmail} from '@/lib/Auth';
 
 const {width, height} = Dimensions.get('window');
-const window_width = width;
-const window_height = height;
 
 export default function SignupScreen() {
   const [email, setEmail] = useState('');
@@ -233,7 +231,6 @@ export default function SignupScreen() {
                   />
                 </View>
               </View>
-
               <Text style={[styles.textSmall, styles.textGrey]}>
                 Already have an account?{' '}
                 <Link href={'/login'} asChild>
@@ -285,9 +282,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  divider: {
-    width: '100%',
-  },
   otherSignupButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -295,8 +289,6 @@ const styles = StyleSheet.create({
     width: '60%',
     marginTop: 20,
     marginBottom: 40,
-    minWidth: window_width,
-    minHeight: window_height,
   },
   checkbox: {
     marginRight: 0,
@@ -348,43 +340,6 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 12,
   },
-  container2: {
-    flex: 6,
-    flexDirection: 'column',
-    alignSelf: 'center',
-    width: '80%',
-  },
-  container3: {
-    flex: 6.8,
-    flexDirection: 'column',
-    alignItems: 'center',
-    alignSelf: 'center',
-    width: '80%',
-  },
-  buttonContainer1: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-    gap: 10,
-  },
-  buttonContainer2: {
-    marginTop: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-    gap: 10,
-  },
-  buttonContainer3: {
-    marginTop: 20,
-    marginBottom: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '60%',
-    gap: 10,
-  },
   logo: {
     width: 35,
     height: 35,
@@ -404,21 +359,17 @@ const styles = StyleSheet.create({
     height: 25,
   },
   logoAppleContainer: {
-    position: 'relative',
     width: 35,
     height: 35,
     borderWidth: 1,
     borderColor: 'grey',
-    zIndex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
     backgroundColor: 'black',
   },
   logoApple: {
-    position: 'relative',
     width: 18,
     height: 18,
-    zIndex: 2,
   },
 });
