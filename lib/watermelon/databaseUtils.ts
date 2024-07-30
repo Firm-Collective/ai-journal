@@ -7,7 +7,7 @@
 // logAllPosts(database)
 
 import {Database, Q} from '@nozbe/watermelondb';
-import {Post} from './post';
+import {Post} from './post';  
 
 export async function logAllPosts(database: Database) {
   const postsCollection = database.get<Post>('journal_entry');

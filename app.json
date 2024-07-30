@@ -55,6 +55,14 @@
                 "modular_headers": true
               }
             ]
+          },
+          "android": {
+            "kotlinVersion": "1.6.10",
+            "packagingOptions": {
+              "pickFirst": [
+                "**/libc++_shared.so"
+              ]
+            }
           }
         }
       ],
