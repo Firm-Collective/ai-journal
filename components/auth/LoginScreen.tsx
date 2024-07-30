@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -13,17 +13,17 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import LoginButton from '@/components/auth/buttons/LoginButtonFromLogin';
-import {Link, router} from 'expo-router';
-import {Feather} from '@expo/vector-icons';
+import { Link, router } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';
 import {loginWithEmail} from '@/lib/Auth';
 import { supabase } from '@/lib/supabase';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const window_width = width;
 const window_height = height;
@@ -51,15 +51,16 @@ export default function LoginScreen() {
       setEmailError('');
     }
 
-    const isSuccess = await loginWithEmail(email, password);
-    if(isSuccess) {
+
+    const userId = await loginWithEmail(email, password);
+    if (userId) {
       // router.push('/tell-us-about-yourself');
       try {
         const { data, error } = await supabase
-        .from('users')
-        .select('is_onboarding')
-        // .eq('id', (user as any).id)
-        .single()
+          .from('users')
+          .select('is_onboarding')
+          .eq("id", userId)
+          .single()
         console.log(data);
         if (error) {
           console.error('Error fetching user data:', error);

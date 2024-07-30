@@ -59,7 +59,7 @@ export async function signupWithEmail(email: string, password: string) {
  * @returns {object} - returns an object with success and message properties
  */
 export async function loginWithEmail(email: string, password: string) {
-  const {error} = await supabase.auth.signInWithPassword({
+  const {data, error} = await supabase.auth.signInWithPassword({
     email: email,
     password: password,
   });
@@ -73,7 +73,7 @@ export async function loginWithEmail(email: string, password: string) {
     };
   } else {
     // Return success message for successful login
-    return {success: true, message: 'Success signing in with user'};
+    return {success: true, message: 'Success signing in with user', userId: data.user.id};
   }
 }
 
