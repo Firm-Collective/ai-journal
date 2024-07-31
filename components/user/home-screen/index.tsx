@@ -3,6 +3,10 @@ import {StyleSheet, FlatList, ImageBackground, Text} from 'react-native';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
 import {useNetInfo} from '@react-native-community/netinfo';
+import {useFocusEffect} from 'expo-router';
+import {useCallback} from 'react';
+import {syncWithServer} from '@/lib/watermelon/sync';
+import {database} from '@/lib/watermelon/database';
 
 export default function HomeScreen() {
   const {type, isConnected} = useNetInfo();
@@ -18,6 +22,22 @@ export default function HomeScreen() {
   // If yes
   // - then we call the sync function
   // if no wifi, then don't call the sync function
+  useFocusEffect(
+    useCallback(() => {
+      const checkConnectionAndSync = async () => {
+        // handle refresh will occur every time
+        handleRefresh();
+        if (isConnected) {
+          console.log('we are connected to wifi');
+          await syncWithServer(database);
+        } else {
+          console.log('we are not connected to wifi');
+        }
+      };
+
+      checkConnectionAndSync();
+    }, [isConnected]) // Add isConnected to dependency array
+  );
 
   return (
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
@@ -26,26 +46,22 @@ export default function HomeScreen() {
         resizeMode="cover"
         source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
       >
-        {isConnected ? (
-          <FlatList
-            data={journalEntries}
-            renderItem={({item}) => (
-              <Post
-                id={item.id}
-                date={item.date}
-                title={item.title}
-                content={item.content}
-                tags={item.tags}
-              />
-            )}
-            style={styles.list}
-            keyExtractor={item => item.id}
-            refreshing={isLoading}
-            onRefresh={handleRefresh}
-          />
-        ) : (
-          <Text>You're offline</Text>
-        )}
+        <FlatList
+          data={journalEntries}
+          renderItem={({item}) => (
+            <Post
+              id={item.id}
+              date={item.date}
+              title={item.title}
+              content={item.content}
+              tags={item.tags}
+            />
+          )}
+          style={styles.list}
+          keyExtractor={item => item.id}
+          refreshing={isLoading}
+          onRefresh={handleRefresh}
+        />
       </ImageBackground>
     </SafeAreaView>
   );
