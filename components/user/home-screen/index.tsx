@@ -11,6 +11,12 @@ export default function HomeScreen() {
     refreshJournalEntries();
   };
 
+  // Every single time we click on home page
+  // we check to see if there is wifi
+  // If yes
+  // - then we call the sync function
+  // if no wifi, then don't call the sync function
+
   return (
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
       <ImageBackground

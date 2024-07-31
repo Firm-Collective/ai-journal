@@ -67,6 +67,12 @@ const WatermelonScreen = () => {
           logAllPosts(database);
         }}
       />
+      <Button
+        title="Delete ID Post"
+        onPress={() => {
+          Post.deletePost(database, 'fu5ginbcH5F7GZpA');
+        }}
+      />
     </View>
   );
 };
