@@ -9,6 +9,8 @@ import {
 import {supabase} from '@/lib/supabase';
 import {Alert} from 'react-native';
 import {IJournalEntry, IDBJournalEntry} from '@/models/data/IJournalEntry';
+import {database} from '@/lib/watermelon/database';
+import {Post} from '@/lib/watermelon/post';
 
 export type JournalEntriesContextProps = {
   /** All journal entries fetched from DB */
@@ -34,21 +36,18 @@ export const JournalEntriesProvider = ({children}: {children: ReactNode}) => {
 
   const listJournalEntriesMostRecent = useCallback(async () => {
     try {
-      const {data, error} = await supabase
-        .from('journal_entry')
-        .select()
-        .order('created_at', {ascending: false});
-      if (error) {
-        throw error;
-      }
+      const postsCollection = database.get<Post>('journal_entry');
+      const data = await postsCollection.query().fetch();
 
-      const mappedData = data.map((item: IDBJournalEntry) => ({
-        date: new Date(item.created_at),
+      const mappedData = data.map(item => ({
+        date: new Date(item.createdAt),
         id: item.id.toString(),
         title: item.title,
         content: item.text,
         tags: [], // TODO: If 'tags' is not provided, initialize as an empty array
       }));
+
+      mappedData.sort((a: any, b: any) => b.date - a.date);
 
       setJournalEntries(mappedData);
     } catch (error) {

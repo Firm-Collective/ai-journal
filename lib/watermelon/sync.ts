@@ -83,10 +83,17 @@ export async function syncWithServer(database: Database): Promise<void> {
 
       if (changes.journal_entry.updated.length > 0) {
         // TODO: logic when there are updated posts
+        console.log('newly updatedp posts', changes.journal_entry.updated);
       }
 
       if (changes.journal_entry.deleted.length > 0) {
         // TODO: logic when there are deleted posts
+        console.log('newley deleted posts', changes.journal_entry.deleted);
+        // TODO:
+        // METHOD
+        // 1. grab the entry from supabase via watermelon ID
+        // delete via watermelond id
+        //
       }
     },
   });
