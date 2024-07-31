@@ -83,17 +83,42 @@ export async function syncWithServer(database: Database): Promise<void> {
 
       if (changes.journal_entry.updated.length > 0) {
         // TODO: logic when there are updated posts
-        console.log('newly updatedp posts', changes.journal_entry.updated);
+        console.log('newly updated posts', changes.journal_entry.updated);
+
+        changes.journal_entry.updated.forEach(async element => {
+          const watermelon_id = element.id;
+          const title = element.title;
+          const text = element.text;
+          const user = element.user;
+
+          // update each post
+          const {error} = await supabase
+            .from('journal_entries')
+            .update({
+              watermelon_id: watermelon_id,
+              title: title,
+              text: text,
+              user: user,
+              updated_at: lastPulledAt,
+            })
+            .eq('watermelon_id', watermelon_id);
+        });
       }
 
       if (changes.journal_entry.deleted.length > 0) {
         // TODO: logic when there are deleted posts
         console.log('newley deleted posts', changes.journal_entry.deleted);
-        // TODO:
-        // METHOD
-        // 1. grab the entry from supabase via watermelon ID
-        // delete via watermelond id
         //
+        changes.journal_entry.deleted.forEach(async id => {
+          const {error} = await supabase
+            .from('journal_entry')
+            .delete()
+            .eq('watermelon_id', id);
+
+          if (error) {
+            console.log(error);
+          }
+        });
       }
     },
   });
