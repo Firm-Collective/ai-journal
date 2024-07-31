@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
-import {supabase} from '@/lib/supabase';
-import useFetchUser from '@/lib/hooks/useFetchUser';
 import {TouchableOpacity} from 'react-native';
-import {useJournalEntries} from '@/providers/JournalEntriesProvider';
 import {Post} from '@/lib/watermelon/post';
 import {database} from '@/lib/watermelon/database';
 import {syncWithServer} from '@/lib/watermelon/sync';
