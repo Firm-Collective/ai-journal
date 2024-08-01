@@ -15,6 +15,7 @@ import {
   SyncPushResult,
   SyncDatabaseChangeSet,
 } from '@nozbe/watermelondb/sync';
+import { Post } from './post';
 
 export async function syncWithServer(database: Database): Promise<void> {
   await synchronize({
@@ -23,7 +24,7 @@ export async function syncWithServer(database: Database): Promise<void> {
     /**
      * Check if there are any changes within the supabase (online) and syncs it with WatermelonDB (offline)
      * AKA, if users make changes to their posts online (new posts, edited posts, deleted posts), sync to WatermelonDB
-     * 
+     *
      * 1. Fetch all posts from supabase that were updated since lastPulledAt
      * 2. Copy all the updated posts to updated[] in changes
      * 3. Return changes object and the timestamp as current time according to WatermelonDB doc
@@ -33,7 +34,6 @@ export async function syncWithServer(database: Database): Promise<void> {
       schemaVersion,
       migration,
     }: SyncPullArgs): Promise<SyncPullResult> => {
-
       const {data, error} = await supabase
         .from('journal_entry')
         .select('*')
@@ -45,7 +45,7 @@ export async function syncWithServer(database: Database): Promise<void> {
         journal_entry: {
           // TODO: new posts go to created[]? or already lumped with edited posts in updated[]?
           created: [],
-          updated: data.map(post => ({
+          updated: data.map((post) => ({
             id: post.watermelon_id,
             title: post.title,
             text: post.text,
@@ -71,22 +71,25 @@ export async function syncWithServer(database: Database): Promise<void> {
       changes,
       lastPulledAt,
     }: SyncPushArgs): Promise<SyncPushResult | undefined | void> => {
-
       // Logic when there are new created posts
       if (changes.journal_entry.created.length > 0) {
         const entries: any = [];
+
+        console.log('new posts created offline', changes.journal_entry.created);
 
         changes.journal_entry.created.forEach(element => {
           const watermelon_id = element.id;
           const title = element.title;
           const text = element.text;
           const user = element.user;
+          const created_at = element.createdAt
 
           entries.push({
             watermelon_id: watermelon_id,
             title: title,
             text: text,
             user: user,
+            created_at: created_at,
             updated_at: lastPulledAt,
           });
         });
