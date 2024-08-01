@@ -11,18 +11,28 @@ import {Database} from '@nozbe/watermelondb';
 import {
   SyncPullArgs,
   SyncPullResult,
+  SyncPushArgs,
+  SyncPushResult,
   SyncDatabaseChangeSet,
 } from '@nozbe/watermelondb/sync';
 
 export async function syncWithServer(database: Database): Promise<void> {
   await synchronize({
     database,
+
+    /**
+     * Check if there are any changes within the supabase (online) and syncs it with WatermelonDB (offline)
+     * AKA, if users make changes to their posts online (new posts, edited posts, deleted posts), sync to WatermelonDB
+     * 
+     * 1. Fetch all posts from supabase that were updated since lastPulledAt
+     * 2. Copy all the updated posts to updated[] in changes
+     * 3. Return changes object and the timestamp as current time according to WatermelonDB doc
+     */
     pullChanges: async ({
       lastPulledAt,
       schemaVersion,
       migration,
     }: SyncPullArgs): Promise<SyncPullResult> => {
-      // Check if there are any changes within the database and syncs it with local storage
 
       const {data, error} = await supabase
         .from('journal_entry')
@@ -33,6 +43,7 @@ export async function syncWithServer(database: Database): Promise<void> {
 
       const changes: SyncDatabaseChangeSet = {
         journal_entry: {
+          // TODO: new posts go to created[]? or already lumped with edited posts in updated[]?
           created: [],
           updated: data.map(post => ({
             id: post.watermelon_id,
@@ -40,6 +51,7 @@ export async function syncWithServer(database: Database): Promise<void> {
             text: post.text,
             user: post.user,
           })),
+          // TODO: some posts could have been deleted from supabase, need to delete them from WatermelonDB too
           deleted: [],
         },
       };
@@ -49,14 +61,16 @@ export async function syncWithServer(database: Database): Promise<void> {
         timestamp: Date.now(),
       };
     },
+
+    /**
+     * Checks if there are any changes within WatermelonDB and pushes it to supabase
+     * AKA, if users make changes to their posts offline (new posts, edited posts, deleted posts), sync to Supabase
+     * Return nothing
+     */
     pushChanges: async ({
       changes,
       lastPulledAt,
-    }: {
-      changes: SyncDatabaseChangeSet;
-      lastPulledAt: number;
-    }) => {
-      // Checks if there are any changes within local storage and pushes it to supabase
+    }: SyncPushArgs): Promise<SyncPushResult | undefined | void> => {
 
       // Logic when there are new created posts
       if (changes.journal_entry.created.length > 0) {
@@ -82,7 +96,7 @@ export async function syncWithServer(database: Database): Promise<void> {
       }
 
       if (changes.journal_entry.updated.length > 0) {
-        // TODO: logic when there are updated posts
+        // Logic when there are updated posts
         console.log('newly updated posts', changes.journal_entry.updated);
 
         changes.journal_entry.updated.forEach(async element => {
@@ -106,7 +120,7 @@ export async function syncWithServer(database: Database): Promise<void> {
       }
 
       if (changes.journal_entry.deleted.length > 0) {
-        // TODO: logic when there are deleted posts
+        // Logic when there are deleted posts
         console.log('newley deleted posts', changes.journal_entry.deleted);
         //
         changes.journal_entry.deleted.forEach(async id => {
