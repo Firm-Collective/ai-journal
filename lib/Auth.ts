@@ -63,8 +63,6 @@ export async function loginWithEmail(email: string, password: string) {
     email: email,
     password: password,
   });
-
-  // Check for errors during login
   if (error) {
     // Return specific error message for incorrect email or password
     return {
@@ -72,7 +70,7 @@ export async function loginWithEmail(email: string, password: string) {
       message: 'Incorrect email or password. Please try again.',
     };
   } else {
-    // Return success message for successful login
+    // if success, return success message and data needed
     return {success: true, message: 'Success signing in with user', userId: data.user.id};
   }
 }

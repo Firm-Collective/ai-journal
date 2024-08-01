@@ -25,7 +25,7 @@ const countries = [
   { label: 'China', value: 'CN' },
   { label: 'United State', value: 'USA' },
   { label: 'United Kingdom', value: 'UK' },
-  { label: 'China', value: 'CN' },
+  { label: 'Japan', value: 'JP' },
   { label: 'Spain', value: 'spain' },
   { label: 'Other', value: 'other' },
   { label: 'Prefer not to say', value: 'N/A' },
@@ -51,22 +51,35 @@ export default function TellUsAboutYourselfScreen() {
       return;
     }
     try {
-      const { error } = await supabase
+      const { error: metadataError } = await supabase.auth.updateUser({
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          birth_year: birthYear,
+          country: country,
+          city: city,
+          is_onboarding: true,
+        },
+      });
+
+      if (metadataError) {
+        throw metadataError;
+      }
+
+      const { error: tableError } = await supabase
         .from('users')
         .update({
           first_name: firstName,
           last_name: lastName,
           birth_year: birthYear,
-          // country: country,
-          // city: city,
           is_onboarding: true,
         })
         .eq('id', (user as any).id);
 
-      if (error) {
-        throw error;
+      if (tableError) {
+        throw tableError;
       }
-
+      
       Alert.alert('Success', 'User info added successfully');
       router.push('/');
     } catch (error) {
