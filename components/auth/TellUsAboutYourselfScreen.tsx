@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Dimensions,
@@ -8,33 +8,26 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { CheckBox } from '@rneui/themed';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {CheckBox} from '@rneui/themed';
 import DropDownPicker from 'react-native-dropdown-picker';
 import AuthHeader from './AuthHeader';
-import { supabase } from '@/lib/supabase';
+import {supabase} from '@/lib/supabase';
 import useFetchUser from '@/lib/hooks/useFetchUser';
-import { router } from 'expo-router';
-import { title } from 'process';
+import {router} from 'expo-router';
+import countriesData from '@/assets/countries.json';
 
-const { width: window_width, height: window_height } = Dimensions.get('window');
+const {width: window_width, height: window_height} = Dimensions.get('window');
 
-const countries = [
-  { label: 'Australia', value: 'AU' },
-  { label: 'Canada', value: 'CA' },
-  { label: 'China', value: 'CN' },
-  { label: 'United State', value: 'USA' },
-  { label: 'United Kingdom', value: 'UK' },
-  { label: 'Japan', value: 'JP' },
-  { label: 'Spain', value: 'spain' },
-  { label: 'Other', value: 'other' },
-  { label: 'Prefer not to say', value: 'N/A' },
-];
-
+interface Country {
+  label: string;
+  value: string;
+}
 
 export default function TellUsAboutYourselfScreen() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [countries, setCountries] = useState<Country[]>([]);
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
   const [birthYear, setBirthYear] = useState('');
@@ -42,6 +35,15 @@ export default function TellUsAboutYourselfScreen() {
   const [isChecked, setIsChecked] = useState(false);
 
   const user = useFetchUser();
+
+  useEffect(() => {
+    // Format data from countries.json
+    const formattedCountryData = countriesData.map(country => ({
+      label: country.name,
+      value: country.code,
+    }));
+    setCountries(formattedCountryData);
+  }, []);
 
   const isFormValid = firstName !== '' && lastName !== '';
 
@@ -51,7 +53,7 @@ export default function TellUsAboutYourselfScreen() {
       return;
     }
     try {
-      const { error: metadataError } = await supabase.auth.updateUser({
+      const {error: metadataError} = await supabase.auth.updateUser({
         data: {
           first_name: firstName,
           last_name: lastName,
@@ -66,7 +68,7 @@ export default function TellUsAboutYourselfScreen() {
         throw metadataError;
       }
 
-      const { error: tableError } = await supabase
+      const {error: tableError} = await supabase
         .from('users')
         .update({
           first_name: firstName,
@@ -79,7 +81,7 @@ export default function TellUsAboutYourselfScreen() {
       if (tableError) {
         throw tableError;
       }
-      
+
       Alert.alert('Success', 'User info added successfully');
       router.push('/');
     } catch (error) {
@@ -125,6 +127,8 @@ export default function TellUsAboutYourselfScreen() {
             setItems={() => {}}
             placeholder="Country"
             placeholderStyle={styles.placeholder}
+            searchable={true}
+            searchPlaceholder="Search your country"
           />
           <TextInput
             style={[styles.textInput, city ? styles.filledInput : null]}
@@ -144,7 +148,7 @@ export default function TellUsAboutYourselfScreen() {
             <CheckBox
               checked={isChecked}
               onPress={handleCheckboxChange}
-              containerStyle={{ marginRight: 0, paddingRight: 5 }}
+              containerStyle={{marginRight: 0, paddingRight: 5}}
             />
             <Text style={[styles.textSmall, styles.inlineText]}>
               <Text style={styles.textGrey}>
@@ -153,7 +157,11 @@ export default function TellUsAboutYourselfScreen() {
               </Text>
             </Text>
           </View>
-          <TouchableOpacity style={styles.button} onPress={handleContinue} disabled={!isFormValid}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleContinue}
+            disabled={!isFormValid}
+          >
             <Text style={styles.buttonText}>Continue</Text>
           </TouchableOpacity>
         </View>
