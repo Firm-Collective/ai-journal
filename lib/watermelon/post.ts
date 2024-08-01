@@ -1,8 +1,7 @@
 import {Model} from '@nozbe/watermelondb';
 import {field, date, text} from '@nozbe/watermelondb/decorators';
-import {Database} from '@nozbe/watermelondb';
+import {Database, Q} from '@nozbe/watermelondb';
 import {database} from './database';
-import {Q} from '@nozbe/watermelondb';
 
 export class Post extends Model {
   static table = 'journal_entry';
@@ -11,16 +10,6 @@ export class Post extends Model {
   @text('text') text!: string;
   @date('created_at') createdAt!: Date;
   @text('user') user!: string;
-
-  // Method to get all posts in watermelonDB
-  static async getPostsRecentDate(): Promise<Post[]> {
-    const postsCollection = database.get<Post>('journal_entry');
-    const allPosts = await postsCollection
-      .query(Q.sortBy('created_at', Q.desc))
-      .fetch();
-
-    return allPosts;
-  }
 
   // Method to create a new post
   static async createPost(
@@ -76,5 +65,14 @@ export class Post extends Model {
       // If you want to permanently delete the post, use:
       // await post.destroyPermanently();
     });
+  }
+
+  static async getPostsByMostRecentDate(database: Database): Promise<Post[]> {
+    const postsCollection = database.get<Post>('journal_entry');
+    const allPosts = await postsCollection
+      .query(Q.sortBy('created_at', Q.desc))
+      .fetch();
+
+    return allPosts;
   }
 }

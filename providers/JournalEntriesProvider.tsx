@@ -9,6 +9,7 @@ import {
 import {supabase} from '@/lib/supabase';
 import {Alert} from 'react-native';
 import {IJournalEntry, IDBJournalEntry} from '@/models/data/IJournalEntry';
+import {database} from '@/lib/watermelon/database';
 import {Post} from '@/lib/watermelon/post';
 import {useNet} from './NetworkProvider';
 
@@ -37,11 +38,11 @@ export const JournalEntriesProvider = ({children}: {children: ReactNode}) => {
 
   const listJournalEntriesMostRecentOffline = useCallback(async () => {
     try {
-      const data = await Post.getPostsRecentDate();
+      const data = await Post.getPostsByMostRecentDate(database);
 
       const mappedData = data.map(item => ({
         date: new Date(item.createdAt),
-        id: item.id,
+        id: item.id.toString(),
         title: item.title,
         content: item.text,
         tags: [], // TODO: If 'tags' is not provided, initialize as an empty array
