@@ -11,7 +11,7 @@ const NetworkContext = createContext<NetworkData>({
   isConnected: null,
 });
 
-function NetworkProvider({children}: PropsWithChildren) {
+export default function NetworkProvider({children}: PropsWithChildren) {
   const {type, isConnected} = useNetInfo();
   return (
     <NetworkContext.Provider value={{type, isConnected}}>

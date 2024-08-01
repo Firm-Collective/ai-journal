@@ -2,14 +2,14 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {StyleSheet, FlatList, ImageBackground, Text} from 'react-native';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
-import {useNetInfo} from '@react-native-community/netinfo';
+import {useNet} from '@/providers/NetworkProvider';
 import {useFocusEffect} from 'expo-router';
 import {useCallback} from 'react';
 import {syncWithServer} from '@/lib/watermelon/sync';
 import {database} from '@/lib/watermelon/database';
 
 export default function HomeScreen() {
-  const {type, isConnected} = useNetInfo();
+  const {type, isConnected} = useNet();
   const {journalEntries, isLoading, refreshJournalEntries} =
     useJournalEntries();
 

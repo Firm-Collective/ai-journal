@@ -9,8 +9,8 @@ import {
 import {supabase} from '@/lib/supabase';
 import {Alert} from 'react-native';
 import {IJournalEntry, IDBJournalEntry} from '@/models/data/IJournalEntry';
-import {database} from '@/lib/watermelon/database';
 import {Post} from '@/lib/watermelon/post';
+import {useNet} from './NetworkProvider';
 
 export type JournalEntriesContextProps = {
   /** All journal entries fetched from DB */
@@ -33,21 +33,19 @@ export const JournalEntriesProvider = ({children}: {children: ReactNode}) => {
     IJournalEntry[] | undefined
   >([]);
   const [isLoading, setisLoading] = useState<boolean>(true);
+  const {isConnected} = useNet();
 
-  const listJournalEntriesMostRecent = useCallback(async () => {
+  const listJournalEntriesMostRecentOffline = useCallback(async () => {
     try {
-      const postsCollection = database.get<Post>('journal_entry');
-      const data = await postsCollection.query().fetch();
+      const data = await Post.getPostsRecentDate();
 
       const mappedData = data.map(item => ({
         date: new Date(item.createdAt),
-        id: item.id.toString(),
+        id: item.id,
         title: item.title,
         content: item.text,
         tags: [], // TODO: If 'tags' is not provided, initialize as an empty array
       }));
-
-      mappedData.sort((a: any, b: any) => b.date - a.date);
 
       setJournalEntries(mappedData);
     } catch (error) {
@@ -58,14 +56,54 @@ export const JournalEntriesProvider = ({children}: {children: ReactNode}) => {
     }
   }, [setJournalEntries]);
 
+  const listJournalEntriesMostRecentOnline = useCallback(async () => {
+    try {
+      const {data, error} = await supabase
+        .from('journal_entry')
+        .select()
+        .order('created_at', {ascending: false});
+      if (error) {
+        throw error;
+      }
+
+      const mappedData = data.map((item: IDBJournalEntry) => ({
+        date: new Date(item.created_at),
+        id: item.id.toString(),
+        title: item.title,
+        content: item.text,
+        tags: [], // TODO: If 'tags' is not provided, initialize as an empty array
+      }));
+
+      setJournalEntries(mappedData);
+    } catch (error) {
+      console.error('Error loading journal entries:', error);
+      Alert.alert('Error', 'Failed to submit entry');
+    } finally {
+      setisLoading(false);
+    }
+  }, [setJournalEntries]);
+
+  const listJournalEntriesMostRecent = useCallback(async () => {
+    if (isConnected) {
+      await listJournalEntriesMostRecentOnline();
+    } else {
+      await listJournalEntriesMostRecentOffline();
+    }
+  }, [
+    isConnected,
+    listJournalEntriesMostRecentOnline,
+    listJournalEntriesMostRecentOffline,
+  ]);
+
   const refreshJournalEntries = useCallback(async () => {
     setJournalEntries(undefined);
     await listJournalEntriesMostRecent();
   }, []);
 
   useEffect(() => {
+    setisLoading(true);
     listJournalEntriesMostRecent();
-  }, []);
+  }, [isConnected, listJournalEntriesMostRecent]);
 
   return (
     <JournalEntriesContext.Provider
