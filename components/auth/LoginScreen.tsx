@@ -40,13 +40,6 @@ export default function LoginScreen() {
     return re.test(String(email).toLowerCase());
   };
 
-  // Password validation function
-  const validatePassword = (password: string) => {
-    // Check if password meets criteria: at least 8 characters, contains a letter and a number
-    const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    return re.test(password);
-  };
-
   const handleLogin = async () => {
     // Validate email and set error message if invalid
     if (!validateEmail(email)) {
@@ -54,16 +47,6 @@ export default function LoginScreen() {
       return;
     } else {
       setEmailError('');
-    }
-
-    // Validate password and set error message if invalid
-    if (!validatePassword(password)) {
-      setPasswordError(
-        'Password must be at least 8 characters and contain a letter and a number.'
-      );
-      return;
-    } else {
-      setPasswordError('');
     }
 
     const result = await loginWithEmail(email, password);
@@ -108,7 +91,7 @@ export default function LoginScreen() {
                   placeholder="Email"
                   placeholderTextColor="rgba(50, 54, 62, 1)"
                 />
-                {emailError ? (
+                {emailError && email ? (
                   <Text style={styles.errorText}>{emailError}</Text>
                 ) : null}
               </View>
@@ -118,11 +101,7 @@ export default function LoginScreen() {
                   secureTextEntry={!showPassword}
                   onChangeText={(text: string) => {
                     setPassword(text);
-                    setPasswordError(
-                      !validatePassword(text)
-                        ? 'Password must be at least 8 characters and contain a letter and a number.'
-                        : ''
-                    );
+                    setPasswordError('');
                   }}
                   value={password}
                   placeholder="Password"
@@ -151,7 +130,7 @@ export default function LoginScreen() {
                 <Text style={styles.errorText}>{errorMessage}</Text> // Conditionally render error message
               ) : null}
               <View style={styles.buttonContainer1}>
-                <LoginButton onPress={handleLogin} />
+                <LoginButton onPress={handleLogin} disabled={isLoginDisabled} />
               </View>
               <Text style={styles.textMiddle}>Forgot Password?</Text>
             </View>
