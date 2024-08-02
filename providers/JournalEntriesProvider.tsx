@@ -36,73 +36,86 @@ export const JournalEntriesProvider = ({children}: {children: ReactNode}) => {
   const [isLoading, setisLoading] = useState<boolean>(true);
   const {isConnected} = useNet();
 
-  const listJournalEntriesMostRecentOffline = useCallback(async () => {
-    try {
-      const data = await Post.getPostsByMostRecentDate(database);
+  const areEntriesEqual = (entry1: IJournalEntry, entry2: IJournalEntry) => {
+    return entry1.id === entry2.id;
+  };
 
-      const mappedData = data.map(item => ({
-        date: new Date(item.createdAt),
-        id: item.id.toString(),
-        title: item.title,
-        content: item.text,
-        tags: [], // TODO: If 'tags' is not provided, initialize as an empty array
-      }));
+  /**
+   * Checks to see if any entries have been changed
+   * @param currentEntries is the entries we currently have
+   * @param newEntries is the new entries (if there is any)
+   * @returns true if there is a change, false otherwise.
+   */
+  const haveEntriesChanged = (
+    currentEntries: IJournalEntry[] | undefined,
+    newEntries: IJournalEntry[] | undefined
+  ) => {
+    if (!currentEntries || !newEntries) return true;
+    if (currentEntries.length !== newEntries.length) return true;
 
-      setJournalEntries(mappedData);
-    } catch (error) {
-      console.error('Error loading journal entries:', error);
-      Alert.alert('Error', 'Failed to submit entry');
-    } finally {
-      setisLoading(false);
+    for (let i = 0; i < currentEntries.length; i++) {
+      if (!areEntriesEqual(currentEntries[i], newEntries[i])) return true;
     }
-  }, [setJournalEntries]);
 
-  const listJournalEntriesMostRecentOnline = useCallback(async () => {
-    try {
-      const {data, error} = await supabase
-        .from('journal_entry')
-        .select()
-        .order('created_at', {ascending: false});
-      if (error) {
-        throw error;
-      }
+    return false;
+  };
 
-      const mappedData = data.map((item: IDBJournalEntry) => ({
-        date: new Date(item.created_at),
-        id: item.id.toString(),
-        title: item.title,
-        content: item.text,
-        tags: [], // TODO: If 'tags' is not provided, initialize as an empty array
-      }));
+  const fetchJournalEntriesOffline = useCallback(async () => {
+    const data = await Post.getPostsByMostRecentDate(database);
+    return data.map(item => ({
+      date: new Date(item.createdAt),
+      id: item.id.toString(),
+      title: item.title,
+      content: item.text,
+      tags: [], // TODO: If 'tags' is not provided, initialize as an empty array
+    }));
+  }, []);
 
-      setJournalEntries(mappedData);
-    } catch (error) {
-      console.error('Error loading journal entries:', error);
-      Alert.alert('Error', 'Failed to submit entry');
-    } finally {
-      setisLoading(false);
+  const fetchJournalEntriesOnline = useCallback(async () => {
+    const {data, error} = await supabase
+      .from('journal_entry')
+      .select()
+      .order('created_at', {ascending: false});
+    if (error) {
+      throw error;
     }
-  }, [setJournalEntries]);
+    return data.map((item: IDBJournalEntry) => ({
+      date: new Date(item.created_at),
+      id: item.id.toString(),
+      title: item.title,
+      content: item.text,
+      tags: [], // TODO: If 'tags' is not provided, initialize as an empty array
+    }));
+  }, []);
 
   const listJournalEntriesMostRecent = useCallback(async () => {
-    if (isConnected) {
-      await listJournalEntriesMostRecentOnline();
-    } else {
-      await listJournalEntriesMostRecentOffline();
+    setisLoading(true);
+    try {
+      const newEntries = await fetchJournalEntriesOffline();
+
+      // if entries have changed, then set new posts,
+      // otherwise, don't change anything
+      if (haveEntriesChanged(journalEntries, newEntries)) {
+        setJournalEntries(newEntries);
+      }
+    } catch (error) {
+      console.error('Error loading journal entries:', error);
+      Alert.alert('Error', 'Failed to load entries');
+    } finally {
+      setisLoading(false);
     }
   }, [
     isConnected,
-    listJournalEntriesMostRecentOnline,
-    listJournalEntriesMostRecentOffline,
+    fetchJournalEntriesOnline,
+    fetchJournalEntriesOffline,
+    journalEntries,
   ]);
 
   const refreshJournalEntries = useCallback(async () => {
-    setJournalEntries(undefined);
     await listJournalEntriesMostRecent();
-  }, []);
+  }, [listJournalEntriesMostRecent]);
 
   useEffect(() => {
-    setisLoading(true);
     listJournalEntriesMostRecent();
   }, [isConnected, listJournalEntriesMostRecent]);
 

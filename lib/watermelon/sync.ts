@@ -15,7 +15,21 @@ import {
   SyncPushResult,
   SyncDatabaseChangeSet,
 } from '@nozbe/watermelondb/sync';
-import { Post } from './post';
+import {Post} from './post';
+
+function convertToTimestamp(unixTimestampMs: number) {
+  const date = new Date(unixTimestampMs);
+
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+  const milliseconds = String(date.getUTCMilliseconds()).padStart(3, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}000+00`;
+}
 
 export async function syncWithServer(database: Database): Promise<void> {
   await synchronize({
@@ -45,7 +59,7 @@ export async function syncWithServer(database: Database): Promise<void> {
         journal_entry: {
           // TODO: new posts go to created[]? or already lumped with edited posts in updated[]?
           created: [],
-          updated: data.map((post) => ({
+          updated: data.map(post => ({
             id: post.watermelon_id,
             title: post.title,
             text: post.text,
@@ -82,7 +96,10 @@ export async function syncWithServer(database: Database): Promise<void> {
           const title = element.title;
           const text = element.text;
           const user = element.user;
-          const created_at = element.createdAt
+
+          // created_at from watermelonDB is different format than
+          // supabase so we have to convert first before pushing.
+          const created_at = convertToTimestamp(element.created_at);
 
           entries.push({
             watermelon_id: watermelon_id,
@@ -96,6 +113,11 @@ export async function syncWithServer(database: Database): Promise<void> {
 
         const {error} = await supabase.from('journal_entry').insert(entries);
         // TODO: do something when there is an error
+        if (!error) {
+          console.log('successfully pushed created posts to supabase');
+        } else {
+          console.log('error pushing created posts', error);
+        }
       }
 
       if (changes.journal_entry.updated.length > 0) {
