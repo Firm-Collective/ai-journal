@@ -16,12 +16,13 @@ const styles = StyleSheet.create({
   footerContainer: {
     flex: 1,
     justifyContent: 'flex-end',
+    zIndex: -1,
   },
   footerText: {
     bottom: 25,
     left: 0,
     right: 0,
-    textAlign:'center',
+    textAlign: 'center',
     color: '#1177C7',
   },
 });

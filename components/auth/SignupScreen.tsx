@@ -7,10 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  Platform,
   Keyboard,
   TouchableWithoutFeedback,
-  Dimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CheckBox} from '@rneui/themed';
@@ -21,8 +19,6 @@ import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';
 import {signupWithEmail} from '@/lib/Auth';
-
-const {width, height} = Dimensions.get('window');
 
 export default function SignupScreen() {
   const [email, setEmail] = useState('');
@@ -75,7 +71,6 @@ export default function SignupScreen() {
     setShowPassword(!showPassword);
   };
 
-  // Determine if signup button should be disabled
   useEffect(() => {
     setEmailError(
       !validateEmail(email) && email
@@ -93,11 +88,7 @@ export default function SignupScreen() {
     !email || !password || !isChecked || !!emailError || !!passwordError;
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}
-      enabled
-    >
+    <KeyboardAvoidingView style={{flex: 1}} enabled>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.view}>
           <AuthHeader />
@@ -106,7 +97,10 @@ export default function SignupScreen() {
               <Text style={styles.textCreate}>Create an Account</Text>
               <View>
                 <TextInput
-                  style={styles.textInput}
+                  style={[
+                    styles.textInput,
+                    emailError ? styles.errorInput : null,
+                  ]}
                   onChangeText={(text: string) => {
                     setEmail(text);
                     setEmailError(
@@ -128,13 +122,12 @@ export default function SignupScreen() {
                     }
                   }}
                 />
-                {emailError ? (
-                  <Text style={styles.errorText}>{emailError}</Text>
-                ) : null}
-
                 <View>
                   <TextInput
-                    style={styles.textInput}
+                    style={[
+                      styles.textInput,
+                      passwordError ? styles.errorInput : null,
+                    ]}
                     secureTextEntry={!showPassword}
                     onChangeText={(text: string) => {
                       setPassword(text);
@@ -168,15 +161,19 @@ export default function SignupScreen() {
                     />
                   </TouchableOpacity>
                 </View>
-                {passwordError ? (
-                  <Text style={styles.errorText}>{passwordError}</Text>
+                {(emailError && email) || (passwordError && password) ? (
+                  <View style={styles.errorContainer}>
+                    <Feather name="alert-circle" size={16} color="red" />
+                    <Text style={styles.errorText}>
+                      {emailError || passwordError}
+                    </Text>
+                  </View>
                 ) : (
                   <Text style={[styles.textSmall, styles.textGrey]}>
                     Password must be at least 8 characters and contain a letter
                     and a number.
                   </Text>
                 )}
-
                 <View style={styles.containercheckbox}>
                   <CheckBox
                     checked={isChecked}
@@ -319,6 +316,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   linkText: {
+    zIndex: 2,
     color: '#1177C7',
   },
   textSmall: {
@@ -339,6 +337,15 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 12,
+    marginLeft: 5,
+  },
+  errorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  errorInput: {
+    borderColor: 'red',
   },
   logo: {
     width: 35,

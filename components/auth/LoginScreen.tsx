@@ -27,12 +27,12 @@ const window_width = width;
 const window_height = height;
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState(''); // State to manage email input
-  const [password, setPassword] = useState(''); // State to manage password input
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-  const [errorMessage, setErrorMessage] = useState(''); // State to manage error message
-  const [emailError, setEmailError] = useState(''); // State for email error message
-  const [passwordError, setPasswordError] = useState(''); // State for password error message
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   // Email validation function
   const validateEmail = (email: string) => {
@@ -69,6 +69,7 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.view}>
@@ -78,42 +79,44 @@ export default function LoginScreen() {
               <Text style={styles.textCreate}>Login</Text>
               <View>
                 <TextInput
-                  style={styles.textInput}
+                  style={[
+                    styles.textInput,
+                    emailError || errorMessage ? styles.errorInput : null,
+                  ]}
                   onChangeText={(text: string) => {
                     setEmail(text);
-                    setEmailError(
-                      !validateEmail(text)
-                        ? 'This is an invalid email, please try again.'
-                        : ''
-                    );
+                    setEmailError('');
+                    setErrorMessage('');
                   }}
                   value={email}
                   placeholder="Email"
                   placeholderTextColor="rgba(50, 54, 62, 1)"
                 />
                 {emailError && email ? (
-                  <Text style={styles.errorText}>{emailError}</Text>
+                  <View style={styles.errorContainer}>
+                    <Feather name="alert-circle" size={16} color="red" />
+                    <Text style={styles.errorText}>{emailError}</Text>
+                  </View>
                 ) : null}
               </View>
               <View>
                 <TextInput
-                  style={styles.textInput}
+                  style={[
+                    styles.textInput,
+                    passwordError || errorMessage ? styles.errorInput : null,
+                  ]}
                   secureTextEntry={!showPassword}
                   onChangeText={(text: string) => {
                     setPassword(text);
                     setPasswordError('');
+                    setErrorMessage('');
                   }}
                   value={password}
                   placeholder="Password"
                   placeholderTextColor="rgba(50, 54, 62, 1)"
                 />
                 <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    top: 15,
-                    right: 10,
-                    padding: 5,
-                  }}
+                  style={styles.eyeIcon}
                   onPress={togglePasswordVisibility}
                 >
                   <Feather
@@ -123,11 +126,17 @@ export default function LoginScreen() {
                   />
                 </TouchableOpacity>
                 {passwordError ? (
-                  <Text style={styles.errorText}>{passwordError}</Text>
+                  <View style={styles.errorContainer}>
+                    <Feather name="alert-circle" size={16} color="red" />
+                    <Text style={styles.errorText}>{passwordError}</Text>
+                  </View>
                 ) : null}
               </View>
               {errorMessage ? (
-                <Text style={styles.errorText}>{errorMessage}</Text> // Conditionally render error message
+                <View style={styles.errorContainer}>
+                  <Feather name="alert-circle" size={16} color="red" />
+                  <Text style={styles.errorText}>{errorMessage}</Text>
+                </View>
               ) : null}
               <View style={styles.buttonContainer1}>
                 <LoginButton onPress={handleLogin} disabled={isLoginDisabled} />
@@ -208,6 +217,9 @@ const styles = StyleSheet.create({
     paddingTop: 3,
     fontFamily: 'Poppins',
   },
+  errorInput: {
+    borderColor: 'red',
+  },
   textCreate: {
     fontSize: 28,
     fontWeight: 'bold',
@@ -237,8 +249,12 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 14,
-    marginBottom: 10,
-    textAlign: 'center',
+    marginLeft: 5,
+  },
+  errorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
   },
   container2: {
     flex: 6,
@@ -315,26 +331,10 @@ const styles = StyleSheet.create({
     height: 18,
     zIndex: 2,
   },
-  backButtonContainer: {
+  eyeIcon: {
     position: 'absolute',
-    left: 15,
-  },
-  backButton: {
-    fontSize: 35,
-    fontWeight: 'bold',
-    marginRight: 10,
-    marginLeft: 0,
-    marginBottom: 12,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    padding: 20,
-  },
-  footerText: {
-    textAlign: 'center',
-    color: '#1177C7',
+    top: 15,
+    right: 10,
+    padding: 5,
   },
 });
