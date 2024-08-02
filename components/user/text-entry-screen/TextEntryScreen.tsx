@@ -1,43 +1,37 @@
 import React, {useState} from 'react';
 import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
-import {supabase} from '@/lib/supabase';
-import useFetchUser from '@/lib/hooks/useFetchUser';
 import {TouchableOpacity} from 'react-native';
-import {useJournalEntries} from '@/providers/JournalEntriesProvider';
+import {Post} from '@/lib/watermelon/post';
+import {database} from '@/lib/watermelon/database';
+import {syncWithServer} from '@/lib/watermelon/sync';
+import {Button} from '@rneui/themed';
+import {useAuth} from '@/providers/AuthProvider';
+import {logAllPosts} from '@/lib/watermelon/databaseUtils';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
-  const user = useFetchUser();
-  const {refreshJournalEntries} = useJournalEntries();
+  const {session, loading} = useAuth();
+
+  const syncNow = async () => {
+    await syncWithServer(database);
+  };
 
   const handleSubmit = async () => {
-    if (!user) {
-      Alert.alert('Error', 'User not found');
-      return;
-    }
     try {
-      const {data, error} = await supabase
-        .from('journal_entry')
-        .insert([
-          {
-            title: title,
-            text: text,
-            user: (user as any).id,
-          },
-        ])
-        .select('id');
-      if (error) {
-        throw error;
-      }
-      setText('');
+      const newPost = await Post.createPost(database, {
+        title,
+        text,
+        user: session?.user.id || 'unknown_user',
+      });
+
+      // reset input values
       setTitle('');
-      Alert.alert('Success', 'Entry submitted successfully');
+      setText('');
+
+      console.log('New post created', newPost);
     } catch (error) {
-      console.error('Error submitting entry:', error);
-      Alert.alert('Error', 'Failed to submit entry');
-    } finally {
-      refreshJournalEntries();
+      console.error('Error creating post:', error);
     }
   };
 
@@ -62,6 +56,19 @@ const TextEntryScreen = () => {
         placeholder="What is God speaking to you?"
         placeholderTextColor="#696969"
         multiline
+      />
+      <Button title="Sync Now" onPress={syncNow} />
+      <Button
+        title="See all Posts in Database"
+        onPress={() => {
+          logAllPosts(database);
+        }}
+      />
+      <Button
+        title="Delete ID Post"
+        onPress={() => {
+          Post.deletePost(database, 'fu5ginbcH5F7GZpA');
+        }}
       />
     </View>
   );
