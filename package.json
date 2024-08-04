@@ -23,13 +23,7 @@
     "@expo-google-fonts/poppins": "^0.2.3",
     "@expo/multipart-body-parser": "^1.1.0",
     "@expo/vector-icons": "^14.0.0",
-<<<<<<< HEAD
     "@react-native-async-storage/async-storage": "^1.23.1",
-=======
-    "@react-native-async-storage/async-storage": "1.23.1",
-    "@react-native-google-signin/google-signin": "^12.2.1",
-    "@react-native-picker/picker": "2.7.5",
->>>>>>> f6c8ac8 (create tell-us-about-yourself screen)
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.9.26",
     "@rneui/themed": "^4.0.0-rc.8",
