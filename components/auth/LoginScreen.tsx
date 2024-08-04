@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -13,17 +13,17 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import LoginButton from '@/components/auth/buttons/LoginButtonFromLogin';
-import { Link, router } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import {Link, router} from 'expo-router';
+import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';
 import {loginWithEmail} from '@/lib/Auth';
-import { supabase } from '@/lib/supabase';
+import {supabase} from '@/lib/supabase';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const window_width = width;
 const window_height = height;
@@ -51,30 +51,36 @@ export default function LoginScreen() {
       setEmailError('');
     }
 
-
     const result = await loginWithEmail(email, password);
-    const userId = result.userId;
-    if (userId) {
-      try {
-        const { data, error } = await supabase
-          .from('users')
-          .select('is_onboarding')
-          .eq("id", userId)
-          .single()
-        if (error) {
-          console.error('Error fetching user data:', error);
-          return;
-        }
-        if (data?.is_onboarding) {
-          router.push('/');
-        } else {
-          router.push('/tell-us-about-yourself');
-        }
-      } catch (error: any) {
-        Alert.alert('Error', error.message);
-        console.log(error.message)
-      }
 
+    // if the login failed, set error message
+    if (!result.success) {
+      setErrorMessage(result.message);
+    } else {
+      // if login successful
+      setErrorMessage('');
+      const userId = result.userId;
+      if (userId) {
+        try {
+          const {data, error} = await supabase
+            .from('users')
+            .select('is_onboarding')
+            .eq('id', userId)
+            .single();
+          if (error) {
+            console.error('Error fetching user data:', error);
+            return;
+          }
+          if (data?.is_onboarding) {
+            router.push('/');
+          } else {
+            router.push('/tell-us-about-yourself');
+          }
+        } catch (error: any) {
+          Alert.alert('Error', error.message);
+          console.log(error.message);
+        }
+      }
     }
   };
 

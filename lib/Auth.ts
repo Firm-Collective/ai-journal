@@ -71,7 +71,11 @@ export async function loginWithEmail(email: string, password: string) {
     };
   } else {
     // if success, return success message and data needed
-    return {success: true, message: 'Success signing in with user', userId: data.user.id};
+    return {
+      success: true,
+      message: 'Success signing in with user',
+      userId: data.user.id,
+    };
   }
 }
 
