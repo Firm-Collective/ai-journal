@@ -53,6 +53,13 @@ export default function TabLayout() {
             tabBarIcon: ({color}) => <TabBarIcon name="code" color={color} />,
           }}
         />
+        <Tabs.Screen
+          name="edit/[id]"
+          options={{
+            title: 'Edit Page',
+            tabBarIcon: ({color}) => <TabBarIcon name="code" color={color} />,
+          }}
+        />
       </Tabs>
     </JournalEntriesProvider>
   );

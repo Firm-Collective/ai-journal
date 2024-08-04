@@ -8,6 +8,7 @@ import {useFocusEffect} from 'expo-router';
 import {syncWithServer} from '@/lib/watermelon/sync';
 import {database} from '@/lib/watermelon/database';
 import {Post as PostFunctions} from '@/lib/watermelon/post';
+import {router} from 'expo-router';
 
 export default function HomeScreen() {
   const {isConnected} = useNet();
@@ -35,7 +36,7 @@ export default function HomeScreen() {
   };
 
   const handleEdit = (id: string) => {
-    console.log(id, 'has been edited...');
+    router.push(`/edit/${id}`);
   };
 
   useFocusEffect(

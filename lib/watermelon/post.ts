@@ -75,4 +75,17 @@ export class Post extends Model {
 
     return allPosts;
   }
+
+  // Method to get a post by ID
+  static async getPostById(
+    database: Database,
+    postId: string
+  ): Promise<Post | null> {
+    try {
+      return await database.get<Post>('journal_entry').find(postId);
+    } catch (error) {
+      console.error('Error fetching post by ID:', error);
+      return null;
+    }
+  }
 }
