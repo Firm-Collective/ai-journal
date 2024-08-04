@@ -42,6 +42,11 @@ export class Post extends Model {
   ): Promise<Post> {
     return await database.write(async () => {
       const post = await database.get<Post>('journal_entry').find(postId);
+
+      if (!post) {
+        throw new Error('Post not found.');
+      }
+
       await post.update(postRecord => {
         if (updateData.title !== undefined) {
           postRecord.title = updateData.title;
@@ -53,6 +58,7 @@ export class Post extends Model {
           postRecord.user = updateData.user;
         }
       });
+
       return post;
     });
   }

@@ -121,33 +121,45 @@ export async function syncWithServer(database: Database): Promise<void> {
       }
 
       if (changes.journal_entry.updated.length > 0) {
-        // Logic when there are updated posts
-        console.log('newly updated posts', changes.journal_entry.updated);
+        console.log('Newly updated posts:', changes.journal_entry.updated);
 
-        changes.journal_entry.updated.forEach(async element => {
-          const watermelon_id = element.id;
-          const title = element.title;
-          const text = element.text;
-          const user = element.user;
+        await Promise.all(
+          changes.journal_entry.updated.map(async element => {
+            const watermelon_id = element.id;
+            const title = element.title;
+            const text = element.text;
+            const user = element.user;
 
-          // update each post
-          const {error} = await supabase
-            .from('journal_entries')
-            .update({
-              watermelon_id: watermelon_id,
-              title: title,
-              text: text,
-              user_id: user,
-              updated_at: lastPulledAt,
-            })
-            .eq('watermelon_id', watermelon_id);
+            // FIXME: could either me a supabase error or
+            // a code error.
+            try {
+              const {data, error} = await supabase
+                .from('journal_entries')
+                .update({
+                  title: title,
+                  text: text,
+                  user_id: user,
+                  updated_at: lastPulledAt,
+                })
+                .eq('watermelon_id', watermelon_id);
 
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Successfully edited post', watermelon_id);
-          }
-        });
+              if (error) {
+                console.error(
+                  'Error updating post',
+                  watermelon_id,
+                  error.message || error
+                );
+              } else {
+                console.log('Successfully edited post', watermelon_id, data);
+              }
+            } catch (error) {
+              console.error(
+                'Error during update operation',
+                error.message || error
+              );
+            }
+          })
+        );
       }
 
       if (changes.journal_entry.deleted.length > 0) {

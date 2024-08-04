@@ -17,13 +17,14 @@ const TextEntryScreen = () => {
   const postId = typeof local.id === 'string' ? local.id : undefined;
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
-    // Define the async function inside useEffect
     const fetchPost = async () => {
       if (postId) {
         try {
           const fetchedPost = await Post.getPostById(database, postId);
+          setPost(fetchedPost);
           setTitle(fetchedPost?.title || '');
           setText(fetchedPost?.text || '');
         } catch (error) {
@@ -43,19 +44,36 @@ const TextEntryScreen = () => {
 
   const handleSubmit = async () => {
     try {
-      // TODO EDIT HERE
+      if (!postId) {
+        throw new Error('Post ID is required.');
+      }
 
-      // reset input values
+      if (!post) {
+        throw new Error('Post data is missing.');
+      }
+
+      // Update the post
+      const updatedPost = await Post.updatePost(database, postId, {
+        title: title, // Use title from state
+        text: text, // Use text from state
+      });
+
+      console.log('Post updated:', updatedPost);
+
+      // Reset input values
       setTitle('');
       setText('');
 
+      // Sync with server if connected
       if (isConnected) {
         await syncWithServer(database);
+        console.log('Synced with server.');
       }
     } catch (error) {
-      console.error('Error Updating post:', error);
+      console.error('Error updating post:', error);
     }
   };
+
   // Display loading, error, or the post content
   if (loading) {
     return <Text>Loading...</Text>;

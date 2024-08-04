@@ -37,7 +37,13 @@ export const JournalEntriesProvider = ({children}: {children: ReactNode}) => {
   const {isConnected} = useNet();
 
   const areEntriesEqual = (entry1: IJournalEntry, entry2: IJournalEntry) => {
-    return entry1.id === entry2.id;
+    return (
+      entry1.id === entry2.id &&
+      entry1.title === entry2.title &&
+      entry1.content === entry2.content &&
+      entry1.imagePath === entry2.imagePath &&
+      JSON.stringify(entry1.tags) === JSON.stringify(entry2.tags) // Convert tags arrays to JSON strings for comparison
+    );
   };
 
   /**
