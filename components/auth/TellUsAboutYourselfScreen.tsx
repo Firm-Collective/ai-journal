@@ -158,9 +158,8 @@ export default function TellUsAboutYourselfScreen() {
             </Text>
           </View>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, !isFormValid && styles.disabledButton]}
             onPress={handleContinue}
-            disabled={!isFormValid}
           >
             <Text style={styles.buttonText}>Continue</Text>
           </TouchableOpacity>
@@ -243,5 +242,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontFamily: 'Poppins',
+  },
+  disabledButton: {
+    backgroundColor: 'gray',
   },
 });

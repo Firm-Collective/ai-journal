@@ -55,14 +55,12 @@ export default function LoginScreen() {
     const result = await loginWithEmail(email, password);
     const userId = result.userId;
     if (userId) {
-      // router.push('/tell-us-about-yourself');
       try {
         const { data, error } = await supabase
           .from('users')
           .select('is_onboarding')
           .eq("id", userId)
           .single()
-        console.log(data);
         if (error) {
           console.error('Error fetching user data:', error);
           return;
