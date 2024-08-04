@@ -1,42 +1,74 @@
+import React, {useState, useEffect, useCallback} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {StyleSheet, FlatList, ImageBackground, Text} from 'react-native';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
 import {useNet} from '@/providers/NetworkProvider';
 import {useFocusEffect} from 'expo-router';
-import {useCallback} from 'react';
 import {syncWithServer} from '@/lib/watermelon/sync';
 import {database} from '@/lib/watermelon/database';
+import {Post as PostFunctions} from '@/lib/watermelon/post';
 
 export default function HomeScreen() {
-  const {type, isConnected} = useNet();
-  const {journalEntries, isLoading, refreshJournalEntries} =
-    useJournalEntries();
+  const {isConnected} = useNet();
+  const [isSyncing, setIsSyncing] = useState(false);
+  const {
+    journalEntries: initialJournalEntries,
+    isLoading,
+    refreshJournalEntries,
+  } = useJournalEntries();
+  const [journalEntries, setJournalEntries] = useState(initialJournalEntries);
+
+  useEffect(() => {
+    setJournalEntries(initialJournalEntries);
+  }, [initialJournalEntries]);
 
   const handleRefresh = () => {
     refreshJournalEntries();
   };
 
-  // Every single time we click on home page
-  // we check to see if there is wifi
-  // If yes
-  // - then we call the sync function
-  // if no wifi, then don't call the sync function
+  const handleDelete = async (id: string) => {
+    await PostFunctions.deletePost(database, id);
+    setJournalEntries((prevEntries = []) =>
+      prevEntries.filter(entry => entry.id !== id)
+    );
+  };
+
+  const handleEdit = (id: string) => {
+    console.log(id, 'has been edited...');
+  };
+
   useFocusEffect(
     useCallback(() => {
+      // makes sure there is no syncing concurrency issues
+      let isActive = true;
+
       const checkConnectionAndSync = async () => {
-        // handle refresh will occur every time
         handleRefresh();
-        if (isConnected) {
-          console.log('we are connected to wifi');
-          await syncWithServer(database);
+        if (isConnected && !isSyncing) {
+          setIsSyncing(true);
+          console.log('we are connected to wifi, syncing with database...');
+          try {
+            await syncWithServer(database);
+          } catch (error) {
+            console.error('Sync error:', error);
+          } finally {
+            if (isActive) {
+              setIsSyncing(false);
+            }
+          }
         } else {
-          console.log('we are not connected to wifi');
+          console.log('we are not connected to wifi or already syncing');
         }
       };
 
       checkConnectionAndSync();
-    }, [isConnected]) // Add isConnected to dependency array
+
+      return () => {
+        isActive = false;
+        setIsSyncing(false);
+      };
+    }, [isConnected, journalEntries])
   );
 
   return (
@@ -55,6 +87,8 @@ export default function HomeScreen() {
               title={item.title}
               content={item.content}
               tags={item.tags}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
             />
           )}
           style={styles.list}

@@ -7,11 +7,13 @@ import {syncWithServer} from '@/lib/watermelon/sync';
 import {Button} from '@rneui/themed';
 import {useAuth} from '@/providers/AuthProvider';
 import {logAllPosts} from '@/lib/watermelon/databaseUtils';
+import {useNet} from '@/providers/NetworkProvider';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
   const {session, loading} = useAuth();
+  const {isConnected} = useNet();
 
   const syncNow = async () => {
     await syncWithServer(database);
@@ -19,7 +21,7 @@ const TextEntryScreen = () => {
 
   const handleSubmit = async () => {
     try {
-      const newPost = await Post.createPost(database, {
+      await Post.createPost(database, {
         title,
         text,
         user: session?.user.id || 'unknown_user',
@@ -29,7 +31,9 @@ const TextEntryScreen = () => {
       setTitle('');
       setText('');
 
-      console.log('New post created', newPost);
+      if (isConnected) {
+        await syncWithServer(database);
+      }
     } catch (error) {
       console.error('Error creating post:', error);
     }
@@ -62,12 +66,6 @@ const TextEntryScreen = () => {
         title="See all Posts in Database"
         onPress={() => {
           logAllPosts(database);
-        }}
-      />
-      <Button
-        title="Delete ID Post"
-        onPress={() => {
-          Post.deletePost(database, 'fu5ginbcH5F7GZpA');
         }}
       />
     </View>

@@ -105,7 +105,7 @@ export async function syncWithServer(database: Database): Promise<void> {
             watermelon_id: watermelon_id,
             title: title,
             text: text,
-            user: user,
+            user_id: user,
             created_at: created_at,
             updated_at: lastPulledAt,
           });
@@ -137,27 +137,40 @@ export async function syncWithServer(database: Database): Promise<void> {
               watermelon_id: watermelon_id,
               title: title,
               text: text,
-              user: user,
+              user_id: user,
               updated_at: lastPulledAt,
             })
             .eq('watermelon_id', watermelon_id);
+
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Successfully edited post', watermelon_id);
+          }
         });
       }
 
       if (changes.journal_entry.deleted.length > 0) {
         // Logic when there are deleted posts
-        console.log('newley deleted posts', changes.journal_entry.deleted);
-        //
-        changes.journal_entry.deleted.forEach(async id => {
+        console.log('newly deleted posts', changes.journal_entry.deleted);
+
+        try {
           const {error} = await supabase
             .from('journal_entry')
             .delete()
-            .eq('watermelon_id', id);
+            .in('watermelon_id', changes.journal_entry.deleted);
 
-          if (error) {
-            console.log(error);
+          if (!error) {
+            console.log(
+              'Successfully deleted posts from supabase',
+              changes.journal_entry.deleted
+            );
+          } else {
+            console.log('Error deleting posts from supabase', error);
           }
-        });
+        } catch (error) {
+          console.log('Exception while deleting posts from supabase', error);
+        }
       }
     },
   });
