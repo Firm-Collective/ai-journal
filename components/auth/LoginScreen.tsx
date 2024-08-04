@@ -52,7 +52,8 @@ export default function LoginScreen() {
     }
 
 
-    const userId = await loginWithEmail(email, password);
+    const result = await loginWithEmail(email, password);
+    const userId = result.userId;
     if (userId) {
       // router.push('/tell-us-about-yourself');
       try {
