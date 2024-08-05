@@ -20,11 +20,16 @@ const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 const SCROLL_DESTINATION = -SCREEN_HEIGHT / 4;
 const CLOSED_POSITION = SCREEN_HEIGHT / 5;
 
+export interface PopupProps {
+  children?: React.ReactNode;
+}
+
 export interface PopupRef {
   scrollTo: (destination: number) => void;
 }
 
-const Popup = forwardRef<PopupRef>((props, ref) => {
+const Popup = forwardRef<PopupRef, PopupProps>((props, ref) => {
+  const {children} = props;
   const translateY = useSharedValue(CLOSED_POSITION);
   const overlayOpacity = useSharedValue(0);
   const context = useSharedValue({y: 0});
@@ -41,6 +46,7 @@ const Popup = forwardRef<PopupRef>((props, ref) => {
   const overlayStyle = useAnimatedStyle(() => {
     return {
       opacity: overlayOpacity.value,
+      pointerEvents: overlayOpacity.value > 0 ? 'auto' : 'none',
     };
   });
 
@@ -79,7 +85,8 @@ const Popup = forwardRef<PopupRef>((props, ref) => {
       </GestureDetector>
       <Animated.View style={[styles.container, reanimatedBottomStyle]}>
         <View style={styles.line} />
-        <View style={styles.buttons_container}>
+        {children}
+        {/* <View style={styles.buttons_container}>
           <TouchableOpacity
             style={[styles.button, styles.button_border]}
             onPress={handleEdit}
@@ -107,7 +114,7 @@ const Popup = forwardRef<PopupRef>((props, ref) => {
             />
             <MonoText style={{color: '#F34848'}}>Delete</MonoText>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </Animated.View>
     </>
   );
@@ -137,21 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: 'center',
     marginVertical: 10,
-  },
-  buttons_container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  button: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    padding: 12,
-    gap: 10,
-  },
-  button_border: {
-    borderBottomWidth: 1.5,
-    borderBlockColor: '#ECEAEA',
-  },
+  }
 });
 
 export {Popup, SCROLL_DESTINATION, CLOSED_POSITION};

@@ -23,96 +23,39 @@ export default function Post({
   imagePath,
   content,
   tags,
-  onDelete,
-  onEdit,
+  onOpen,
 }: IJournalEntry & {
-  onDelete: (id: string) => void;
-  onEdit: (id: string) => void;
+  onOpen: () => void;
 }) {
-  const [menuVisible, setMenuVisible] = useState(false);
-  const dropdownOpacity = useRef(new Animated.Value(0)).current;
-
-  const toggleMenu = useCallback(() => {
-    setMenuVisible(prev => !prev);
-    Animated.timing(dropdownOpacity, {
-      toValue: menuVisible ? 0 : 1,
-      duration: 100,
-      useNativeDriver: true,
-    }).start();
-  }, [menuVisible, dropdownOpacity]);
-
-  const closeMenu = useCallback(() => {
-    if (menuVisible) {
-      toggleMenu();
-    }
-  }, [menuVisible, toggleMenu]);
-
-  const handlePressOutside = useCallback(
-    event => {
-      if (menuVisible) {
-        closeMenu();
-      }
-
-      // TODO: view the post that was created
-    },
-    [menuVisible, closeMenu]
-  );
-
   return (
-    <Pressable onPress={handlePressOutside}>
-      <Card containerStyle={styles.card}>
-        <View style={styles.cardTop}>
-          <MonoText style={styles.date}>{dateToStringConverter(date)}</MonoText>
-          <View>
-            <TouchableOpacity onPress={toggleMenu}>
-              <Image
-                resizeMode="contain"
-                source={require('../../../assets/images/home-screen/more-icon.png')}
-              />
-            </TouchableOpacity>
-            {menuVisible && (
-              <Pressable style={[styles.dropdown]}>
-                <Animated.View style={[{opacity: dropdownOpacity}]}>
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      closeMenu();
-                      onEdit(id);
-                    }}
-                  >
-                    <Text style={styles.dropdownText}>Edit</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      closeMenu();
-                      onDelete(id);
-                    }}
-                  >
-                    <Text style={styles.dropdownText}>Delete</Text>
-                  </TouchableOpacity>
-                </Animated.View>
-              </Pressable>
-            )}
-          </View>
+    <Card containerStyle={styles.card}>
+      <View style={styles.cardTop}>
+        <MonoText style={styles.date}>{dateToStringConverter(date)}</MonoText>
+        <View>
+          <TouchableOpacity onPress={onOpen}>
+            <Image
+              resizeMode="contain"
+              source={require('../../../assets/images/home-screen/more-icon.png')}
+            />
+          </TouchableOpacity>
         </View>
-        <TextSemiBold style={styles.title}>{title}</TextSemiBold>
-        <View style={styles.contentContainer}>
-          <Image
-            style={styles.singleImage}
-            source={require('../../../assets/images/mockup-post-img.jpeg')}
-          />
-          <MonoText style={styles.content}>
-            {content.substring(0, CONTENT_LENGTH)}
-          </MonoText>
-        </View>
-        <View style={styles.tagsContainer}>
-          {tags.map((tag, i) => (
-            <Tag key={i} name={tag} />
-          ))}
-        </View>
-      </Card>
-    </Pressable>
+      </View>
+      <TextSemiBold style={styles.title}>{title}</TextSemiBold>
+      <View style={styles.contentContainer}>
+        <Image
+          style={styles.singleImage}
+          source={require('../../../assets/images/mockup-post-img.jpeg')}
+        />
+        <MonoText style={styles.content}>
+          {content.substring(0, CONTENT_LENGTH)}
+        </MonoText>
+      </View>
+      <View style={styles.tagsContainer}>
+        {tags.map((tag, i) => (
+          <Tag key={i} name={tag} />
+        ))}
+      </View>
+    </Card>
   );
 }
 

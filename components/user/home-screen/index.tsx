@@ -1,6 +1,13 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {StyleSheet, FlatList, ImageBackground, Text} from 'react-native';
+import {
+  StyleSheet,
+  FlatList,
+  ImageBackground,
+  TouchableOpacity,
+  Image,
+  View,
+} from 'react-native';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
 import {useNet} from '@/providers/NetworkProvider';
@@ -9,6 +16,8 @@ import {syncWithServer} from '@/lib/watermelon/sync';
 import {database} from '@/lib/watermelon/database';
 import {Post as PostFunctions} from '@/lib/watermelon/post';
 import {router} from 'expo-router';
+import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
+import {MonoText} from '@/components/StyledText';
 
 export default function HomeScreen() {
   const {isConnected} = useNet();
@@ -19,6 +28,7 @@ export default function HomeScreen() {
     refreshJournalEntries,
   } = useJournalEntries();
   const [journalEntries, setJournalEntries] = useState(initialJournalEntries);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   useEffect(() => {
     setJournalEntries(initialJournalEntries);
@@ -72,6 +82,15 @@ export default function HomeScreen() {
     }, [isConnected, journalEntries])
   );
 
+  const popupRef = useRef<PopupRef>(null);
+
+  const openPopupMenu = (id: string) => {
+    if (popupRef.current) {
+      popupRef.current.scrollTo(SCROLL_DESTINATION);
+      setSelectedPostId(id);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
       <ImageBackground
@@ -88,8 +107,7 @@ export default function HomeScreen() {
               title={item.title}
               content={item.content}
               tags={item.tags}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
+              onOpen={() => openPopupMenu(item.id)}
             />
           )}
           style={styles.list}
@@ -97,6 +115,37 @@ export default function HomeScreen() {
           refreshing={isLoading}
           onRefresh={handleRefresh}
         />
+        <Popup ref={popupRef}>
+          <View style={styles.buttons_container}>
+            <TouchableOpacity
+              style={[styles.button, styles.button_border]}
+              onPress={() => handleEdit(selectedPostId!)}
+            >
+              <Image
+                source={require('../../../assets/images/home-screen/Pencil.png')}
+              />
+              <MonoText>Edit</MonoText>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.button_border]}>
+              <Image
+                source={require('../../../assets/images/home-screen/Bookmark.png')}
+              />
+              <MonoText>Mark As Favourite</MonoText>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.button_border]}>
+              <Image
+                source={require('../../../assets/images/home-screen/Price Tag.png')}
+              />
+              <MonoText>Edit Tag</MonoText>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+              <Image
+                source={require('../../../assets/images/home-screen/Delete.png')}
+              />
+              <MonoText style={{color: '#F34848'}}>Delete</MonoText>
+            </TouchableOpacity>
+          </View>
+        </Popup>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -116,5 +165,20 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+  },
+
+  buttons_container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  button: {
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    padding: 12,
+    gap: 10,
+  },
+  button_border: {
+    borderBottomWidth: 1.5,
+    borderBlockColor: '#ECEAEA',
   },
 });
