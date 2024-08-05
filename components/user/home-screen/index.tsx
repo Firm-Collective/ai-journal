@@ -38,15 +38,21 @@ export default function HomeScreen() {
     refreshJournalEntries();
   };
 
+  const handleEdit = (id: string) => {
+    router.push(`/edit/${id}`);
+    if (popupRef.current) {
+      popupRef.current.scrollTo(CLOSED_POSITION);
+    }
+  };
+
   const handleDelete = async (id: string) => {
     await PostFunctions.deletePost(database, id);
     setJournalEntries((prevEntries = []) =>
       prevEntries.filter(entry => entry.id !== id)
     );
-  };
-
-  const handleEdit = (id: string) => {
-    router.push(`/edit/${id}`);
+    if (popupRef.current) {
+      popupRef.current.scrollTo(CLOSED_POSITION);
+    }
   };
 
   useFocusEffect(
@@ -115,11 +121,17 @@ export default function HomeScreen() {
           refreshing={isLoading}
           onRefresh={handleRefresh}
         />
+
+        {/* Popup menu to edit, delete selected post */}
         <Popup ref={popupRef}>
           <View style={styles.buttons_container}>
             <TouchableOpacity
               style={[styles.button, styles.button_border]}
-              onPress={() => handleEdit(selectedPostId!)}
+              onPress={() => {
+                if (selectedPostId) {
+                  handleEdit(selectedPostId);
+                }
+              }}
             >
               <Image
                 source={require('../../../assets/images/home-screen/Pencil.png')}
@@ -138,7 +150,14 @@ export default function HomeScreen() {
               />
               <MonoText>Edit Tag</MonoText>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                if (selectedPostId) {
+                  handleDelete(selectedPostId);
+                }
+              }}
+            >
               <Image
                 source={require('../../../assets/images/home-screen/Delete.png')}
               />

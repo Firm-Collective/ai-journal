@@ -37,7 +37,7 @@ const Popup = forwardRef<PopupRef, PopupProps>((props, ref) => {
   /**
    * Animated style for the bottom sheet
    */
-  const reanimatedBottomStyle = useAnimatedStyle(e => {
+  const reanimatedBottomStyle = useAnimatedStyle(() => {
     return {
       transform: [{translateY: translateY.value}],
     };
