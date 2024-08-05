@@ -14,8 +14,6 @@ export default function Test() {
   const handleScrollTo = () => {
     if (popupRef.current) {
       popupRef.current.scrollTo(SCROLL_DESTINATION); // Example destination
-    } else {
-      console.log('not exist');
     }
   };
 
