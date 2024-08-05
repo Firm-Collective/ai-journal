@@ -1,25 +1,16 @@
 import React, {useState} from 'react';
-import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
+import {View, TextInput, StyleSheet, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import {Post} from '@/lib/watermelon/post';
 import {database} from '@/lib/watermelon/database';
-import {syncWithServer} from '@/lib/watermelon/sync';
-import {Button} from '@rneui/themed';
 import {useAuth} from '@/providers/AuthProvider';
-import {logAllPosts} from '@/lib/watermelon/databaseUtils';
-import {useNet} from '@/providers/NetworkProvider';
 import {useRouter} from 'expo-router';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
-  const {session, loading} = useAuth();
-  const {isConnected} = useNet();
+  const {session} = useAuth();
   const router = useRouter();
-
-  const syncNow = async () => {
-    await syncWithServer(database);
-  };
 
   const handleSubmit = async () => {
     try {

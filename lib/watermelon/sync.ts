@@ -112,7 +112,6 @@ export async function syncWithServer(database: Database): Promise<void> {
         });
 
         const {error} = await supabase.from('journal_entry').insert(entries);
-        // TODO: do something when there is an error
         if (!error) {
           console.log('successfully pushed created posts to supabase');
         } else {
