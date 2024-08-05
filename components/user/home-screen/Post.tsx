@@ -42,10 +42,12 @@ export default function Post({
       </View>
       <TextSemiBold style={styles.title}>{title}</TextSemiBold>
       <View style={styles.contentContainer}>
+        {/*
         <Image
           style={styles.singleImage}
           source={require('../../../assets/images/mockup-post-img.jpeg')}
         />
+        */}
         <MonoText style={styles.content}>
           {content.substring(0, CONTENT_LENGTH)}
         </MonoText>

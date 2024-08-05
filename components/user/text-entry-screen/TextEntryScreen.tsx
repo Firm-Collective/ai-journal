@@ -8,12 +8,14 @@ import {Button} from '@rneui/themed';
 import {useAuth} from '@/providers/AuthProvider';
 import {logAllPosts} from '@/lib/watermelon/databaseUtils';
 import {useNet} from '@/providers/NetworkProvider';
+import {useRouter} from 'expo-router';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
   const {session, loading} = useAuth();
   const {isConnected} = useNet();
+  const router = useRouter();
 
   const syncNow = async () => {
     await syncWithServer(database);
@@ -31,9 +33,8 @@ const TextEntryScreen = () => {
       setTitle('');
       setText('');
 
-      if (isConnected) {
-        await syncWithServer(database);
-      }
+      // re-route to home page after successful post creation
+      router.push('/');
     } catch (error) {
       console.error('Error creating post:', error);
     }
@@ -61,13 +62,15 @@ const TextEntryScreen = () => {
         placeholderTextColor="#696969"
         multiline
       />
-      <Button title="Sync Now" onPress={syncNow} />
+
+      {/* Button to see all posts within local storage
       <Button
         title="See all Posts in Database"
         onPress={() => {
           logAllPosts(database);
         }}
       />
+      */}
     </View>
   );
 };

@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import {Post} from '@/lib/watermelon/post';
 import {database} from '@/lib/watermelon/database';
 import {syncWithServer} from '@/lib/watermelon/sync';
-import {useAuth} from '@/providers/AuthProvider';
 import {useNet} from '@/providers/NetworkProvider';
-import {useLocalSearchParams} from 'expo-router';
+import {useLocalSearchParams, useFocusEffect} from 'expo-router';
+import {useRouter} from 'expo-router';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
@@ -19,28 +19,31 @@ const TextEntryScreen = () => {
   const [error, setError] = useState<string | null>(null);
   const [post, setPost] = useState<Post | null>(null);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      if (postId) {
-        try {
-          const fetchedPost = await Post.getPostById(database, postId);
-          setPost(fetchedPost);
-          setTitle(fetchedPost?.title || '');
-          setText(fetchedPost?.text || '');
-        } catch (error) {
-          console.error('Error fetching post by ID:', error);
-          setError('Failed to fetch post');
-        } finally {
+  const router = useRouter();
+  // FIXME: Refactor this later
+  useFocusEffect(
+    useCallback(() => {
+      const fetchPost = async () => {
+        if (postId) {
+          try {
+            const fetchedPost = await Post.getPostById(database, postId);
+            setPost(fetchedPost);
+            setTitle(fetchedPost?.title || '');
+            setText(fetchedPost?.text || '');
+          } catch (error) {
+            console.error('Error fetching post by ID:', error);
+            setError('Failed to fetch post');
+          } finally {
+            setLoading(false);
+          }
+        } else {
+          setError('Invalid post ID');
           setLoading(false);
         }
-      } else {
-        setError('Invalid post ID');
-        setLoading(false);
-      }
-    };
-
-    fetchPost();
-  }, [postId]);
+      };
+      fetchPost();
+    }, [postId])
+  );
 
   const handleSubmit = async () => {
     try {
@@ -64,11 +67,8 @@ const TextEntryScreen = () => {
       setTitle('');
       setText('');
 
-      // Sync with server if connected
-      if (isConnected) {
-        await syncWithServer(database);
-        console.log('Synced with server.');
-      }
+      // re-route to home page after successful edit
+      router.push('/');
     } catch (error) {
       console.error('Error updating post:', error);
     }
@@ -77,10 +77,6 @@ const TextEntryScreen = () => {
   // Display loading, error, or the post content
   if (loading) {
     return <Text>Loading...</Text>;
-  }
-
-  if (error) {
-    return <Text>{error}</Text>;
   }
 
   return (

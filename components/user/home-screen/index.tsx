@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   View,
+  Button,
 } from 'react-native';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
@@ -66,6 +67,7 @@ export default function HomeScreen() {
           setIsSyncing(true);
           console.log('we are connected to wifi, syncing with database...');
           try {
+            console.log('SYNC RUNNING');
             await syncWithServer(database);
           } catch (error) {
             console.error('Sync error:', error);
@@ -83,7 +85,6 @@ export default function HomeScreen() {
 
       return () => {
         isActive = false;
-        setIsSyncing(false);
       };
     }, [isConnected, journalEntries])
   );
@@ -165,6 +166,10 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
         </Popup>
+        <Button
+          title="Create"
+          onPress={() => router.push('/text-entry')}
+        ></Button>
       </ImageBackground>
     </SafeAreaView>
   );

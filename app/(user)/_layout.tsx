@@ -1,5 +1,5 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {Redirect, Tabs} from 'expo-router';
+import {Redirect, Tabs, Stack} from 'expo-router';
 
 import Colors from '@/constants/Colors';
 import {useClientOnlyValue} from '@/components/useClientOnlyValue';
@@ -24,43 +24,12 @@ export default function TabLayout() {
 
   return (
     <JournalEntriesProvider>
-      <Tabs
-        screenOptions={{
-          tabBarActiveTintColor: Colors['light'].tint,
-          // Disable the static render of the header on web
-          // to prevent a hydration error in React Navigation v6.
-          headerShown: useClientOnlyValue(false, true),
-        }}
-      >
-        <Tabs.Screen
-          name="home/index"
-          options={{
-            title: 'Home',
-            tabBarIcon: ({color}) => <TabBarIcon name="code" color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="text-entry"
-          options={{
-            title: 'Text Entry',
-            tabBarIcon: ({color}) => <TabBarIcon name="code" color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="settings"
-          options={{
-            title: 'Settings',
-            tabBarIcon: ({color}) => <TabBarIcon name="code" color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="edit/[id]"
-          options={{
-            title: 'Edit Page',
-            tabBarIcon: ({color}) => <TabBarIcon name="code" color={color} />,
-          }}
-        />
-      </Tabs>
+      <Stack>
+        <Stack.Screen name="home/index" options={{headerShown: true}} />
+        <Stack.Screen name="text-entry" options={{headerShown: true}} />
+        <Stack.Screen name="edit/[id]" options={{headerShown: true}} />
+        <Stack.Screen name="settings" options={{headerShown: true}} />
+      </Stack>
     </JournalEntriesProvider>
   );
 }

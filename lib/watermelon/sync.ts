@@ -122,41 +122,29 @@ export async function syncWithServer(database: Database): Promise<void> {
 
       if (changes.journal_entry.updated.length > 0) {
         console.log('Newly updated posts:', changes.journal_entry.updated);
-
         await Promise.all(
           changes.journal_entry.updated.map(async element => {
             const watermelon_id = element.id;
             const title = element.title;
             const text = element.text;
-            const user = element.user;
 
-            // FIXME: could either me a supabase error or
-            // a code error.
             try {
               const {data, error} = await supabase
-                .from('journal_entries')
+                .from('journal_entry')
                 .update({
                   title: title,
                   text: text,
-                  user_id: user,
-                  updated_at: lastPulledAt,
+                  updated_at: lastPulledAt, // Use current timestamp
                 })
                 .eq('watermelon_id', watermelon_id);
 
               if (error) {
-                console.error(
-                  'Error updating post',
-                  watermelon_id,
-                  error.message || error
-                );
+                console.error('Error updating post', watermelon_id, error);
               } else {
                 console.log('Successfully edited post', watermelon_id, data);
               }
             } catch (error) {
-              console.error(
-                'Error during update operation',
-                error.message || error
-              );
+              console.error('Error during update operation', error);
             }
           })
         );
