@@ -164,6 +164,14 @@ export default function HomeScreen() {
               />
               <MonoText style={{color: '#F34848'}}>Delete</MonoText>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.button_border]}
+              onPress={() => {
+                router.push('/settings');
+              }}
+            >
+              <MonoText>Settings (WIP)</MonoText>
+            </TouchableOpacity>
           </View>
         </Popup>
         <Button
