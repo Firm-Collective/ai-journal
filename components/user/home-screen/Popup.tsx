@@ -80,41 +80,11 @@ const Popup = forwardRef<PopupRef, PopupProps>((props, ref) => {
       <GestureDetector gesture={tap}>
         <Animated.View
           style={[styles.overlay, overlayStyle]}
-          pointerEvents="auto"
         />
       </GestureDetector>
       <Animated.View style={[styles.container, reanimatedBottomStyle]}>
         <View style={styles.line} />
         {children}
-        {/* <View style={styles.buttons_container}>
-          <TouchableOpacity
-            style={[styles.button, styles.button_border]}
-            onPress={handleEdit}
-          >
-            <Image
-              source={require('../../../assets/images/home-screen/Pencil.png')}
-            />
-            <MonoText>Edit</MonoText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.button_border]}>
-            <Image
-              source={require('../../../assets/images/home-screen/Bookmark.png')}
-            />
-            <MonoText>Mark As Favourite</MonoText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.button_border]}>
-            <Image
-              source={require('../../../assets/images/home-screen/Price Tag.png')}
-            />
-            <MonoText>Edit Tag</MonoText>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Image
-              source={require('../../../assets/images/home-screen/Delete.png')}
-            />
-            <MonoText style={{color: '#F34848'}}>Delete</MonoText>
-          </TouchableOpacity>
-        </View> */}
       </Animated.View>
     </>
   );
