@@ -54,13 +54,13 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const router = useRouter();
-
   // this monitors for incoming urls and sets the session if it's an auth url
   const url = Linking.useURL();
   if (url) {
     console.log('Url is ', url);
-    createSessionFromUrl(url);
+    if (url.includes('access_token')) {
+      createSessionFromUrl(url);
+    }
   }
 
   return (

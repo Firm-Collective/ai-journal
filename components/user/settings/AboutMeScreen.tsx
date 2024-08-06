@@ -14,9 +14,16 @@ import {useState} from 'react';
 import EditModal from '@/components/user/settings/DummyEditModal';
 import {supabase} from '@/lib/supabase';
 import useFetchUser from '@/lib/hooks/useFetchUser';
+import {useAuth} from '@/providers/AuthProvider';
 
 export default function AboutMeScreen() {
-  const [userFullName, setUserFullName] = useState('John Doe');
+  const userData = useAuth();
+  let userFullName = '';
+  if (userData.session) {
+    const {first_name, last_name} = userData.session.user.user_metadata;
+    userFullName = first_name + ' ' + last_name;
+  }
+  const [userFullNameState, setUserFullName] = useState(userFullName);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalInitialValue, setModalInitialValue] = useState('');
@@ -26,7 +33,7 @@ export default function AboutMeScreen() {
   const userAffiliations = ['Bethel', 'BSSM', 'Firm'];
   const userInterests = ['Music', 'Sports', 'Concerts'];
 
-  const name = <Text>{userFullName}</Text>;
+  const name = <Text>{userFullNameState}</Text>;
   const about = (
     <Text>
       {'I am a devoted Christian who finds great joy and purpose through my faith. My' +

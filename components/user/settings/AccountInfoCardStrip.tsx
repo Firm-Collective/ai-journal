@@ -21,6 +21,9 @@ export default function AccountInfoCardStrip({
   const cardWidth = 0.9 * width;
 
   return (
+    // if userProperty is 'Password', then toLocation is 'ChangePassword'
+    // toDo: implement the above logic
+
     <Pressable
       onPress={() => {
         router.push(toLocation);

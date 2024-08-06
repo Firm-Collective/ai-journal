@@ -113,7 +113,7 @@ export const createSessionFromUrl = async (
 
   if (!access_token) {
     console.log('No acc token');
-    throw new Error('No access token');
+    // throw new Error('No access token');
   }
 
   const {data, error} = await supabase.auth.setSession({
