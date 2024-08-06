@@ -1,4 +1,3 @@
-import React from 'react';
 import {Image, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Card} from '@rneui/themed';
 import {MonoText, TextSemiBold} from '@/components/StyledText';
@@ -9,38 +8,45 @@ import {dateToStringConverter} from '@/lib/util';
 const CONTENT_LENGTH = 200;
 
 export default function Post({
+  id,
   date,
   title,
   imagePath,
   content,
   tags,
-}: IJournalEntry) {
+  onOpen,
+}: IJournalEntry & {
+  onOpen: () => void;
+}) {
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.cardTop}>
         <MonoText style={styles.date}>{dateToStringConverter(date)}</MonoText>
-        <TouchableOpacity>
-          <Image
-            resizeMode="contain"
-            source={require('../../../assets/images/home-screen/more-icon.png')}
-          />
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity onPress={onOpen}>
+            <Image
+              resizeMode="contain"
+              source={require('../../../assets/images/home-screen/more-icon.png')}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <TextSemiBold style={styles.title}>{title}</TextSemiBold>
       <View style={styles.contentContainer}>
+        {/*
         <Image
           style={styles.singleImage}
           source={require('../../../assets/images/mockup-post-img.jpeg')}
         />
-        {/* multiple line text */}
+        */}
         <MonoText style={styles.content}>
           {content.substring(0, CONTENT_LENGTH)}
         </MonoText>
       </View>
       <View style={styles.tagsContainer}>
-        {tags.map((tag, i) => {
-          return <Tag key={i} name={tag} />;
-        })}
+        {tags.map((tag, i) => (
+          <Tag key={i} name={tag} />
+        ))}
       </View>
     </Card>
   );
@@ -98,5 +104,30 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     gap: 5,
+  },
+  dropdown: {
+    position: 'absolute',
+    right: 0,
+    top: 25, // Adjust this value to position the dropdown correctly
+    backgroundColor: 'white',
+    borderRadius: 4,
+    padding: 5,
+    minWidth: 100,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 100, // Ensure the dropdown appears above other elements
+  },
+  dropdownItem: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  dropdownText: {
+    fontSize: 14,
   },
 });

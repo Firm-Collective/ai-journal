@@ -14,22 +14,9 @@
     },
     "ios": {
       "supportsTablet": true,
-      "infoPlist": {
-        "SKAdNetworkItems": [
-          {
-            "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
-          },
-          {
-            "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
-          }
-        ]
-      },
-      "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
+      "associatedDomains": ["applinks:firmcollective.org"]
     },
     "android": {
-      "permissions": [
-        "android.permission.INTERNET"
-      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -59,6 +46,21 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "extraPods": [
+              {
+                "name": "simdjson",
+                "configurations": ["Debug", "Release"],
+                "path": "../node_modules/@nozbe/simdjson",
+                "modular_headers": true
+              }
+            ]
+          }
+        }
+      ],
       "expo-router",
       [
         "expo-secure-store",
@@ -66,14 +68,11 @@
           "faceIDPermission": "Please allow One Voice Echo to access your Face ID biometric data for logging in."
         }
       ],
-      [
-        "@react-native-google-signin/google-signin",
-        {
-          "iosUrlScheme": "com.googleusercontent.apps.64478294171-ehjcv2i43egrjdcggpm3n4c0a7l5jkk9"
-        }
-      ]
+      "expo-build-properties"
     ],
-    "experiments": {},
+    "experiments": {
+      "typedRoutes": true
+    },
     "extra": {
       "router": {
         "origin": false
@@ -82,12 +81,10 @@
         "projectId": "b6865e23-e26f-40d9-8b77-d42d219c18c7"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/b6865e23-e26f-40d9-8b77-d42d219c18c7"
     },
-    "jsEngine": "hermes"
+    "owner": "one-voice-journal"
   }
 }

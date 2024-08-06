@@ -8,10 +8,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import 'react-native-reanimated';
 import AuthProvider from '@/providers/AuthProvider';
+import NetworkProvider from '@/providers/NetworkProvider';
 import * as Linking from 'expo-linking';
 import {createSessionFromUrl} from '@/lib/Auth';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {supabase} from '@/lib/supabase';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -69,17 +69,19 @@ function RootLayoutNav() {
         translucent={true}
         barStyle="dark-content"
       />
-      <GestureHandlerRootView>
-        <SafeAreaProvider>
+      <SafeAreaProvider>
+        <NetworkProvider>
           <AuthProvider>
-            <Stack>
-              <Stack.Screen name="index" options={{headerShown: false}} />
-              <Stack.Screen name="(auth)" options={{headerShown: false}} />
-              <Stack.Screen name="(user)" options={{headerShown: false}} />
-            </Stack>
+            <GestureHandlerRootView>
+              <Stack>
+                <Stack.Screen name="index" options={{headerShown: false}} />
+                <Stack.Screen name="(auth)" options={{headerShown: false}} />
+                <Stack.Screen name="(user)" options={{headerShown: false}} />
+              </Stack>
+            </GestureHandlerRootView>
           </AuthProvider>
-        </SafeAreaProvider>
-      </GestureHandlerRootView>
+        </NetworkProvider>
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }

@@ -1,43 +1,33 @@
 import React, {useState} from 'react';
-import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
-import {supabase} from '@/lib/supabase';
-import useFetchUser from '@/lib/hooks/useFetchUser';
+import {View, TextInput, StyleSheet, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native';
-import {useJournalEntries} from '@/providers/JournalEntriesProvider';
+import {Post} from '@/lib/watermelon/post';
+import {database} from '@/lib/watermelon/database';
+import {useAuth} from '@/providers/AuthProvider';
+import {useRouter} from 'expo-router';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
-  const user = useFetchUser();
-  const {refreshJournalEntries} = useJournalEntries();
+  const {session} = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async () => {
-    if (!user) {
-      Alert.alert('Error', 'User not found');
-      return;
-    }
     try {
-      const {data, error} = await supabase
-        .from('journal_entry')
-        .insert([
-          {
-            title: title,
-            text: text,
-            user: (user as any).id,
-          },
-        ])
-        .select('id');
-      if (error) {
-        throw error;
-      }
-      setText('');
+      await Post.createPost(database, {
+        title,
+        text,
+        user: session?.user.id || 'unknown_user',
+      });
+
+      // reset input values
       setTitle('');
-      Alert.alert('Success', 'Entry submitted successfully');
+      setText('');
+
+      // re-route to home page after successful post creation
+      router.push('/');
     } catch (error) {
-      console.error('Error submitting entry:', error);
-      Alert.alert('Error', 'Failed to submit entry');
-    } finally {
-      refreshJournalEntries();
+      console.error('Error creating post:', error);
     }
   };
 
@@ -63,6 +53,15 @@ const TextEntryScreen = () => {
         placeholderTextColor="#696969"
         multiline
       />
+
+      {/* Button to see all posts within local storage
+      <Button
+        title="See all Posts in Database"
+        onPress={() => {
+          logAllPosts(database);
+        }}
+      />
+      */}
     </View>
   );
 };
