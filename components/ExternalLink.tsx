@@ -15,6 +15,7 @@ export function ExternalLink(
         if (Platform.OS !== 'web') {
           // Prevent the default behavior of linking to the default browser on native.
           e.preventDefault();
+          console.log("CALLED HERE!!!");
           // Open the link in an in-app browser.
           WebBrowser.openBrowserAsync(props.href as string);
         }

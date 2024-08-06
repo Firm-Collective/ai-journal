@@ -51,17 +51,34 @@ function RootLayoutNav() {
   const router = useRouter();
 
   useEffect(() => {
+    // console.log('GOT HERE 123');
     const handleDeepLink = (event: {url: string}) => {
+      console.log("GOT HERE");
+      console.log('Deep link received:', event.url);
       const url = new URL(event.url);
       const path = url.pathname.slice(1);
+      // const path2 = url.pathname.slice()
 
-      if (path === 'login') {
+      console.log('Parsed path:', path); // Log parsed path
+      
+      if (path === '--/reset-pass') {
+        console.log("CALLED HERE");
+        const queryParams = new URLSearchParams(url.search);
+        const accessToken = queryParams.get('access_token');
+        const refreshToken = queryParams.get('refresh_token');
+        console.log("access");
+        console.log(accessToken);
+        console.log("refresh");
+        console.log(refreshToken);
+        router.push('/(auth)/reset-pass?access_token=' + encodeURIComponent(accessToken) + "&refresh_token=" + encodeURIComponent(refreshToken));
+      } else if (path === 'login') {
         router.push('/login');
       }
     };
 
     // Handle incoming url
     Linking.getInitialURL().then(url => {
+      console.log("Called Here: " + url);
       if (url) {
         handleDeepLink({url});
       }

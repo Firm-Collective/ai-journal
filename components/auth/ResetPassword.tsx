@@ -1,9 +1,10 @@
 // app/(auth)/reset-password.tsx
+import { FontAwesome } from '@expo/vector-icons';
 import React, {useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
-import {supabase} from '/Users/jbeaudry/Desktop/Develop For Good/ai-journal/lib/supabase'; // Adjust the path if needed
+import {View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, Image} from 'react-native';
+import {supabase} from '/Users/jbeaudry/Desktop/Develop_For_Good/ai-journal/lib/supabase'; // Adjust the path if needed
 
-export default function ForgotPasswordScreen () {
+export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
 
   const handleResetPassword = async () => {
@@ -12,9 +13,13 @@ export default function ForgotPasswordScreen () {
       Alert.alert('Error', 'Please enter your email address.');
       return;
     }
-
+    console.log('HERE IS THE EMAIL SENT');
+    console.log(email);
     // Call Supabase to send the password reset email
-    const {error} = await supabase.auth.resetPasswordForEmail(email);
+    const {data, error} = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://jb2700.github.io/Dev_for_good/',
+    });
+    console.log(data);
 
     if (error) {
       // Handle error
@@ -27,41 +32,139 @@ export default function ForgotPasswordScreen () {
       );
     }
   };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Reset Password</Text>
+      <View style={styles.header}>
+        <Text style={styles.backArrow}>{'<'} Back</Text>
+      </View>
+      <Image
+        source={require('/Users/jbeaudry/Desktop/Develop_For_Good/ai-journal/assets/OneVoiceLogo.png')}
+        style={styles.logo}
+      />
+      <Text style={styles.title}>Password Reset</Text>
+      <Text style={styles.subtitle}>
+        Enter your email address, and we'll send you a link to reset your
+        password.
+      </Text>
       <TextInput
         style={styles.input}
-        placeholder="Enter your email"
+        placeholder="Email"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      <Button title="Send Password Reset Email" onPress={handleResetPassword} />
+      <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
+      <Text style={styles.orText}>or sign in with</Text>
+      <View style={styles.socialButtons}>
+        <TouchableOpacity style={styles.socialButton}>
+          <FontAwesome name="google" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.socialButton}>
+          <FontAwesome name="facebook" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.socialButton}>
+          <FontAwesome name="apple" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.signUpText}>
+        Don't have an account? <Text style={styles.signUpLink}>Sign Up</Text>
+      </Text>
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Terms of Use | Privacy Policy</Text>
+      </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 40,
+    backgroundColor: '#f5f5f5',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    marginBottom: 20,
+  },
+  backArrow: {
+    fontSize: 16,
+    color: '#000',
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    alignSelf: 'center',
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
-    marginBottom: 16,
+    fontWeight: 'bold',
+    color: '#000',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 30,
   },
   input: {
     width: '100%',
-    padding: 8,
+    padding: 15,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 4,
-    marginBottom: 16,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#333',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  orText: {
+    fontSize: 14,
+    color: '#999',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  socialButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 30,
+  },
+  socialButton: {
+    marginHorizontal: 10,
+  },
+  signUpText: {
+    fontSize: 14,
+    color: '#999',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  signUpLink: {
+    color: '#007BFF',
+    fontWeight: 'bold',
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#999',
   },
 });
-
-// export default ForgotPasswordScreen;

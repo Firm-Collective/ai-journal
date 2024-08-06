@@ -2,6 +2,7 @@ import {Image, StyleSheet, View, Text, Dimensions} from 'react-native';
 import SignupButton from '@/components/auth/buttons/SignupButtonToSignup';
 import LoginButton from '@/components/auth/buttons/LoginButtonToLogin';
 const {width, height} = Dimensions.get('window');
+import {Link} from 'expo-router';
 
 const WelcomeScreen = () => {
   return (
@@ -33,6 +34,9 @@ const WelcomeScreen = () => {
         <LoginButton />
         <SignupButton />
       </View>
+      <Link href="/(auth)/reset-pass" asChild>
+        <Text style={styles.text}>Sign up</Text>
+      </Link>
     </View>
   );
 };

@@ -12,6 +12,7 @@ export default function IndexPage() {
 
   if (!session) {
     // show welcome screen if user needs to log-in
+    console.log("HERE IS WHERE WE ARE 123");
     return <WelcomeScreen />;
   }
 
