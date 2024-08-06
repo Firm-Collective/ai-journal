@@ -13,8 +13,32 @@ import UserAvatar from '@/components/user/settings/UserAvatar';
 import ProfileOverviewStripCard from '@/components/user/settings/ProfileOverviewStripCard';
 import AccountInfoAccordion from '@/components/user/settings/AccountInfoAccordion';
 import AccountInfoCardStrip from '@/components/user/settings/AccountInfoCardStrip';
+import {useAuth} from '@/providers/AuthProvider';
+
+interface userDataProps {
+  last_name: string;
+  first_name: string;
+  city: string;
+  country: string;
+}
 
 export default function ProfileScreen() {
+  const userData = useAuth();
+
+  let first_name = '',
+    last_name = '',
+    city = '',
+    country = '',
+    email: string | undefined = '';
+  if (userData.session) {
+    const userMetadata = userData.session.user.user_metadata as userDataProps;
+    first_name = userMetadata.first_name || 'user';
+    last_name = userMetadata.last_name || '';
+    city = userMetadata.city || 'NYC';
+    country = userMetadata.country || 'USA';
+    email = userData.session.user.email;
+  }
+
   const {height, width} = useWindowDimensions();
   return (
     <SafeAreaView
@@ -34,11 +58,11 @@ export default function ProfileScreen() {
         <View style={styles.mainProfileTopStrip}>
           <ProfileOverviewStripCard
             userProp={'Username'}
-            propValue={'name_here'}
+            propValue={first_name + ' ' + last_name}
           />
           <ProfileOverviewStripCard
             userProp={'Location'}
-            propValue={'City, USA'}
+            propValue={city + ', ' + country}
           />
         </View>
 
@@ -54,7 +78,7 @@ export default function ProfileScreen() {
           <View>
             <AccountInfoAccordion
               userProperty={'Email'}
-              userPropertyValue={'123@gmail.com'}
+              userPropertyValue={email || ''}
               externalStyles={{
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20,
@@ -62,10 +86,13 @@ export default function ProfileScreen() {
             />
             <AccountInfoAccordion
               userProperty={'Phone'}
-              userPropertyValue={'+1 (234) 567-890 '}
+              userPropertyValue={'+1 (234) 567-890'}
               externalStyles={{borderBottomWidth: 1, borderTopWidth: 0}}
             />
-            <AccountInfoCardStrip userProperty={'Password'} toLocation={'/'} />
+            <AccountInfoCardStrip
+              userProperty={'Password'}
+              toLocation={'/profile/change_password'}
+            />
           </View>
         </View>
         <View style={styles.bioInfoCont}>
