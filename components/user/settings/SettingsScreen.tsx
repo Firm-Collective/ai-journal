@@ -9,52 +9,27 @@ import {
 } from 'react-native';
 import SettingsMainHeader from '@/components/user/settings/SettingsMainHeader';
 import UserAvatar from '@/components/user/settings/UserAvatar';
-import useFetchUser from '@/lib/hooks/useFetchUser';
-import {supabase} from '@/lib/supabase';
-import {useEffect, useState} from 'react';
 import SettingsMainStripCard from '@/components/user/settings/SettingsMainStripCard';
-
-interface userData {
-  last_name: string;
-  first_name: string;
-  email_address: string;
-}
+import {useAuth} from '@/providers/AuthProvider';
+import {useEffect, useState} from 'react';
 
 export default function SettingsScreen() {
   const {width, height} = useWindowDimensions();
+  const {session: userData} = useAuth();
 
-  // toDo: get user's name from local storage instead or context
-  const [userData, setUserData] = useState({
-    first_name: 'user',
-    last_name: '',
-    email_address: '',
-  });
-  const user = useFetchUser();
+  const [fullName, setFullName] = useState('Account Name');
+  const [email, setEmail] = useState('please set your email');
 
   useEffect(() => {
-    if (user) {
-      const getName = async () => {
-        const {data, error} = await supabase
-          .from('users')
-          .select('first_name, last_name, email_address')
-          .eq('id', user?.id);
-
-        if (!error) {
-          if (data && data.length > 0) {
-            const userData: userData = data[0];
-            setUserData(userData);
-            return;
-          } else {
-            console.log('No user found');
-          }
-        } else {
-          console.log('Error ', error);
-        }
-      };
-
-      getName();
+    if (userData) {
+      const {first_name, last_name} = userData.user.user_metadata;
+      const {email: userEmail} = userData.user;
+      if (first_name !== undefined) {
+        setFullName(`${first_name} + ${last_name}`);
+      }
+      setEmail(userEmail || 'please set your email');
     }
-  }, [user]);
+  }, [userData]);
 
   return (
     <SafeAreaView
@@ -65,10 +40,8 @@ export default function SettingsScreen() {
         <View style={styles.profileSummary}>
           <UserAvatar />
           <View style={[styles.textContainer, {backgroundColor: 'white'}]}>
-            <Text style={styles.fullName}>
-              {userData.first_name + ' ' + userData.last_name}
-            </Text>
-            <Text style={styles.email}>{userData.email_address}</Text>
+            <Text style={styles.fullName}>{fullName}</Text>
+            <Text style={styles.email}>{email}</Text>
           </View>
         </View>
         <View style={styles.stripContainer}>
@@ -80,19 +53,19 @@ export default function SettingsScreen() {
           />
           <SettingsMainStripCard
             cardStyles={styles.middleStrip}
-            toLocation={'/profile'}
+            toLocation={'/'}
             iconSrc={require('../../../assets/images/User/notifications-icon.png')}
             text={'Notifications'}
           />
           <SettingsMainStripCard
             cardStyles={styles.middleStrip}
-            toLocation={'/profile'}
+            toLocation={'/'}
             iconSrc={require('../../../assets/images/User/payments-icon.png')}
             text={'Payments and Linked Accounts'}
           />
           <SettingsMainStripCard
             cardStyles={styles.middleStrip}
-            toLocation={'/profile'}
+            toLocation={'/'}
             iconSrc={require('../../../assets/images/User/faq-icon.png')}
             text={'Help and Support'}
           />
