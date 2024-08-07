@@ -174,10 +174,8 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
         </Popup>
-        <Button
-          title="Create"
-          onPress={() => router.push('/text-entry')}
-        ></Button>
+        <Button title="Create" onPress={() => router.push('/text-entry')} />
+        <Button title="Settings" onPress={() => router.push('/settings')} />
       </ImageBackground>
     </SafeAreaView>
   );
