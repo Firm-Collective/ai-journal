@@ -34,7 +34,6 @@ const ChangePassword = () => {
         router.replace('/profile/settings');
       } else {
         Alert.alert('Error', 'An error occurred: ' + error.message);
-        console.log('Error: ', error);
       }
     } catch (error) {
       setErrorMessage('Error changing password: ' + error.message);

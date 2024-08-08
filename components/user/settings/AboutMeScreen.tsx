@@ -98,7 +98,6 @@ export default function AboutMeScreen() {
             userProperty={'Name'}
             userPropertyValue={name}
             handleEdit={() => {
-              console.log('My name is about to change');
               openModal('Name', userFullName);
             }}
           />
