@@ -1,4 +1,4 @@
-import WelcomeScreen from '@/components/WelcomeScreen';
+import WelcomeScreen2 from '@/components/WelcomeScreen2';
 import {useAuth} from '@/providers/AuthProvider';
 import {Redirect} from 'expo-router';
 import {ActivityIndicator} from 'react-native';
@@ -12,7 +12,7 @@ export default function IndexPage() {
 
   if (!session) {
     // show welcome screen if user needs to log-in
-    return <WelcomeScreen />;
+    return <WelcomeScreen2 />;
   }
 
   return <Redirect href={'/home'} />;
