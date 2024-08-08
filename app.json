@@ -32,7 +32,10 @@
               "pathPrefix": "/login"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
@@ -59,7 +62,12 @@
         }
       ],
       "expo-router",
-      "expo-secure-store",
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": "Please allow One Voice Echo to access your Face ID biometric data for logging in."
+        }
+      ],
       "expo-build-properties"
     ],
     "experiments": {

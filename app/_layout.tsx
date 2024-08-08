@@ -7,10 +7,11 @@ import {Stack, useRouter} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import 'react-native-reanimated';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import AuthProvider from '@/providers/AuthProvider';
 import NetworkProvider from '@/providers/NetworkProvider';
-import {Linking} from 'react-native';
+import * as Linking from 'expo-linking';
+import {createSessionFromUrl} from '@/lib/Auth';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -52,32 +53,13 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const router = useRouter();
-
-  useEffect(() => {
-    const handleDeepLink = (event: {url: string}) => {
-      const url = new URL(event.url);
-      const path = url.pathname.slice(1);
-
-      if (path === 'login') {
-        router.push('/login');
-      }
-    };
-
-    // Handle incoming url
-    Linking.getInitialURL().then(url => {
-      if (url) {
-        handleDeepLink({url});
-      }
-    });
-
-    // Listen for new urls
-    const subscription = Linking.addEventListener('url', handleDeepLink);
-
-    return () => {
-      subscription.remove();
-    };
-  }, [router]);
+  // this monitors for incoming urls and sets the session if it's an auth url
+  const url = Linking.useURL();
+  if (url) {
+    if (url.includes('access_token')) {
+      createSessionFromUrl(url);
+    }
+  }
 
   return (
     <ThemeProvider value={DefaultTheme}>
