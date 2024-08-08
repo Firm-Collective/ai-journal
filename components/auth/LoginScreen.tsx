@@ -71,7 +71,7 @@ export default function LoginScreen() {
             console.error('Error fetching user data:', error);
             return;
           }
-          if (data?.is_onboarding) {
+          if (!data?.is_onboarding) {
             router.push('/');
           } else {
             router.push('/tell-us-about-yourself');

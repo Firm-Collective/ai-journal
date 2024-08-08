@@ -60,7 +60,7 @@ export default function TellUsAboutYourselfScreen() {
           birth_year: birthYear,
           country: country,
           city: city,
-          is_onboarding: true,
+          is_onboarding: false,
         },
       });
 
@@ -74,7 +74,7 @@ export default function TellUsAboutYourselfScreen() {
           first_name: firstName,
           last_name: lastName,
           birth_year: birthYear,
-          is_onboarding: true,
+          is_onboarding: false,
         })
         .eq('id', (user as any).id);
 
