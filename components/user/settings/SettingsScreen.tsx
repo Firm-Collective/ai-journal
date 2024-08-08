@@ -25,7 +25,7 @@ export default function SettingsScreen() {
       const {first_name, last_name} = userData.user.user_metadata;
       const {email: userEmail} = userData.user;
       if (first_name !== undefined) {
-        setFullName(`${first_name} + ${last_name}`);
+        setFullName(`${first_name} ${last_name}`);
       }
       setEmail(userEmail || 'please set your email');
     }
