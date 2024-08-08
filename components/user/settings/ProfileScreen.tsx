@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 30,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-    paddingBottom: Platform.OS === 'android' ? 30 : 100,
+    paddingBottom: Platform.OS === 'android' ? 90 : 100,
   },
   contentWrapper: {
     display: 'flex',
