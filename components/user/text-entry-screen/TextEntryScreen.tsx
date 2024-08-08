@@ -1,14 +1,26 @@
-import React, {useState} from 'react';
-import {View, TextInput, StyleSheet, Text} from 'react-native';
-import {TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {Post} from '@/lib/watermelon/post';
 import {database} from '@/lib/watermelon/database';
 import {useAuth} from '@/providers/AuthProvider';
 import {useRouter} from 'expo-router';
+import {Feather, MaterialIcons} from '@expo/vector-icons';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
+  const [fontSize, setFontSize] = useState<number>(16);
+  const [isBold, setIsBold] = useState<boolean>(false);
+  const [isItalic, setIsItalic] = useState<boolean>(false);
+  const [isUnderlined, setIsUnderlined] = useState<boolean>(false);
+  const [highlight, setHighlight] = useState<string>('');
   const {session} = useAuth();
   const router = useRouter();
 
@@ -31,8 +43,13 @@ const TextEntryScreen = () => {
     }
   };
 
+  const toggleBold = () => setIsBold(!isBold);
+  const toggleItalic = () => setIsItalic(!isItalic);
+  const toggleUnderline = () => setIsUnderlined(!isUnderlined);
+  const toggleHighlight = () => setHighlight(highlight ? '' : 'yellow');
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={handleSubmit}>
           <Text style={styles.saveText}>Save</Text>
@@ -45,24 +62,56 @@ const TextEntryScreen = () => {
         placeholder="Title"
         placeholderTextColor="#696969"
       />
+      <View style={styles.formattingBar}>
+        <TouchableOpacity onPress={toggleBold}>
+          <Feather name="bold" size={24} color={isBold ? 'black' : 'gray'} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={toggleItalic}>
+          <Feather
+            name="italic"
+            size={24}
+            color={isItalic ? 'black' : 'gray'}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={toggleUnderline}>
+          <Feather
+            name="underline"
+            size={24}
+            color={isUnderlined ? 'black' : 'gray'}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={toggleHighlight}>
+          <MaterialIcons
+            name="highlight"
+            size={24}
+            color={highlight ? 'black' : 'gray'}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setFontSize(fontSize + 1)}>
+          <Feather name="plus" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setFontSize(fontSize - 1)}>
+          <Feather name="minus" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
       <TextInput
-        style={styles.textInput}
+        style={[
+          styles.textInput,
+          {
+            fontSize,
+            fontWeight: isBold ? 'bold' : 'normal',
+            fontStyle: isItalic ? 'italic' : 'normal',
+            textDecorationLine: isUnderlined ? 'underline' : 'none',
+            backgroundColor: highlight,
+          },
+        ]}
         value={text}
         onChangeText={setText}
         placeholder="What is God speaking to you?"
         placeholderTextColor="#696969"
         multiline
       />
-
-      {/* Button to see all posts within local storage
-      <Button
-        title="See all Posts in Database"
-        onPress={() => {
-          logAllPosts(database);
-        }}
-      />
-      */}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -93,6 +142,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#272727',
     textAlignVertical: 'top',
+  },
+  formattingBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 8,
   },
 });
 
