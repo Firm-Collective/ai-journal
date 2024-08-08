@@ -125,8 +125,6 @@ export const createSessionFromUrl = async (
     console.log('Supabase error occurred');
   }
 
-  console.log('Data session info: ', data);
-
   return data.session;
 };
 

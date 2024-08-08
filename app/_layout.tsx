@@ -57,7 +57,6 @@ function RootLayoutNav() {
   // this monitors for incoming urls and sets the session if it's an auth url
   const url = Linking.useURL();
   if (url) {
-    console.log('Url is ', url);
     if (url.includes('access_token')) {
       createSessionFromUrl(url);
     }
