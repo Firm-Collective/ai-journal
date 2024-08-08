@@ -24,12 +24,11 @@
           }
         ]
       },
+      "associatedDomains": ["applinks:firmcollective.org"],
       "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
     },
     "android": {
-      "permissions": [
-        "android.permission.INTERNET"
-      ],
+      "permissions": ["android.permission.INTERNET"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -45,10 +44,7 @@
               "pathPrefix": "/login"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
