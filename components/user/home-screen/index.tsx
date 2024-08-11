@@ -54,6 +54,7 @@ export default function HomeScreen() {
     if (popupRef.current) {
       popupRef.current.scrollTo(CLOSED_POSITION);
     }
+    // reroute to main to trigger sync
   };
 
   useFocusEffect(
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 30,
+    marginTop: 20,
   },
   imageBg: {
     flex: 1,
