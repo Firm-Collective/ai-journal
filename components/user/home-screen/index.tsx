@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 30,
   },
   imageBg: {
     flex: 1,
