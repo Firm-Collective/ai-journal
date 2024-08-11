@@ -14,7 +14,7 @@ export default function TabLayout() {
   return (
     <JournalEntriesProvider>
       <Stack>
-        <Stack.Screen name="home/index" options={{headerShown: true}} />
+        <Stack.Screen name="home/index" options={{headerShown: false}} />
         <Stack.Screen name="text-entry" options={{headerShown: true}} />
         <Stack.Screen name="edit/[id]" options={{headerShown: true}} />
         <Stack.Screen name="settings" options={{headerShown: true}} />
