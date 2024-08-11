@@ -26,7 +26,7 @@ export default function AccountInfoCardStrip({
 
     <Pressable
       onPress={() => {
-        router.push(toLocation);
+        router.push(toLocation as any);
       }}
       style={({pressed}) => [
         styles.pressableStyles,

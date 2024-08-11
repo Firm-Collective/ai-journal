@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
 import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import {supabase} from '@/lib/supabase';
-import {useAuth} from '@/providers/AuthProvider';
-import {router} from 'expo-router';
+import {useRouter} from 'expo-router';
 
 const ChangePassword = () => {
-  const userInfo = useAuth();
-  const userEmail = userInfo.session.user.email;
-
+  const router = useRouter();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -35,8 +32,8 @@ const ChangePassword = () => {
       } else {
         Alert.alert('Error', 'An error occurred: ' + error.message);
       }
-    } catch (error) {
-      setErrorMessage('Error changing password: ' + error.message);
+    } catch (error: any) {
+      setErrorMessage('Error changing password: ' + error?.message);
     }
   };
 

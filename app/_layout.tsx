@@ -72,11 +72,17 @@ function RootLayoutNav() {
       <GestureHandlerRootView>
         <SafeAreaProvider>
           <AuthProvider>
-            <Stack>
-              <Stack.Screen name="index" options={{headerShown: false}} />
-              <Stack.Screen name="(auth)" options={{headerShown: false}} />
-              <Stack.Screen name="(user)" options={{headerShown: false}} />
-            </Stack>
+            <GestureHandlerRootView>
+              <Stack>
+                <Stack.Screen name="index" options={{headerShown: false}} />
+                <Stack.Screen name="(auth)" options={{headerShown: false}} />
+                <Stack.Screen name="(user)" options={{headerShown: false}} />
+                <Stack.Screen
+                  name="tell-us-about-yourself"
+                  options={{headerShown: false}}
+                />
+              </Stack>
+            </GestureHandlerRootView>
           </AuthProvider>
         </SafeAreaProvider>
       </GestureHandlerRootView>

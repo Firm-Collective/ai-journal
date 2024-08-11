@@ -1,23 +1,12 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {Redirect, Tabs, Stack} from 'expo-router';
+import {Redirect, Stack} from 'expo-router';
 
-import Colors from '@/constants/Colors';
-import {useClientOnlyValue} from '@/components/useClientOnlyValue';
 import {useAuth} from '@/providers/AuthProvider';
 import {JournalEntriesProvider} from '@/providers/JournalEntriesProvider';
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{marginBottom: -3}} {...props} />;
-}
 
 export default function TabLayout() {
   const {session} = useAuth();
 
-  // if use is not logged in, redirect to login page
+  // if user is not logged in, redirect to login page
   if (!session) {
     return <Redirect href={'/'} />;
   }

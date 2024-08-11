@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -15,13 +15,14 @@ import {
 import {Text, TextSemiBold} from '../StyledText';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LoginButton from '@/components/auth/buttons/LoginButtonFromLogin';
-import {Link, router} from 'expo-router';
+import {Link, router, useLocalSearchParams} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import Divider from '../Divider';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';
 import {loginWithEmail} from '@/lib/Auth';
 import {supabase} from '@/lib/supabase';
+import {useGlobalSearchParams} from 'expo-router';
 
 const {width, height} = Dimensions.get('window');
 
@@ -35,6 +36,17 @@ export default function LoginScreen() {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const global = useGlobalSearchParams();
+  const local = useLocalSearchParams();
+
+  // if an access token is returned, then the user used an email verification
+  // method to log in. If the user is not a proper user, it will
+  // redirect the user back to home screen.
+  useEffect(() => {
+    if (global['#'] || local['#']) {
+      router.replace('/tell-us-about-yourself');
+    }
+  }, [global, local]);
 
   // Email validation function
   const validateEmail = (email: string) => {
@@ -71,9 +83,7 @@ export default function LoginScreen() {
             console.error('Error fetching user data:', error);
             return;
           }
-          if (!data?.is_onboarding) {
-            router.push('/');
-          } else {
+          if (data?.is_onboarding) {
             router.push('/tell-us-about-yourself');
           }
         } catch (error: any) {
