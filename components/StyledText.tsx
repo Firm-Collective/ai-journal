@@ -23,7 +23,7 @@ function TextExtraBold(props: TextProps) {
     />
   );
 }
-export function MonoText(props: TextProps) {
+export function TextRegular(props: TextProps) {
   return (
     <Text
       {...props}
