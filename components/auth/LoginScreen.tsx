@@ -213,7 +213,7 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   view: {
-    display: 'flex',
+    flex: 1,
     backgroundColor: 'white',
     minWidth: window_width,
     minHeight: window_height,

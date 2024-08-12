@@ -5,6 +5,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Platform,
   TextInput,
   KeyboardAvoidingView,
   Keyboard,
@@ -88,7 +89,10 @@ export default function SignupScreen() {
     !email || !password || !isChecked || !!emailError || !!passwordError;
 
   return (
-    <KeyboardAvoidingView style={{flex: 1}} enabled>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.view}>
           <AuthHeader />
@@ -235,8 +239,8 @@ export default function SignupScreen() {
                 </Link>
               </Text>
             </View>
+            <AuthFooter />
           </View>
-          <AuthFooter />
         </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
