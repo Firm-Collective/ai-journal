@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {View, TextInput, StyleSheet, Text} from 'react-native';
+import {TextInput, StyleSheet, Text} from 'react-native';
+import {View} from '@/components/Themed';
 import {TouchableOpacity} from 'react-native';
 import {Post} from '@/lib/watermelon/post';
 import {database} from '@/lib/watermelon/database';

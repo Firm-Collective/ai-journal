@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   StyleSheet,
-  View,
   Text,
   Image,
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import {View} from '../Themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';

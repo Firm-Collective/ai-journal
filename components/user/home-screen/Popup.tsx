@@ -1,4 +1,5 @@
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
+import {View} from '@/components/Themed';
 import React, {forwardRef, useImperativeHandle} from 'react';
 import Animated, {
   useAnimatedStyle,

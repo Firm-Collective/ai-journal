@@ -1,6 +1,7 @@
 // Divider.tsx
 import React from 'react';
-import {View, StyleSheet, DimensionValue} from 'react-native';
+import {StyleSheet, DimensionValue} from 'react-native';
+import {View} from './Themed';
 
 interface DividerProps {
   inset?: boolean;

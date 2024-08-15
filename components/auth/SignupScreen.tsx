@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   Image,
   StyleSheet,
-  View,
   Text,
   TouchableOpacity,
   Platform,
@@ -11,6 +10,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import {View} from '../Themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CheckBox} from '@rneui/themed';
 import SignupButton from '@/components/auth/buttons/SignupButtonFromSignup';

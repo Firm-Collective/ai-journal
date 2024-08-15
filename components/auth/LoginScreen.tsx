@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   Image,
   StyleSheet,
-  View,
   Text,
   Dimensions,
   TouchableOpacity,
@@ -13,6 +12,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import {View} from '../Themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LoginButton from '@/components/auth/buttons/LoginButtonFromLogin';
 import {Link, router} from 'expo-router';

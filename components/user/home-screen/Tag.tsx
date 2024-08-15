@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {TextRegular} from '@/components/StyledText';
-
+import {View} from '@/components/Themed';
 type TagProps = {name: string};
 
 export default function Tag({name}: TagProps) {
