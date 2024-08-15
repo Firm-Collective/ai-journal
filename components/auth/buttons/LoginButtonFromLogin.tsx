@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
+import {Text} from '@/components/StyledText';
 
 interface LoginButtonProps {
   onPress: () => void;
@@ -33,7 +34,6 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 16,
-    fontFamily: 'Poppins',
   },
 });
 

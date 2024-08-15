@@ -18,7 +18,7 @@ import {database} from '@/lib/watermelon/database';
 import {Post as PostFunctions} from '@/lib/watermelon/post';
 import {router} from 'expo-router';
 import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
-import {TextRegular} from '@/components/StyledText';
+import {Text} from '@/components/StyledText';
 
 export default function HomeScreen() {
   const {isConnected} = useNet();
@@ -137,19 +137,19 @@ export default function HomeScreen() {
               <Image
                 source={require('../../../assets/images/home-screen/Pencil.png')}
               />
-              <TextRegular>Edit</TextRegular>
+              <Text>Edit</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, styles.button_border]}>
               <Image
                 source={require('../../../assets/images/home-screen/Bookmark.png')}
               />
-              <TextRegular>Mark As Favourite</TextRegular>
+              <Text>Mark As Favourite</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, styles.button_border]}>
               <Image
                 source={require('../../../assets/images/home-screen/Price Tag.png')}
               />
-              <TextRegular>Edit Tag</TextRegular>
+              <Text>Edit Tag</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
@@ -162,7 +162,7 @@ export default function HomeScreen() {
               <Image
                 source={require('../../../assets/images/home-screen/Delete.png')}
               />
-              <TextRegular style={{color: '#F34848'}}>Delete</TextRegular>
+              <Text style={{color: '#F34848'}}>Delete</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.button, styles.button_border]}
@@ -170,7 +170,7 @@ export default function HomeScreen() {
                 router.push('/settings');
               }}
             >
-              <TextRegular>Settings (WIP)</TextRegular>
+              <Text>Settings (WIP)</Text>
             </TouchableOpacity>
           </View>
         </Popup>

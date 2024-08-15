@@ -3,11 +3,11 @@ import {
   Alert,
   Dimensions,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {Text} from '../StyledText';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CheckBox} from '@rneui/themed';
 import DropDownPicker from 'react-native-dropdown-picker';

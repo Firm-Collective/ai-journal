@@ -1,6 +1,7 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
 import {Link} from 'expo-router';
+import {Text} from '@/components/StyledText';
 
 const LoginButton = () => {
   return (

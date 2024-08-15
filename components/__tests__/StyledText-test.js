@@ -1,12 +1,10 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer';
 
-import {TextRegular} from '../StyledText';
+import {Text} from '../StyledText';
 
 it(`renders correctly`, () => {
-  const tree = renderer
-    .create(<TextRegular>Snapshot test!</TextRegular>)
-    .toJSON();
+  const tree = renderer.create(<Text>Snapshot test!</Text>).toJSON();
 
   expect(tree).toMatchSnapshot();
 });

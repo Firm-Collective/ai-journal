@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
+import {Text} from '@/components/StyledText';
 import {Link} from 'expo-router';
 
 const SignupButton = () => {

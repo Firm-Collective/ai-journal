@@ -3,7 +3,6 @@ import {
   Image,
   StyleSheet,
   View,
-  Text,
   Dimensions,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -13,6 +12,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import {Text, TextSemiBold} from '../StyledText';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LoginButton from '@/components/auth/buttons/LoginButtonFromLogin';
 import {Link, router} from 'expo-router';
@@ -102,7 +102,7 @@ export default function LoginScreen() {
           <AuthHeader />
           <View style={styles.container}>
             <View style={styles.container2}>
-              <Text style={styles.textCreate}>Login</Text>
+              <TextSemiBold style={styles.textCreate}>Login</TextSemiBold>
               <View>
                 <TextInput
                   style={[
@@ -248,9 +248,6 @@ const styles = StyleSheet.create({
   },
   textCreate: {
     fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'left',
-    fontFamily: 'Poppins',
     marginTop: 10,
     marginBottom: 10,
   },
@@ -269,8 +266,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     color: '#696969',
-    textDecorationLine: 'underline',
-    fontFamily: 'Poppins',
+    textDecorationLine: 'underline'
   },
   errorText: {
     color: 'red',

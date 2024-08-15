@@ -1,8 +1,9 @@
-import {Text, TextProps} from './Themed';
+import {Text as DefaultText, TextProps} from './Themed';
+import {TextInput as DefaultTextInput, TextInputProps} from 'react-native';
 
 function TextSemiBold(props: TextProps) {
   return (
-    <Text
+    <DefaultText
       {...props}
       style={[
         {fontFamily: 'PoppinsSemiBold', color: 'var(--Black, #272727)'},
@@ -14,7 +15,7 @@ function TextSemiBold(props: TextProps) {
 
 function TextExtraBold(props: TextProps) {
   return (
-    <Text
+    <DefaultText
       {...props}
       style={[
         {fontFamily: 'PoppinsExtraBold', color: 'var(--Black, #272727)'},
@@ -23,9 +24,10 @@ function TextExtraBold(props: TextProps) {
     />
   );
 }
-export function TextRegular(props: TextProps) {
+
+function TextInput(props: TextInputProps) {
   return (
-    <Text
+    <DefaultTextInput
       {...props}
       style={[
         {fontFamily: 'Poppins', color: 'var(--Black, #272727)'},
@@ -35,4 +37,28 @@ export function TextRegular(props: TextProps) {
   );
 }
 
-export {TextSemiBold, TextExtraBold};
+function TextInputSemiBold(props: TextInputProps) {
+  return (
+    <DefaultTextInput
+      {...props}
+      style={[
+        {fontFamily: 'PoppinsSemiBold', color: 'var(--Black, #272727)'},
+        props.style,
+      ]}
+    />
+  );
+}
+
+export function Text(props: TextProps) {
+  return (
+    <DefaultText
+      {...props}
+      style={[
+        {fontFamily: 'Poppins', color: 'var(--Black, #272727)'},
+        props.style,
+      ]}
+    />
+  );
+}
+
+export {TextSemiBold, TextExtraBold, TextInput, TextInputSemiBold};

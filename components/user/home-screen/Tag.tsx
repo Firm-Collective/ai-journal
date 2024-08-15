@@ -1,13 +1,13 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {TextRegular} from '@/components/StyledText';
+import {Text} from '@/components/StyledText';
 
 type TagProps = {name: string};
 
 export default function Tag({name}: TagProps) {
   return (
     <View style={styles.container}>
-      <TextRegular style={styles.tagName}>{name}</TextRegular>
+      <Text style={styles.tagName}>{name}</Text>
     </View>
   );
 }

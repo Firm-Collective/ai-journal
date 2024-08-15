@@ -1,17 +1,14 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
-import {TouchableOpacity} from 'react-native';
+import React, {useState, useCallback} from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, TextInput, TextInputSemiBold} from '@/components/StyledText';
 import {Post} from '@/lib/watermelon/post';
 import {database} from '@/lib/watermelon/database';
-import {syncWithServer} from '@/lib/watermelon/sync';
-import {useNet} from '@/providers/NetworkProvider';
 import {useLocalSearchParams, useFocusEffect} from 'expo-router';
 import {useRouter} from 'expo-router';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
-  const {isConnected} = useNet();
 
   const local = useLocalSearchParams();
   const postId = typeof local.id === 'string' ? local.id : undefined;
@@ -86,21 +83,23 @@ const TextEntryScreen = () => {
           <Text style={styles.saveText}>Save</Text>
         </TouchableOpacity>
       </View>
-      <TextInput
-        style={styles.titleInput}
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Title"
-        placeholderTextColor="#696969"
-      />
-      <TextInput
-        style={styles.textInput}
-        value={text}
-        onChangeText={setText}
-        placeholder="What is God speaking to you?"
-        placeholderTextColor="#696969"
-        multiline
-      />
+      <View style={styles.textInputContainer}>
+        <TextInputSemiBold
+          style={styles.titleInput}
+          value={title}
+          onChangeText={setTitle}
+          placeholder="Title"
+          placeholderTextColor="#696969"
+        />
+        <TextInput
+          style={styles.textInput}
+          value={text}
+          onChangeText={setText}
+          placeholder="What is God speaking to you?"
+          placeholderTextColor="#696969"
+          multiline
+        />
+      </View>
     </View>
   );
 };
@@ -121,16 +120,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'purple',
   },
+  textInputContainer: {
+    flex: 1,
+    padding: 5,
+  },
   titleInput: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#272727',
     marginBottom: 8,
   },
   textInput: {
     flex: 1,
     fontSize: 18,
-    color: '#272727',
     textAlignVertical: 'top',
   },
 });

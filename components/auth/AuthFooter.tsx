@@ -2,7 +2,8 @@
  * This component represents the footer of the Authentication pages.
  */
 
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import {Text} from '../StyledText';
 
 const AuthFooter = () => {
   return (
@@ -15,14 +16,11 @@ const AuthFooter = () => {
 const styles = StyleSheet.create({
   footerContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
-    zIndex: -1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   footerText: {
-    bottom: 25,
-    left: 0,
-    right: 0,
-    textAlign: 'center',
+    fontSize: 12,
     color: '#1177C7',
   },
 });

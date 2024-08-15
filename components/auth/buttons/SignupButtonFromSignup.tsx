@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import {TouchableOpacity, StyleSheet, StyleProp, ViewStyle} from 'react-native';
+import {Text} from '@/components/StyledText';
 
 interface SignupButtonProps {
   onPress: () => void;
@@ -44,7 +39,6 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 16,
-    fontFamily: 'Poppins',
   },
 });
 

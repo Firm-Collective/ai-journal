@@ -1,12 +1,12 @@
 import {Stack} from 'expo-router';
 import {
   SafeAreaView,
-  Text,
   View,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import {Text, TextInputSemiBold} from '@/components/StyledText';
 import {signOut} from '@/lib/Auth';
 import useFetchUser from '@/lib/hooks/useFetchUser';
 
@@ -21,7 +21,7 @@ export default function SettingsPage() {
         <View style={{padding: 16}}>
           <Text>Email: {email}</Text>
           <TouchableOpacity onPress={signOut} style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>LOGOUT</Text>
+            <TextInputSemiBold style={styles.buttonText}>LOGOUT</TextInputSemiBold>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: '#fff',
-    fontWeight: 'bold',
     alignSelf: 'center',
     textTransform: 'uppercase',
   },

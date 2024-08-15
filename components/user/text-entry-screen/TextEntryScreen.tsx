@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {View, TextInput, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import {Text, TextInput, TextInputSemiBold} from '@/components/StyledText';
 import {TouchableOpacity} from 'react-native';
 import {Post} from '@/lib/watermelon/post';
 import {database} from '@/lib/watermelon/database';
@@ -38,21 +39,23 @@ const TextEntryScreen = () => {
           <Text style={styles.saveText}>Save</Text>
         </TouchableOpacity>
       </View>
-      <TextInput
-        style={styles.titleInput}
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Title"
-        placeholderTextColor="#696969"
-      />
-      <TextInput
-        style={styles.textInput}
-        value={text}
-        onChangeText={setText}
-        placeholder="What is God speaking to you?"
-        placeholderTextColor="#696969"
-        multiline
-      />
+      <View style={styles.textInputContainer}>
+        <TextInputSemiBold
+          style={styles.titleInput}
+          value={title}
+          onChangeText={setTitle}
+          placeholder="Title"
+          placeholderTextColor="#696969"
+        />
+        <TextInput
+          style={styles.textInput}
+          value={text}
+          onChangeText={setText}
+          placeholder="What is God speaking to you?"
+          placeholderTextColor="#696969"
+          multiline
+        />
+      </View>
 
       {/* Button to see all posts within local storage
       <Button
@@ -78,20 +81,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+  textInputContainer: {
+    flex: 1,
+    padding: 5,
+  },
   saveText: {
     fontSize: 18,
     color: 'purple',
   },
   titleInput: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#272727',
     marginBottom: 8,
   },
   textInput: {
     flex: 1,
     fontSize: 18,
-    color: '#272727',
     textAlignVertical: 'top',
   },
 });

@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, StyleProp, ViewStyle} from 'react-native';
-import {TextRegular} from './StyledText';
+import {Text} from './StyledText';
 import React from 'react';
 
 export interface StyledButtonProps {

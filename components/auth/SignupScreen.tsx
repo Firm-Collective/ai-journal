@@ -3,7 +3,6 @@ import {
   Image,
   StyleSheet,
   View,
-  Text,
   TouchableOpacity,
   Platform,
   TextInput,
@@ -11,6 +10,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import {Text, TextSemiBold} from '../StyledText';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CheckBox} from '@rneui/themed';
 import SignupButton from '@/components/auth/buttons/SignupButtonFromSignup';
@@ -98,7 +98,7 @@ export default function SignupScreen() {
           <AuthHeader />
           <View style={styles.container}>
             <View style={styles.signupFieldsContainer}>
-              <Text style={styles.textCreate}>Create an Account</Text>
+              <TextSemiBold style={styles.textCreate}>Create an Account</TextSemiBold>
               <View>
                 <TextInput
                   style={[
@@ -314,9 +314,7 @@ const styles = StyleSheet.create({
   },
   textCreate: {
     fontSize: 28,
-    fontWeight: 'bold',
     textAlign: 'left',
-    fontFamily: 'Poppins',
     marginBottom: 10,
   },
   linkText: {
@@ -325,7 +323,6 @@ const styles = StyleSheet.create({
   },
   textSmall: {
     fontSize: 12,
-    fontFamily: 'Poppins',
   },
   textGrey: {
     color: '#6C757D',
