@@ -2,8 +2,7 @@
  * This component represents the footer of the Authentication pages.
  */
 
-import {StyleSheet, Text} from 'react-native';
-import {View} from '../Themed';
+import {View, StyleSheet, Text} from 'react-native';
 
 const AuthFooter = () => {
   return (

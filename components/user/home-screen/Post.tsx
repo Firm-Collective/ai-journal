@@ -1,5 +1,4 @@
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {View} from '@/components/Themed';
+import {Image, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Card} from '@rneui/themed';
 import {TextRegular, TextSemiBold} from '@/components/StyledText';
 import Tag from './Tag';

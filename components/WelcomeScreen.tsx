@@ -1,6 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, Text, Dimensions} from 'react-native';
-import {View} from './Themed';
+import {Image, StyleSheet, View, Text, Dimensions} from 'react-native';
 import SignupButton from '@/components/auth/buttons/SignupButtonToSignup';
 import LoginButton from '@/components/auth/buttons/LoginButtonToLogin';
 

@@ -6,9 +6,9 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  View,
   Button,
 } from 'react-native';
-import {View} from '@/components/Themed';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
 import {useNet} from '@/providers/NetworkProvider';

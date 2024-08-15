@@ -1,19 +1,17 @@
-import React, {useState, useCallback} from 'react';
-import {
-  TextInput,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
-import {View} from '@/components/Themed';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, TextInput, StyleSheet, Text, Alert} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {Post} from '@/lib/watermelon/post';
 import {database} from '@/lib/watermelon/database';
+import {syncWithServer} from '@/lib/watermelon/sync';
+import {useNet} from '@/providers/NetworkProvider';
 import {useLocalSearchParams, useFocusEffect} from 'expo-router';
 import {useRouter} from 'expo-router';
 
 const TextEntryScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
+  const {isConnected} = useNet();
 
   const local = useLocalSearchParams();
   const postId = typeof local.id === 'string' ? local.id : undefined;
