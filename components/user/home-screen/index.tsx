@@ -167,7 +167,7 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={[styles.button, styles.button_border]}
               onPress={() => {
-                router.push('/settings');
+                router.push('/settings' as any);
               }}
             >
               <Text>Settings (WIP)</Text>
@@ -175,7 +175,10 @@ export default function HomeScreen() {
           </View>
         </Popup>
         <Button title="Create" onPress={() => router.push('/text-entry')} />
-        <Button title="Settings" onPress={() => router.push('/settings')} />
+        <Button
+          title="Settings"
+          onPress={() => router.push('/settings' as any)}
+        />
       </ImageBackground>
     </SafeAreaView>
   );
