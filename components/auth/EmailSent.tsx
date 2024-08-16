@@ -21,7 +21,7 @@ const EmailSent = () => {
 
   const handleResendLink = async () => {
     const emailString = Array.isArray(email) ? email[0] : email;
-    // Call Supabase to resend the password reset email
+    // change the redirect to match the deployed github page
     const {data, error} = await supabase.auth.resetPasswordForEmail(
       emailString,
       {

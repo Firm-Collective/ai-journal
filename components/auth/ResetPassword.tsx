@@ -21,7 +21,7 @@ export default function ForgotPasswordScreen() {
       Alert.alert('Error', 'Please enter your email address.');
       return;
     }
-
+    // change the redirect to match the deployed github page
     const {data, error} = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: 'https://jb2700.github.io/Dev_for_good/',
     });
