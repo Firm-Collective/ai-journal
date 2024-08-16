@@ -40,12 +40,6 @@ const EmailSent = () => {
   };
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <FontAwesome name="arrow-left" size={24} color="black" />
-      </TouchableOpacity>
       <Image
         source={require('../../assets/OneVoiceLogo.png')}
         style={styles.logo}

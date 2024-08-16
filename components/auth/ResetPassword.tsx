@@ -41,9 +41,6 @@ export default function ForgotPasswordScreen() {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.backArrow}>{'<'} Back</Text>
-      </View>
       <Image
         source={require('../../assets/OneVoiceLogo.png')}
         style={styles.logo}

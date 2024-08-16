@@ -64,9 +64,6 @@ const PasswordReset = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton}>
-        <FontAwesome name="arrow-left" size={24} color="black" />
-      </TouchableOpacity>
       <Image
         source={require('../../assets/OneVoiceLogo.png')}
         style={styles.logo}
