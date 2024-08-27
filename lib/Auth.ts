@@ -2,7 +2,6 @@
 import {Alert, Platform} from 'react-native';
 import {supabase} from './supabase';
 import {makeRedirectUri} from 'expo-auth-session';
-import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
 import * as QueryParams from 'expo-auth-session/build/QueryParams';
 // toDo: uncomment or revert file
