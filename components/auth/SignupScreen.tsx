@@ -98,7 +98,9 @@ export default function SignupScreen() {
           <AuthHeader />
           <View style={styles.container}>
             <View style={styles.signupFieldsContainer}>
-              <TextSemiBold style={styles.textCreate}>Create an Account</TextSemiBold>
+              <TextSemiBold style={styles.textCreate}>
+                Create an Account
+              </TextSemiBold>
               <View>
                 <TextInput
                   style={[
@@ -234,8 +236,8 @@ export default function SignupScreen() {
               </View>
               <Text style={[styles.textSmall, styles.textGrey]}>
                 Already have an account?{' '}
-                <Link href={'/login'} asChild>
-                  <Text style={styles.linkText}>Log in</Text>
+                <Link href={'/login'} style={styles.linkText}>
+                  Log in
                 </Link>
               </Text>
             </View>

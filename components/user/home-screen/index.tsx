@@ -54,6 +54,7 @@ export default function HomeScreen() {
     if (popupRef.current) {
       popupRef.current.scrollTo(CLOSED_POSITION);
     }
+    // reroute to main to trigger sync
   };
 
   useFocusEffect(
@@ -160,7 +161,7 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={[styles.button, styles.button_border]}
               onPress={() => {
-                router.push('/settings' as any);
+                router.push('/profile/settings' as any);
               }}
             >
               <Text>Settings (WIP)</Text>
@@ -170,7 +171,7 @@ export default function HomeScreen() {
         <Button title="Create" onPress={() => router.push('/text-entry')} />
         <Button
           title="Settings"
-          onPress={() => router.push('/settings' as any)}
+          onPress={() => router.push('/profile/settings' as any)}
         />
       </ImageBackground>
     </SafeAreaView>
@@ -183,6 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 20,
   },
   imageBg: {
     flex: 1,

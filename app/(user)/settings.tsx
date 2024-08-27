@@ -12,7 +12,7 @@ import useFetchUser from '@/lib/hooks/useFetchUser';
 
 export default function SettingsPage() {
   const user = useFetchUser();
-  const email = (user as {email: string})?.email;
+  const email = (user as unknown as {email: string})?.email;
 
   return (
     <ScrollView>

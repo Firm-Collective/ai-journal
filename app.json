@@ -14,9 +14,21 @@
     },
     "ios": {
       "supportsTablet": true,
-      "associatedDomains": ["applinks:firmcollective.org"]
+      "infoPlist": {
+        "SKAdNetworkItems": [
+          {
+            "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
+          },
+          {
+            "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
+          }
+        ]
+      },
+      "associatedDomains": ["applinks:firmcollective.org"],
+      "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
     },
     "android": {
+      "permissions": ["android.permission.INTERNET"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -73,10 +85,12 @@
         "projectId": "b6865e23-e26f-40d9-8b77-d42d219c18c7"
       }
     },
-    "runtimeVersion": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "updates": {
       "url": "https://u.expo.dev/b6865e23-e26f-40d9-8b77-d42d219c18c7"
     },
-    "owner": "one-voice-journal"
+    "jsEngine": "hermes"
   }
 }

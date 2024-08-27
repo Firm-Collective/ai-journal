@@ -1,8 +1,8 @@
-import { useAuth } from '@/providers/AuthProvider';
-import { Redirect, Stack } from 'expo-router';
+import {useAuth} from '@/providers/AuthProvider';
+import {Redirect, Stack} from 'expo-router';
 
 export default function AuthLayout() {
-  const { session } = useAuth();
+  const {session} = useAuth();
 
   // if user is logged in, redirect to home screen
   if (session) {
@@ -11,10 +11,9 @@ export default function AuthLayout() {
 
   return (
     <Stack>
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="signup" options={{ headerShown: false }} />
-      <Stack.Screen name="email-verification" options={{ headerShown: false }} />
-      <Stack.Screen name="tell-us-about-yourself" options={{ headerShown: false }} />
+      <Stack.Screen name="login" options={{headerShown: false}} />
+      <Stack.Screen name="signup" options={{headerShown: false}} />
+      <Stack.Screen name="email-verification" options={{headerShown: false}} />
     </Stack>
   );
 }
