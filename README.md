@@ -73,24 +73,15 @@ Before making any changes, create a new branch:
 ## Creating a Pull Request Once you've made your changes and committed them to your branch
 
 ### Running the Project
-1. **Start the Expo server:**
-    ```sh
-    npm start
-    ```
 
-2. **Run on iOS:**
+1. **Run on iOS:**
     ```sh
     npm run ios
     ```
 
-3. **Run on Android:**
+2. **Run on Android:**
     ```sh
     npm run android
-    ```
-
-4. **Run on Web:**
-    ```sh
-    npm run web
     ```
 
 ### Additional Commands
