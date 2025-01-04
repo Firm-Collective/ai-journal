@@ -13,17 +13,19 @@ const formatDate = (date: Date, layout: 'vertical' | 'horizontal') => {
     : { weekday: 'long', month: 'long', day: 'numeric' }; // Monday, August 26
 
   const formattedDate = new Date(date).toLocaleDateString('en-US', options);
-  if (layout === 'horizontal'){
+  
+  if (layout === 'horizontal') {
     return formattedDate;
   }
-  // Split the formatted date into parts
+
+  // Split the formatted date into parts for vertical layout
   const [weekday, day] = formattedDate.split(' ');
-  return { weekday, day };
+  return `${weekday} ${day}`;  // Return a formatted string instead of an object
 };
 
 const Post = ({ id, date, title, imagePath, content, tags, onOpen }: IJournalEntry & { onOpen: () => void }) => {
   const { layout } = useLayout(); // Access the selected layout
-  const { weekday, day } = formatDate(date, layout); // Destructure formatted date
+  const dateString = formatDate(date, layout); // Get formatted date as string
 
   return (
     <Card containerStyle={styles.card}>
@@ -31,8 +33,8 @@ const Post = ({ id, date, title, imagePath, content, tags, onOpen }: IJournalEnt
         <View style={styles.verticalLayout}>
           <View style={styles.dateContainer}>
             {/* Display weekday above day */}
-            <Text style={styles.weekday}>{weekday}</Text>
-            <Text style={styles.boldDate}>{day}</Text>
+            <Text style={styles.weekday}>{dateString.split(' ')[0]}</Text>
+            <Text style={styles.boldDate}>{dateString.split(' ')[1]}</Text>
           </View>
 
           <View style={styles.verticalLayoutSubcontainer}>
@@ -53,7 +55,7 @@ const Post = ({ id, date, title, imagePath, content, tags, onOpen }: IJournalEnt
       ) : (
         <View style={styles.horizontalLayout}>
           <View style={styles.cardTop}>
-            <Text style={styles.date}>{formatDate(date, layout)}</Text>
+            <Text style={styles.date}>{dateString}</Text>
             <TouchableOpacity onPress={onOpen}>
               <Image
                 resizeMode="contain"
@@ -75,6 +77,7 @@ const Post = ({ id, date, title, imagePath, content, tags, onOpen }: IJournalEnt
     </Card>
   );
 };
+
 
 const styles = StyleSheet.create({
   card: {
@@ -198,50 +201,5 @@ export default Post;
 
 
 
-
-// export default function Post({
-//   id,
-//   date,
-//   title,
-//   imagePath,
-//   content,
-//   tags,
-//   onOpen,
-// }: IJournalEntry & {
-//   onOpen: () => void;
-// }) {
-//   return (
-//     <Card containerStyle={styles.card}>
-//       <View style={styles.cardTop}>
-//         <Text style={styles.date}>{dateToStringConverter(date)}</Text>
-//         <View>
-//           <TouchableOpacity onPress={onOpen}>
-//             <Image
-//               resizeMode="contain"
-//               source={require('../../../assets/images/home-screen/more-icon.png')}
-//             />
-//           </TouchableOpacity>
-//         </View>
-//       </View>
-//       <TextSemiBold style={styles.title}>{title}</TextSemiBold>
-//       <View style={styles.contentContainer}>
-//         {/*
-//         <Image
-//           style={styles.singleImage}
-//           source={require('../../../assets/images/mockup-post-img.jpeg')}
-//         />
-//         */}
-//         <Text style={styles.content}>
-//           {content.substring(0, CONTENT_LENGTH)}
-//         </Text>
-//       </View>
-//       <View style={styles.tagsContainer}>
-//         {tags.map((tag, i) => (
-//           <Tag key={i} name={tag} />
-//         ))}
-//       </View>
-//     </Card>
-//   );
-// }
 
 
