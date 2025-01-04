@@ -19,7 +19,8 @@ import {Post as PostFunctions} from '@/lib/watermelon/post';
 import {router} from 'expo-router';
 import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
 import {Text} from '@/components/StyledText';
-
+import Navbar from '@/components/Navbar';
+import { LayoutProvider } from '@/components/context/LayoutContext';
 export default function HomeScreen() {
   const {isConnected} = useNet();
   const [isSyncing, setIsSyncing] = useState(false);
@@ -93,7 +94,10 @@ export default function HomeScreen() {
   };
 
   return (
+    <LayoutProvider>
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
+      {/* Import navbar */}
+      <Navbar/>
       <ImageBackground
         style={styles.imageBg}
         resizeMode="cover"
@@ -175,6 +179,7 @@ export default function HomeScreen() {
         />
       </ImageBackground>
     </SafeAreaView>
+    </LayoutProvider>
   );
 }
 
