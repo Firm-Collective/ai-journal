@@ -3,7 +3,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StatusBar} from 'react-native';
 import {DefaultTheme, ThemeProvider} from '@react-navigation/native';
 import {useFonts} from 'expo-font';
-import {Stack, useRouter} from 'expo-router';
+import {Href, Stack, useRouter} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
 import 'react-native-reanimated';
@@ -61,6 +61,19 @@ function RootLayoutNav() {
 
       if (path === 'login') {
         router.push('/login');
+      } else if (path === '--/reset-pass') {
+        const queryParams = new URLSearchParams(url.search);
+        const accessToken = queryParams.get('access_token');
+        const refreshToken = queryParams.get('refresh_token');
+        if (accessToken && refreshToken) {
+          const url = `/(auth)/reset-pass?access_token=${encodeURIComponent(
+            accessToken
+          )}&refresh_token=${encodeURIComponent(refreshToken)}`;
+
+          router.push(url as Href<string>);
+        } else {
+          console.error('Access token or refresh token is missing.');
+        }
       }
     };
 
