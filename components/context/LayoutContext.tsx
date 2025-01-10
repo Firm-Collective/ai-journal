@@ -12,11 +12,8 @@ const LayoutContext = createContext<LayoutContextType | undefined>(undefined);
 
 // Provide the context to children
 export const LayoutProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-<<<<<<< Updated upstream
-  const [layout, setLayout] = useState<'horizontal' | 'vertical' | null>('horizontal');
-=======
+
   const [layout, setLayout] = useState<'horizontal' | 'vertical'>('horizontal');
->>>>>>> Stashed changes
 
   return (
     <LayoutContext.Provider value={{ layout, setLayout }}>
