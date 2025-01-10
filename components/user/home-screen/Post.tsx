@@ -1,4 +1,4 @@
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Card } from '@rneui/themed';
 import { Text, TextSemiBold } from '@/components/StyledText';
 import Tag from './Tag';
@@ -28,7 +28,9 @@ const Post = ({ id, date, title, imagePath, content, tags, onOpen }: IJournalEnt
   const dateString = formatDate(date, layout); // Get formatted date as string
 
   return (
-    <Card containerStyle={styles.card}>
+    <SafeAreaView>
+
+    {/* <Card containerStyle={styles.card}> */}
       {layout === 'vertical' ? (
         <View style={styles.verticalLayout}>
           <View style={styles.dateContainer}>
@@ -74,7 +76,8 @@ const Post = ({ id, date, title, imagePath, content, tags, onOpen }: IJournalEnt
           </View>
         </View>
       )}
-    </Card>
+    {/* </Card> */}
+    </SafeAreaView>
   );
 };
 
@@ -82,12 +85,10 @@ const Post = ({ id, date, title, imagePath, content, tags, onOpen }: IJournalEnt
 const styles = StyleSheet.create({
   card: {
     borderWidth: 0,
-    borderRadius: 8,
-    backgroundColor: '#fff',
     paddingVertical: 14,
     paddingHorizontal: 15,
-    marginBottom: 5,
-    shadowColor: 'rgba(0, 0, 0, 0.6)',
+    margin: 0, 
+    shadowColor: 'rgba(0, 0, 0, 0)',
     //ios
     shadowOffset: {
       width: 0,
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     //android
     elevation: 10,
+    backgroundColor: 'transparent'
   },
   cardTop: {
     flex: 1,
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   verticalTitle: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 600,
     marginBottom: 10,
   },
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   content: {
-    fontSize: 12,
+    fontSize: 13,
   },
   singleImage: {
     borderRadius: 8,
@@ -173,6 +175,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     gap: 20,
+    borderWidth: 0,
+    paddingVertical: 14,
+    paddingHorizontal: 15,
+    shadowColor: 'rgba(0, 0, 0, 0)',
+    //ios
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
+    //android
+    elevation: 10,
+    backgroundColor: 'white',
   },
   verticalLayoutSubcontainer: {
     flex: 4,
@@ -192,8 +208,29 @@ const styles = StyleSheet.create({
     fontSize: 14,  // You can adjust this size as needed
   },
   horizontalLayout: {
-    // styling for horizontal layout
-  }
+    marginTop: 20,
+    marginHorizontal: 15,
+    borderWidth: 0,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    paddingVertical: 14,
+    paddingHorizontal: 15,
+    marginBottom: 5,
+    shadowColor: 'rgba(0, 0, 0, 0.6)',
+    //ios
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
+    //android
+    elevation: 10,
+    
+
+
+  },
+  
 });
 
 export default Post;

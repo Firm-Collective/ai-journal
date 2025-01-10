@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     width: '100%', // Ensures full width
     marginRight: 30,
     marginTop: 30,
+    backgroundColor: 'transparent',
   },
   subcontainer: {
     width: 95, // Adjust width as needed
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     alignSelf: 'flex-end',
+
   },
   button: {
     justifyContent: 'center',
