@@ -21,12 +21,9 @@ import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
 import {Text} from '@/components/StyledText';
 import Navbar from '@/components/Navbar';
 import { LayoutProvider } from '@/components/context/LayoutContext';
-<<<<<<< Updated upstream
-=======
 import { useLayout } from '@/components/context/LayoutContext';
 
 
->>>>>>> Stashed changes
 export default function HomeScreen() {
   const { layout } = useLayout();
   const {isConnected} = useNet();
@@ -104,88 +101,6 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
       {/* Import navbar */}
       <Navbar/>
-<<<<<<< Updated upstream
-      <ImageBackground
-        style={styles.imageBg}
-        resizeMode="cover"
-        source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
-      >
-        <FlatList
-          data={journalEntries}
-          renderItem={({item}) => (
-            <Post
-              id={item.id}
-              date={item.date}
-              title={item.title}
-              content={item.content}
-              tags={item.tags}
-              onOpen={() => openPopupMenu(item.id)}
-            />
-          )}
-          style={styles.list}
-          keyExtractor={item => item.id}
-          refreshing={isLoading}
-          onRefresh={handleRefresh}
-        />
-
-        {/* Popup menu to edit, delete selected post */}
-        <Popup ref={popupRef}>
-          <View style={styles.buttons_container}>
-            <TouchableOpacity
-              style={[styles.button, styles.button_border]}
-              onPress={() => {
-                if (selectedPostId) {
-                  handleEdit(selectedPostId);
-                }
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/home-screen/Pencil.png')}
-              />
-              <Text>Edit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.button_border]}>
-              <Image
-                source={require('../../../assets/images/home-screen/Bookmark.png')}
-              />
-              <Text>Mark As Favourite</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.button_border]}>
-              <Image
-                source={require('../../../assets/images/home-screen/Price Tag.png')}
-              />
-              <Text>Edit Tag</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                if (selectedPostId) {
-                  handleDelete(selectedPostId);
-                }
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/home-screen/Delete.png')}
-              />
-              <Text style={{color: '#F34848'}}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.button_border]}
-              onPress={() => {
-                router.push('/profile/settings' as any);
-              }}
-            >
-              <Text>Settings (WIP)</Text>
-            </TouchableOpacity>
-          </View>
-        </Popup>
-        <Button title="Create" onPress={() => router.push('/text-entry')} />
-        <Button
-          title="Settings"
-          onPress={() => router.push('/profile/settings' as any)}
-        />
-      </ImageBackground>
-=======
       {
         layout === 'horizontal' ? (
           <ImageBackground
@@ -356,8 +271,6 @@ export default function HomeScreen() {
       
       
   
-     
->>>>>>> Stashed changes
     </SafeAreaView>
   );
 }
