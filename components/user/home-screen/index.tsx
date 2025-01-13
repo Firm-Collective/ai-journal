@@ -19,8 +19,13 @@ import {Post as PostFunctions} from '@/lib/watermelon/post';
 import {router} from 'expo-router';
 import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
 import {Text} from '@/components/StyledText';
+import Navbar from '@/components/Navbar';
+import { LayoutProvider } from '@/components/context/LayoutContext';
+import { useLayout } from '@/components/context/LayoutContext';
+
 
 export default function HomeScreen() {
+  const { layout } = useLayout();
   const {isConnected} = useNet();
   const [isSyncing, setIsSyncing] = useState(false);
   const {
@@ -94,86 +99,178 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
-      <ImageBackground
-        style={styles.imageBg}
-        resizeMode="cover"
-        source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
-      >
-        <FlatList
-          data={journalEntries}
-          renderItem={({item}) => (
-            <Post
-              id={item.id}
-              date={item.date}
-              title={item.title}
-              content={item.content}
-              tags={item.tags}
-              onOpen={() => openPopupMenu(item.id)}
-            />
-          )}
-          style={styles.list}
-          keyExtractor={item => item.id}
-          refreshing={isLoading}
-          onRefresh={handleRefresh}
-        />
+      {/* Import navbar */}
+      <Navbar/>
+      {
+        layout === 'horizontal' ? (
+          <ImageBackground
+          style={styles.imageBg}
+          resizeMode="cover"
+          source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
+          >
+          {/* Start of lists */}
+          <FlatList
+            data={journalEntries}
+            renderItem={({ item }) => (
+              <Post
+                id={item.id}
+                date={item.date}
+                title={item.title}
+                content={item.content}
+                tags={item.tags}
+                onOpen={() => openPopupMenu(item.id)}
+              />
+            )}
+            style={styles.list}
+            keyExtractor={(item) => item.id}
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
+          />
+  
+          {/* Popup menu to edit, delete selected post */}
+          <Popup ref={popupRef}>
+            <View style={styles.buttons_container}>
+              <TouchableOpacity
+                style={[styles.button, styles.button_border]}
+                onPress={() => {
+                  if (selectedPostId) {
+                    handleEdit(selectedPostId);
+                  }
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/home-screen/Pencil.png')}
+                />
+                <Text>Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button_border]}>
+                <Image
+                  source={require('../../../assets/images/home-screen/Bookmark.png')}
+                />
+                <Text>Mark As Favourite</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button_border]}>
+                <Image
+                  source={require('../../../assets/images/home-screen/Price Tag.png')}
+                />
+                <Text>Edit Tag</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  if (selectedPostId) {
+                    handleDelete(selectedPostId);
+                  }
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/home-screen/Delete.png')}
+                />
+                <Text style={{color: '#F34848'}}>Delete</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.button_border]}
+                onPress={() => {
+                  router.push('/profile/settings' as any);
+                }}
+              >
+                <Text>Settings (WIP)</Text>
+              </TouchableOpacity>
+            </View>
+          </Popup>
+          <Button title="Create" onPress={() => router.push('/text-entry')} />
+          <Button
+            title="Settings"
+            onPress={() => router.push('/profile/settings' as any)}
+          />
+        </ImageBackground>
 
-        {/* Popup menu to edit, delete selected post */}
-        <Popup ref={popupRef}>
-          <View style={styles.buttons_container}>
-            <TouchableOpacity
-              style={[styles.button, styles.button_border]}
-              onPress={() => {
-                if (selectedPostId) {
-                  handleEdit(selectedPostId);
-                }
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/home-screen/Pencil.png')}
+        ) : (
+          <ImageBackground
+          style={styles.imageBg}
+          resizeMode="cover"
+          source={require('../../../assets/images/home-screen/white-bg.jpg')}
+          >
+          {/* Start of lists */}
+        <FlatList
+            data={journalEntries}
+            renderItem={({ item }) => (
+              <Post
+                id={item.id}
+                date={item.date}
+                title={item.title}
+                content={item.content}
+                tags={item.tags}
+                onOpen={() => openPopupMenu(item.id)}
               />
-              <Text>Edit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.button_border]}>
-              <Image
-                source={require('../../../assets/images/home-screen/Bookmark.png')}
-              />
-              <Text>Mark As Favourite</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.button_border]}>
-              <Image
-                source={require('../../../assets/images/home-screen/Price Tag.png')}
-              />
-              <Text>Edit Tag</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                if (selectedPostId) {
-                  handleDelete(selectedPostId);
-                }
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/home-screen/Delete.png')}
-              />
-              <Text style={{color: '#F34848'}}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.button_border]}
-              onPress={() => {
-                router.push('/profile/settings' as any);
-              }}
-            >
-              <Text>Settings (WIP)</Text>
-            </TouchableOpacity>
-          </View>
-        </Popup>
-        <Button title="Create" onPress={() => router.push('/text-entry')} />
-        <Button
-          title="Settings"
-          onPress={() => router.push('/profile/settings' as any)}
-        />
-      </ImageBackground>
+            )}
+            style={styles.list}
+            keyExtractor={(item) => item.id}
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
+          />
+          {/* Popup menu to edit, delete selected post */}
+          <Popup ref={popupRef}>
+            <View style={styles.buttons_container}>
+              <TouchableOpacity
+                style={[styles.button, styles.button_border]}
+                onPress={() => {
+                  if (selectedPostId) {
+                    handleEdit(selectedPostId);
+                  }
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/home-screen/Pencil.png')}
+                />
+                <Text>Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button_border]}>
+                <Image
+                  source={require('../../../assets/images/home-screen/Bookmark.png')}
+                />
+                <Text>Mark As Favourite</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button_border]}>
+                <Image
+                  source={require('../../../assets/images/home-screen/Price Tag.png')}
+                />
+                <Text>Edit Tag</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  if (selectedPostId) {
+                    handleDelete(selectedPostId);
+                  }
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/home-screen/Delete.png')}
+                />
+                <Text style={{color: '#F34848'}}>Delete</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.button_border]}
+                onPress={() => {
+                  router.push('/profile/settings' as any);
+                }}
+              >
+                <Text>Settings (WIP)</Text>
+              </TouchableOpacity>
+            </View>
+          </Popup>
+          <Button title="Create" onPress={() => router.push('/text-entry')} />
+          <Button
+            title="Settings"
+            onPress={() => router.push('/profile/settings' as any)}
+          />
+        </ImageBackground>
+        )
+      }
+      
+      
+  
     </SafeAreaView>
   );
 }
@@ -190,6 +287,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+
   },
   list: {
     flex: 1,
