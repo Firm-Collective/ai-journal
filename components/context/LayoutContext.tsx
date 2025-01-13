@@ -12,7 +12,6 @@ const LayoutContext = createContext<LayoutContextType | undefined>(undefined);
 
 // Provide the context to children
 export const LayoutProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-
   const [layout, setLayout] = useState<'horizontal' | 'vertical'>('horizontal');
 
   return (

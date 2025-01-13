@@ -118,7 +118,6 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
       {/* Import navbar */}
       <Navbar/>
-
       {
         layout === 'horizontal' ? (
           <ImageBackground
