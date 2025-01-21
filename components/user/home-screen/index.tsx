@@ -104,6 +104,7 @@ export default function HomeScreen() {
   const [sections, setSections] = useState([]);
   useEffect(() => {
     const groupedEntries = initialJournalEntries.reduce((acc, entry) => {
+      console.log("Entry Date:", entry.date);
       const date = entry.date ? new Date(entry.date) : new Date();
       if (isNaN(date.getTime())) {
         console.error(`Invalid date for entry: ${entry.id}`);
@@ -119,8 +120,7 @@ export default function HomeScreen() {
     const formattedSections = Object.entries(groupedEntries).map(([title, data]) => ({ title, data }));
     setSections(formattedSections);
   }, [initialJournalEntries]);
-  
-
+ 
   return (
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
       {/* Import navbar */}
