@@ -8,6 +8,7 @@ import {
   Image,
   View,
   Button,
+  SectionList,
 } from 'react-native';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
@@ -37,8 +38,10 @@ export default function HomeScreen() {
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("Initial Journal Entries Updated:", initialJournalEntries);
     setJournalEntries(initialJournalEntries);
   }, [initialJournalEntries]);
+  
 
   const handleRefresh = () => {
     refreshJournalEntries();
@@ -97,6 +100,27 @@ export default function HomeScreen() {
     }
   };
 
+  // Create the date layout
+  const [sections, setSections] = useState([]);
+  useEffect(() => {
+    const groupedEntries = initialJournalEntries.reduce((acc, entry) => {
+      const date = entry.date ? new Date(entry.date) : new Date();
+      if (isNaN(date.getTime())) {
+        console.error(`Invalid date for entry: ${entry.id}`);
+        return acc;
+      }
+      const monthYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+      if (!acc[monthYear]) {
+        acc[monthYear] = [];
+      }
+      acc[monthYear].push(entry);
+      return acc;
+    }, {});
+    const formattedSections = Object.entries(groupedEntries).map(([title, data]) => ({ title, data }));
+    setSections(formattedSections);
+  }, [initialJournalEntries]);
+  
+
   return (
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
       {/* Import navbar */}
@@ -109,22 +133,27 @@ export default function HomeScreen() {
           source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
           >
           {/* Start of lists */}
-          <FlatList
-            data={journalEntries}
-            renderItem={({ item }) => (
-              <Post
-                id={item.id}
-                date={item.date}
-                title={item.title}
-                content={item.content}
-                tags={item.tags}
-                onOpen={() => openPopupMenu(item.id)}
-              />
-            )}
-            style={styles.list}
-            keyExtractor={(item) => item.id}
-            refreshing={isLoading}
-            onRefresh={handleRefresh}
+          <SectionList
+              sections={sections}
+              renderItem={({ item }) => (
+                <Post
+                  id={item.id}
+                  date={item.date}
+                  title={item.title}
+                  content={item.content}
+                  tags={item.tags}
+                  onOpen={() => openPopupMenu(item.id)}
+                />
+              )}
+              renderSectionHeader={({ section: { title } }) => (
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionHeaderText}>{title}</Text>
+                </View>
+              )}
+              style={styles.list}
+              keyExtractor={(item) => item.id}
+              refreshing={isLoading}
+              onRefresh={handleRefresh}
           />
   
           {/* Popup menu to edit, delete selected post */}
@@ -192,23 +221,29 @@ export default function HomeScreen() {
           source={require('../../../assets/images/home-screen/white-bg.jpg')}
           >
           {/* Start of lists */}
-        <FlatList
-            data={journalEntries}
-            renderItem={({ item }) => (
-              <Post
-                id={item.id}
-                date={item.date}
-                title={item.title}
-                content={item.content}
-                tags={item.tags}
-                onOpen={() => openPopupMenu(item.id)}
-              />
-            )}
-            style={styles.list}
-            keyExtractor={(item) => item.id}
-            refreshing={isLoading}
-            onRefresh={handleRefresh}
+          <SectionList
+              sections={sections}
+              renderItem={({ item }) => (
+                <Post
+                  id={item.id}
+                  date={item.date}
+                  title={item.title}
+                  content={item.content}
+                  tags={item.tags}
+                  onOpen={() => openPopupMenu(item.id)}
+                />
+              )}
+              renderSectionHeader={({ section: { title } }) => (
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionHeaderText}>{title}</Text>
+                </View>
+              )}
+              style={styles.list}
+              keyExtractor={(item) => item.id}
+              refreshing={isLoading}
+              onRefresh={handleRefresh}
           />
+  
           {/* Popup menu to edit, delete selected post */}
           <Popup ref={popupRef}>
             <View style={styles.buttons_container}>
@@ -306,5 +341,15 @@ const styles = StyleSheet.create({
   button_border: {
     borderBottomWidth: 1.5,
     borderBlockColor: '#ECEAEA',
+  },
+  sectionHeader: {
+    padding: 6,
+    marginTop: 22,
+    marginLeft: 5
+  },
+  sectionHeaderText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#62239B',
   },
 });
