@@ -6,13 +6,56 @@ import {Post} from '@/lib/watermelon/post';
 import {database} from '@/lib/watermelon/database';
 import {useAuth} from '@/providers/AuthProvider';
 import {useRouter} from 'expo-router';
+import TagSelectionModal from './TagSelectionModal';
+import PrivacySelectionModal from './PrivacySelectionModal';
+import {TagOption, PrivacyOption} from './types';
+
+/**
+ * Journal entry creation screen that allows users to:
+ * - Write journal entries
+ * - Add multiple tags
+ * - Set privacy settings
+ */
 
 const TextEntryScreen = () => {
+  // State management for form inputs and modals
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');
+  const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
+  const [selectedPrivacy, setSelectedPrivacy] = useState<PrivacyOption | null>(null);
+  const [isTagModalVisible, setIsTagModalVisible] = useState(false);
+  const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
   const {session} = useAuth();
   const router = useRouter();
 
+  /**
+   * Handles tag selection/deselection
+   * @param tag - The tag to toggle
+   */
+  const handleSaveButtonClick = (event: any) => {
+    event.preventDefault();
+    setIsTagModalVisible(true);
+  };
+
+  const handleTagSelect = (tag: TagOption) => {
+    setSelectedTags(prevTags => {
+      if (prevTags.includes(tag)) {
+        return prevTags.filter(t => t !== tag);
+      } else {
+        return [...prevTags, tag];
+      }
+    });
+  };
+
+  const handleTagNext = () => {
+    setIsTagModalVisible(false);
+    setIsPrivacyModalVisible(true);
+  };
+
+  /**
+   * Handles final submission of the journal entry
+   * Validates input, saves to database, and handles errors
+   */
   const handleSubmit = async () => {
     try {
       await Post.createPost(database, {
@@ -24,6 +67,9 @@ const TextEntryScreen = () => {
       // reset input values
       setTitle('');
       setText('');
+      setSelectedTags([]);
+      setSelectedPrivacy(null);
+      setIsPrivacyModalVisible(false);
 
       // re-route to home page after successful post creation
       router.push('/');
@@ -35,7 +81,7 @@ const TextEntryScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={handleSubmit}>
+        <TouchableOpacity onPress={handleSaveButtonClick}>
           <Text style={styles.saveText}>Save</Text>
         </TouchableOpacity>
       </View>
@@ -57,14 +103,21 @@ const TextEntryScreen = () => {
         />
       </View>
 
-      {/* Button to see all posts within local storage
-      <Button
-        title="See all Posts in Database"
-        onPress={() => {
-          logAllPosts(database);
-        }}
+      <TagSelectionModal
+        visible={isTagModalVisible}
+        selectedTags={selectedTags}
+        onSelectTag={handleTagSelect}
+        onNext={handleTagNext}
+        onClose={() => setIsTagModalVisible(false)}
       />
-      */}
+
+      <PrivacySelectionModal
+        visible={isPrivacyModalVisible}
+        selectedPrivacy={selectedPrivacy}
+        onSelectPrivacy={setSelectedPrivacy}
+        onSubmit={handleSubmit}
+        onClose={() => setIsPrivacyModalVisible(false)}
+      />
     </View>
   );
 };
