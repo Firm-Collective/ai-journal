@@ -24,11 +24,15 @@
           }
         ]
       },
-      "associatedDomains": ["applinks:firmcollective.org"],
+      "associatedDomains": [
+        "applinks:firmcollective.org"
+      ],
       "bundleIdentifier": "com.firmcollective.OneVoiceEcho"
     },
     "android": {
-      "permissions": ["android.permission.INTERNET"],
+      "permissions": [
+        "android.permission.INTERNET"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -44,7 +48,10 @@
               "pathPrefix": "/login"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "package": "com.firmcollective.OneVoiceEcho"
@@ -62,7 +69,10 @@
             "extraPods": [
               {
                 "name": "simdjson",
-                "configurations": ["Debug", "Release"],
+                "configurations": [
+                  "Debug",
+                  "Release"
+                ],
                 "path": "../node_modules/@nozbe/simdjson",
                 "modular_headers": true
               }
@@ -72,7 +82,8 @@
       ],
       "expo-router",
       "expo-secure-store",
-      "expo-build-properties"
+      "expo-build-properties",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
