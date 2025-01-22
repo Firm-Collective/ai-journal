@@ -1,14 +1,6 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {
-  StyleSheet,
-  FlatList,
-  ImageBackground,
-  TouchableOpacity,
-  Image,
-  View,
-  Button,
-} from 'react-native';
+import {StyleSheet,FlatList,ImageBackground,TouchableOpacity,Image,View,Button,} from 'react-native';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
 import {useNet} from '@/providers/NetworkProvider';
@@ -19,6 +11,7 @@ import {Post as PostFunctions} from '@/lib/watermelon/post';
 import {router} from 'expo-router';
 import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
 import {Text} from '@/components/StyledText';
+import { TagEdit } from './TagEdit';
 
 export default function HomeScreen() {
   const {isConnected} = useNet();
@@ -30,6 +23,7 @@ export default function HomeScreen() {
   } = useJournalEntries();
   const [journalEntries, setJournalEntries] = useState(initialJournalEntries);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+  const [showTagEdit, setShowTagEdit] = useState(false);
 
   useEffect(() => {
     setJournalEntries(initialJournalEntries);
@@ -54,13 +48,22 @@ export default function HomeScreen() {
     if (popupRef.current) {
       popupRef.current.scrollTo(CLOSED_POSITION);
     }
-    // reroute to main to trigger sync
+  };
+
+  const handleTagSave = async (selectedTags: number[]) => {
+    if (selectedPostId) {
+      // TODO: 实现保存标签的逻辑
+      console.log('Saving tags for post:', selectedPostId, selectedTags);
+      // await PostFunctions.updateTags(database, selectedPostId, selectedTags);
+    }
+    setShowTagEdit(false);
+    if (popupRef.current) {
+      popupRef.current.scrollTo(CLOSED_POSITION);
+    }
   };
 
   useFocusEffect(
     useCallback(() => {
-      // makes sure there is no syncing concurrency issues
-
       const checkConnectionAndSync = async () => {
         handleRefresh();
         if (isConnected && !isSyncing) {
@@ -89,6 +92,7 @@ export default function HomeScreen() {
     if (popupRef.current) {
       popupRef.current.scrollTo(SCROLL_DESTINATION);
       setSelectedPostId(id);
+      setShowTagEdit(false); // Reset tag edit state when opening popup
     }
   };
 
@@ -117,55 +121,67 @@ export default function HomeScreen() {
           onRefresh={handleRefresh}
         />
 
-        {/* Popup menu to edit, delete selected post */}
         <Popup ref={popupRef}>
           <View style={styles.buttons_container}>
-            <TouchableOpacity
-              style={[styles.button, styles.button_border]}
-              onPress={() => {
-                if (selectedPostId) {
-                  handleEdit(selectedPostId);
-                }
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/home-screen/Pencil.png')}
+            {!showTagEdit ? (
+              <>
+                <TouchableOpacity
+                  style={[styles.button, styles.button_border]}
+                  onPress={() => {
+                    if (selectedPostId) {
+                      handleEdit(selectedPostId);
+                    }
+                  }}
+                >
+                  <Image
+                    source={require('../../../assets/images/home-screen/Pencil.png')}
+                  />
+                  <Text>Edit</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.button_border]}>
+                  <Image
+                    source={require('../../../assets/images/home-screen/Bookmark.png')}
+                  />
+                  <Text>Mark As Favourite</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={[styles.button, styles.button_border]}
+                  onPress={() => setShowTagEdit(true)}
+                >
+                  <Image
+                    source={require('../../../assets/images/home-screen/Price Tag.png')}
+                  />
+                  <Text>Edit Tag</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    if (selectedPostId) {
+                      handleDelete(selectedPostId);
+                    }
+                  }}
+                >
+                  <Image
+                    source={require('../../../assets/images/home-screen/Delete.png')}
+                  />
+                  <Text style={{color: '#F34848'}}>Delete</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.button, styles.button_border]}
+                  onPress={() => {
+                    router.push('/profile/settings' as any);
+                  }}
+                >
+                  <Text>Settings (WIP)</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <TagEdit
+                onSave={handleTagSave}
+                onClose={() => setShowTagEdit(false)}
+                initialTags={[]} // TODO: 传入当前文章的标签
               />
-              <Text>Edit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.button_border]}>
-              <Image
-                source={require('../../../assets/images/home-screen/Bookmark.png')}
-              />
-              <Text>Mark As Favourite</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.button_border]}>
-              <Image
-                source={require('../../../assets/images/home-screen/Price Tag.png')}
-              />
-              <Text>Edit Tag</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                if (selectedPostId) {
-                  handleDelete(selectedPostId);
-                }
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/home-screen/Delete.png')}
-              />
-              <Text style={{color: '#F34848'}}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.button_border]}
-              onPress={() => {
-                router.push('/profile/settings' as any);
-              }}
-            >
-              <Text>Settings (WIP)</Text>
-            </TouchableOpacity>
+            )}
           </View>
         </Popup>
         <Button title="Create" onPress={() => router.push('/text-entry')} />
@@ -194,7 +210,6 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
   },
-
   buttons_container: {
     flex: 1,
     flexDirection: 'column',
