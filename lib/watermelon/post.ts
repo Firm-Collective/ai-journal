@@ -10,6 +10,7 @@ export class Post extends Model {
   @text('text') text!: string;
   @date('created_at') createdAt!: Date;
   @text('user') user!: string;
+  @date('date') date!: Date;
 
   // Method to create a new post
   static async createPost(
@@ -18,6 +19,7 @@ export class Post extends Model {
       title: string;
       text: string;
       user: string;
+      date: string;
     }
   ): Promise<Post> {
     return await database.write(async () => {
@@ -26,6 +28,7 @@ export class Post extends Model {
         post.text = postData.text;
         post.user = postData.user;
         post.createdAt = new Date();
+        post.date = new Date(postData.date);
       });
     });
   }

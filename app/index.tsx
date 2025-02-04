@@ -18,6 +18,6 @@ export default function IndexPage() {
     return <WelcomeScreen />;
   }
 
-  // return <Redirect href={'/home'} />;
-  return <Home />;
+  return <Redirect href={'/(user)/home'} />;
+  // return <Home />;
 }

@@ -64,6 +64,7 @@ export async function syncWithServer(database: Database): Promise<void> {
             title: post.title,
             text: post.text,
             user: post.user,
+            date: post.date,
           })),
           // TODO: some posts could have been deleted from supabase, need to delete them from WatermelonDB too
           deleted: [],
