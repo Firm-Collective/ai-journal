@@ -11,9 +11,7 @@ import { useJournalEntries } from '@/providers/JournalEntriesProvider';
 
 export default function SearchButton() {
   const [searchText, setSearchText] = useState('');
-  const [isSearching, setIsSearching] = useState(true);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-
   // Get journal entries from context
   const { journalEntries: initialJournalEntries } = useJournalEntries();
   const [filteredEntries, setFilteredEntries] = useState(initialJournalEntries);
@@ -59,13 +57,13 @@ export default function SearchButton() {
       <View style={styles.searchBarContainer}>
         <View style={styles.inputWrapper}>
           <TextInput
-            placeholder="Search notes by title or content..."
+            placeholder="Search notes.."
             style={styles.input}
             value={searchText}
             onChangeText={(text) => {
               setSearchText(text);
-              setIsSearching(text.length > 0);
             }}
+            autoFocus
           />
           <TouchableOpacity onPress={() => setSearchText('')} style={styles.cancelButton}>
             <Text style={styles.cancelText}>Cancel</Text>
@@ -110,20 +108,94 @@ export default function SearchButton() {
   );
 }
 
+
 const styles = StyleSheet.create({
-  container: { position: 'absolute', top: 30, left: 23, right: -3, zIndex: 50 },
-  searchBarContainer: { flexDirection: 'row', alignItems: 'center', padding: 1 },
-  inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', borderRadius: 8, paddingLeft: 16, borderWidth: 1 },
-  input: { flex: 1, height: 40 },
-  cancelButton: { paddingHorizontal: 12, paddingVertical: 8 },
-  cancelText: { color: '#007AFF', fontSize: 15 },
-  buttonContainer: { flexDirection: 'row', padding: 16, gap: 8, left: -14 },
-  filterButton: { backgroundColor: 'ghostwhite', paddingVertical: 5, paddingHorizontal: 13, borderRadius: 20, marginRight: 8, borderWidth: 1 },
-  activeFilterButton: { backgroundColor: '#e6f2ff', borderColor: '#004080' },
-  activeFilterText: { color: '#004080' },
-  entryBox: { backgroundColor: 'white', padding: 10, marginVertical: 5, borderRadius: 8, borderWidth: 1, borderColor: '#ddd' },
-  entryTitle: { fontWeight: 'bold', fontSize: 16 },
-  entryContent: { color: '#555' },
-  highlightedText: { backgroundColor: '#ffeb3b', fontWeight: 'bold' }, // Yellow highlight
+    container: {
+        position: 'absolute',
+        top: 30,
+        left: 23,
+        right: -3,
+        //backgroundColor: 'pink',
+        zIndex: 50,
+    },
+    overlay: {
+        backgroundColor: 'rgba(0,0,0,0.1)',
+        zIndex: 40,
+    },
+    searchButton: {
+        padding: 8,
+        marginRight: 8,
+    },
+    searchIcon: {
+        width: 24,
+        height: 24,
+    },
+    searchBarContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 1,
+        //borderBottomWidth: 1,
+        //borderBottomColor: '#e5e5e5',
+    },
+    inputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white', //#f3f4f6
+        borderRadius: 8,
+        paddingLeft: 16,
+        borderWidth: 1,
+    },
+    input: {
+        flex: 1,
+        height: 40,
+    },
+    cancelButton: {
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+    },
+    cancelText: {
+        color: '#007AFF',
+        fontSize: 15,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        padding: 16,
+        gap: 8,
+        left: -14,
+    },
+    filterButton: {
+        backgroundColor: 'ghostwhite',
+        paddingVertical: 5,
+        paddingHorizontal: 13,
+        borderRadius: 20,
+        marginRight: 8,
+        borderWidth: 1,
+    },
+    activeFilterButton: {
+        backgroundColor: '#e6f2ff',
+        borderColor: '#004080',
+    },
+    activeFilterText: {
+        color: '#004080',
+    },
+    entryBox: { 
+        backgroundColor: 'white', 
+        padding: 10, 
+        marginVertical: 5, 
+        borderRadius: 8, 
+        borderWidth: 1, 
+        borderColor: '#ddd' 
+    },
+    entryTitle: { 
+        fontWeight: 'bold', 
+        fontSize: 16 
+    },
+    entryContent: { 
+        color: '#555' 
+    },
+    highlightedText: { 
+        backgroundColor: '#ffeb3b', // yellow highliter
+        fontWeight: 'bold' }, 
 });
+
 
