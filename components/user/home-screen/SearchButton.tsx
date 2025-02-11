@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  FlatList,
-  StyleSheet
-} from 'react-native';
+import {View, TextInput, TouchableOpacity, Text, FlatList, StyleSheet} from 'react-native';
 import { useJournalEntries } from '@/providers/JournalEntriesProvider';
 
 export default function SearchButton() {
