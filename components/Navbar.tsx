@@ -4,7 +4,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import the icon
 import { useLayout } from '@/components/context/LayoutContext'; // Import the context hook
 import { useNavigation } from '@react-navigation/native';
+import { useRouter } from "expo-router"
+
 const Navbar = () => {
+  const router = useRouter();
   // State to track which button is selected
   const [selectedLayout, setSelectedLayout] = useState(null);
 
@@ -43,7 +46,7 @@ const Navbar = () => {
       {/* Right-aligned group (subcontainer) */}
       <View style={styles.subcontainer}>
         {/* Searching button */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => router.push('search')}>
           <Icon name="search" size={30} color="purple" />
         </TouchableOpacity>
 
