@@ -19,6 +19,7 @@ import {Post as PostFunctions} from '@/lib/watermelon/post';
 import {router} from 'expo-router';
 import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
 import {Text} from '@/components/StyledText';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function HomeScreen() {
   const {isConnected} = useNet();
@@ -93,12 +94,56 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.view} edges={['left', 'right']}>
+    <SafeAreaView style={styles.view}>
       <ImageBackground
         style={styles.imageBg}
         resizeMode="cover"
         source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
       >
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            paddingRight: 25,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: 28,
+              alignItems: 'center',
+              justifyContent: 'center',
+              shadowColor: '#000',
+              shadowOpacity: 0.2,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+            onPress={() => {}} // TODO: search logic
+          >
+            <Ionicons name="search" size={32} color="rgba(142, 87, 192, 1)" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => router.push('/profile/settings')}
+            style={{
+              width: 42,
+              height: 42,
+              borderRadius: 28,
+              overflow: 'hidden', // ensures the image stays within the circle
+            }}
+          >
+            <Image
+              source={require('../../../assets/images/User/defaultAvatar.jpeg')} // update avatar URL
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: 28,
+              }}
+              resizeMode="cover"
+            />
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={journalEntries}
           renderItem={({item}) => (
@@ -168,11 +213,31 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
         </Popup>
-        <Button title="Create" onPress={() => router.push('/text-entry')} />
-        <Button
-          title="Settings"
-          onPress={() => router.push('/profile/settings' as any)}
-        />
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: 25,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'rgba(142, 87, 192, 1)',
+              width: 56,
+              height: 56,
+              borderRadius: 28,
+              alignItems: 'center',
+              justifyContent: 'center',
+              shadowColor: '#000',
+              shadowOpacity: 0.2,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+            onPress={() => router.push('/text-entry')}
+          >
+            <Ionicons name="add" size={32} color="white" />
+          </TouchableOpacity>
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -184,7 +249,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
   },
   imageBg: {
     flex: 1,
@@ -194,7 +258,6 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
   },
-
   buttons_container: {
     flex: 1,
     flexDirection: 'column',
