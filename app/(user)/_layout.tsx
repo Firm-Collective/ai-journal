@@ -14,8 +14,8 @@ export default function TabLayout() {
       <Stack>
         <Stack.Screen name="home/index" options={{headerShown: false}} />
         <Stack.Screen name="text-entry" options={{headerShown: false}} />
-        <Stack.Screen name="edit/[id]" options={{headerShown: true}} />
-        <Stack.Screen name="settings" options={{headerShown: true}} />
+        <Stack.Screen name="edit/[id]" options={{headerShown: false}} />
+        <Stack.Screen name="settings" options={{headerShown: false}} />
         <Stack.Screen name="profile" options={{headerShown: true}} />
         <Stack.Screen name="search/index" />
       </Stack>

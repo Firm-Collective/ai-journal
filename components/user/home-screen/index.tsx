@@ -231,16 +231,13 @@ export default function HomeScreen() {
                 shadowOpacity: 0.2,
                 shadowRadius: 4,
                 elevation: 5,
+                marginBottom: 15,
               }}
               onPress={() => router.push('/text-entry')}
             >
               <Ionicons name="add" size={32} color="white" />
             </TouchableOpacity>
           </View>
-          <Button
-            title="Settings"
-            onPress={() => router.push('/profile/settings' as any)}
-          />
         </ImageBackground>
       ) : (
         <ImageBackground
@@ -323,11 +320,32 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
           </Popup>
-          <Button title="Create" onPress={() => router.push('/text-entry')} />
-          <Button
-            title="Settings"
-            onPress={() => router.push('/profile/settings' as any)}
-          />
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 25,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgba(142, 87, 192, 1)',
+                width: 56,
+                height: 56,
+                borderRadius: 28,
+                alignItems: 'center',
+                justifyContent: 'center',
+                shadowColor: '#000',
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 5,
+                marginBottom: 15,
+              }}
+              onPress={() => router.push('/text-entry')}
+            >
+              <Ionicons name="add" size={32} color="white" />
+            </TouchableOpacity>
+          </View>
         </ImageBackground>
       )}
     </SafeAreaView>

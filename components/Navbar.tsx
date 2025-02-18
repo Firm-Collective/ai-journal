@@ -56,7 +56,7 @@ const Navbar = () => {
         {/* User Avatar button on press go to setting */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Profile' as never)}
+          onPress={() => router.push('/profile/settings' as any)}
         >
           <Image
             source={require('../assets/images/User/defaultAvatar.jpeg')} // Simplified path
