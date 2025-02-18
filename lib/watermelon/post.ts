@@ -41,6 +41,7 @@ export class Post extends Model {
       title?: string;
       text?: string;
       user?: string;
+      date?: string;
     }
   ): Promise<Post> {
     return await database.write(async () => {
@@ -59,6 +60,9 @@ export class Post extends Model {
         }
         if (updateData.user !== undefined) {
           postRecord.user = updateData.user;
+        }
+        if (updateData.date !== undefined) {
+          postRecord.date = new Date(updateData.date);
         }
       });
 

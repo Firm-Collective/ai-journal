@@ -8,6 +8,7 @@ import {
   Image,
   View,
   Button,
+  SectionList,
 } from 'react-native';
 import Post from './Post';
 import {useJournalEntries} from '@/providers/JournalEntriesProvider';
@@ -20,12 +21,16 @@ import {router} from 'expo-router';
 import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
 import {Text} from '@/components/StyledText';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useLayout} from '@/components/context/LayoutContext';
+import Navbar from '@/components/Navbar';
+import {IJournalEntry} from '@/models/data/IJournalEntry';
 
 export default function HomeScreen() {
+  const {layout} = useLayout();
   const {isConnected} = useNet();
   const [isSyncing, setIsSyncing] = useState(false);
   const {
-    journalEntries: initialJournalEntries,
+    journalEntries: initialJournalEntries = [],
     isLoading,
     refreshJournalEntries,
   } = useJournalEntries();
@@ -33,6 +38,7 @@ export default function HomeScreen() {
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('Initial Journal Entries Updated:', initialJournalEntries);
     setJournalEntries(initialJournalEntries);
   }, [initialJournalEntries]);
 
@@ -93,152 +99,237 @@ export default function HomeScreen() {
     }
   };
 
+  // Create the date layout
+  const [sections, setSections] = useState<
+    {title: string; data: IJournalEntry[]}[]
+  >([]);
+  useEffect(() => {
+    const groupedEntries = initialJournalEntries.reduce(
+      (acc: Record<string, typeof initialJournalEntries>, entry) => {
+        console.log('Entry Date:', entry.date);
+        const date = entry.date ? new Date(entry.date) : new Date();
+        if (isNaN(date.getTime())) {
+          console.error(`Invalid date for entry: ${entry.id}`);
+          return acc;
+        }
+        const monthYear = `${date.toLocaleString('default', {month: 'long'})} ${date.getFullYear()}`;
+        if (!acc[monthYear]) {
+          acc[monthYear] = [];
+        }
+        acc[monthYear].push(entry);
+        return acc;
+      },
+      {}
+    );
+    const formattedSections = Object.entries(groupedEntries).map(
+      ([title, data]) => ({title, data})
+    );
+    setSections(formattedSections);
+  }, [initialJournalEntries]);
+
   return (
-    <SafeAreaView style={styles.view}>
-      <ImageBackground
-        style={styles.imageBg}
-        resizeMode="cover"
-        source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
-      >
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            paddingRight: 25,
-          }}
+    <SafeAreaView style={styles.view} edges={['left', 'right']}>
+      {/* Import navbar */}
+      <Navbar />
+      {layout === 'horizontal' ? (
+        <ImageBackground
+          style={styles.imageBg}
+          resizeMode="cover"
+          source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
         >
-          <TouchableOpacity
+          {/* Start of lists */}
+          <SectionList
+            sections={sections}
+            renderItem={({item}) => (
+              <Post
+                id={item.id}
+                date={item.date}
+                title={item.title}
+                content={item.content}
+                tags={item.tags}
+                onOpen={() => openPopupMenu(item.id)}
+              />
+            )}
+            renderSectionHeader={({section: {title}}) => (
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionHeaderText}>{title}</Text>
+              </View>
+            )}
+            style={styles.list}
+            keyExtractor={item => item.id}
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
+          />
+
+          {/* Popup menu to edit, delete selected post */}
+          <Popup ref={popupRef}>
+            <View style={styles.buttons_container}>
+              <TouchableOpacity
+                style={[styles.button, styles.button_border]}
+                onPress={() => {
+                  if (selectedPostId) {
+                    handleEdit(selectedPostId);
+                  }
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/home-screen/Pencil.png')}
+                />
+                <Text>Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button_border]}>
+                <Image
+                  source={require('../../../assets/images/home-screen/Bookmark.png')}
+                />
+                <Text>Mark As Favourite</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button_border]}>
+                <Image
+                  source={require('../../../assets/images/home-screen/Price Tag.png')}
+                />
+                <Text>Edit Tag</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  if (selectedPostId) {
+                    handleDelete(selectedPostId);
+                  }
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/home-screen/Delete.png')}
+                />
+                <Text style={{color: '#F34848'}}>Delete</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.button_border]}
+                onPress={() => {
+                  router.push('/profile/settings' as any);
+                }}
+              >
+                <Text>Settings (WIP)</Text>
+              </TouchableOpacity>
+            </View>
+          </Popup>
+          <View
             style={{
-              width: 56,
-              height: 56,
-              borderRadius: 28,
               alignItems: 'center',
               justifyContent: 'center',
-              shadowColor: '#000',
-              shadowOpacity: 0.2,
-              shadowRadius: 4,
-              elevation: 5,
-            }}
-            onPress={() => {}} // TODO: search logic
-          >
-            <Ionicons name="search" size={32} color="rgba(142, 87, 192, 1)" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => router.push('/profile/settings')}
-            style={{
-              width: 42,
-              height: 42,
-              borderRadius: 28,
-              overflow: 'hidden', // ensures the image stays within the circle
+              paddingBottom: 25,
             }}
           >
-            <Image
-              source={require('../../../assets/images/User/defaultAvatar.jpeg')} // update avatar URL
+            <TouchableOpacity
               style={{
-                width: '100%',
-                height: '100%',
+                backgroundColor: 'rgba(142, 87, 192, 1)',
+                width: 56,
+                height: 56,
                 borderRadius: 28,
+                alignItems: 'center',
+                justifyContent: 'center',
+                shadowColor: '#000',
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 5,
               }}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={journalEntries}
-          renderItem={({item}) => (
-            <Post
-              id={item.id}
-              date={item.date}
-              title={item.title}
-              content={item.content}
-              tags={item.tags}
-              onOpen={() => openPopupMenu(item.id)}
-            />
-          )}
-          style={styles.list}
-          keyExtractor={item => item.id}
-          refreshing={isLoading}
-          onRefresh={handleRefresh}
-        />
-
-        {/* Popup menu to edit, delete selected post */}
-        <Popup ref={popupRef}>
-          <View style={styles.buttons_container}>
-            <TouchableOpacity
-              style={[styles.button, styles.button_border]}
-              onPress={() => {
-                if (selectedPostId) {
-                  handleEdit(selectedPostId);
-                }
-              }}
+              onPress={() => router.push('/text-entry')}
             >
-              <Image
-                source={require('../../../assets/images/home-screen/Pencil.png')}
-              />
-              <Text>Edit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.button_border]}>
-              <Image
-                source={require('../../../assets/images/home-screen/Bookmark.png')}
-              />
-              <Text>Mark As Favourite</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.button_border]}>
-              <Image
-                source={require('../../../assets/images/home-screen/Price Tag.png')}
-              />
-              <Text>Edit Tag</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                if (selectedPostId) {
-                  handleDelete(selectedPostId);
-                }
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/home-screen/Delete.png')}
-              />
-              <Text style={{color: '#F34848'}}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.button_border]}
-              onPress={() => {
-                router.push('/profile/settings' as any);
-              }}
-            >
-              <Text>Settings (WIP)</Text>
+              <Ionicons name="add" size={32} color="white" />
             </TouchableOpacity>
           </View>
-        </Popup>
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingBottom: 25,
-          }}
+          <Button
+            title="Settings"
+            onPress={() => router.push('/profile/settings' as any)}
+          />
+        </ImageBackground>
+      ) : (
+        <ImageBackground
+          style={styles.imageBg}
+          resizeMode="cover"
+          source={require('../../../assets/images/home-screen/white-bg.jpg')}
         >
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'rgba(142, 87, 192, 1)',
-              width: 56,
-              height: 56,
-              borderRadius: 28,
-              alignItems: 'center',
-              justifyContent: 'center',
-              shadowColor: '#000',
-              shadowOpacity: 0.2,
-              shadowRadius: 4,
-              elevation: 5,
-            }}
-            onPress={() => router.push('/text-entry')}
-          >
-            <Ionicons name="add" size={32} color="white" />
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
+          {/* Start of lists */}
+          <SectionList
+            sections={sections}
+            renderItem={({item}) => (
+              <Post
+                id={item.id}
+                date={item.date}
+                title={item.title}
+                content={item.content}
+                tags={item.tags}
+                onOpen={() => openPopupMenu(item.id)}
+              />
+            )}
+            renderSectionHeader={({section: {title}}) => (
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionHeaderText}>{title}</Text>
+              </View>
+            )}
+            style={styles.list}
+            keyExtractor={item => item.id}
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
+          />
+
+          {/* Popup menu to edit, delete selected post */}
+          <Popup ref={popupRef}>
+            <View style={styles.buttons_container}>
+              <TouchableOpacity
+                style={[styles.button, styles.button_border]}
+                onPress={() => {
+                  if (selectedPostId) {
+                    handleEdit(selectedPostId);
+                  }
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/home-screen/Pencil.png')}
+                />
+                <Text>Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button_border]}>
+                <Image
+                  source={require('../../../assets/images/home-screen/Bookmark.png')}
+                />
+                <Text>Mark As Favourite</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button_border]}>
+                <Image
+                  source={require('../../../assets/images/home-screen/Price Tag.png')}
+                />
+                <Text>Edit Tag</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  if (selectedPostId) {
+                    handleDelete(selectedPostId);
+                  }
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/home-screen/Delete.png')}
+                />
+                <Text style={{color: '#F34848'}}>Delete</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.button_border]}
+                onPress={() => {
+                  router.push('/profile/settings' as any);
+                }}
+              >
+                <Text>Settings (WIP)</Text>
+              </TouchableOpacity>
+            </View>
+          </Popup>
+          <Button title="Create" onPress={() => router.push('/text-entry')} />
+          <Button
+            title="Settings"
+            onPress={() => router.push('/profile/settings' as any)}
+          />
+        </ImageBackground>
+      )}
     </SafeAreaView>
   );
 }
@@ -271,5 +362,15 @@ const styles = StyleSheet.create({
   button_border: {
     borderBottomWidth: 1.5,
     borderBlockColor: '#ECEAEA',
+  },
+  sectionHeader: {
+    padding: 6,
+    marginTop: 22,
+    marginLeft: 5,
+  },
+  sectionHeaderText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#62239B',
   },
 });

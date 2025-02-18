@@ -97,6 +97,7 @@ export async function syncWithServer(database: Database): Promise<void> {
           const title = element.title;
           const text = element.text;
           const user = element.user;
+          const date = element.date;
 
           // created_at from watermelonDB is different format than
           // supabase so we have to convert first before pushing.
@@ -109,6 +110,7 @@ export async function syncWithServer(database: Database): Promise<void> {
             user_id: user,
             created_at: created_at,
             updated_at: lastPulledAt,
+            date: date,
           });
         });
 
@@ -127,6 +129,7 @@ export async function syncWithServer(database: Database): Promise<void> {
             const watermelon_id = element.id;
             const title = element.title;
             const text = element.text;
+            const date = element.date;
 
             try {
               const {data, error} = await supabase
@@ -135,6 +138,7 @@ export async function syncWithServer(database: Database): Promise<void> {
                   title: title,
                   text: text,
                   updated_at: lastPulledAt, // Use current timestamp
+                  date: date,
                 })
                 .eq('watermelon_id', watermelon_id);
 
