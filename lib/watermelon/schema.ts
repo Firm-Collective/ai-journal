@@ -10,6 +10,7 @@ export default appSchema({
         {name: 'text', type: 'string'},
         {name: 'created_at', type: 'number'},
         {name: 'user', type: 'string'},
+        {name: 'date', type: 'string'},
       ],
     }),
     // Add more tables as needed

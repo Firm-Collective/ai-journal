@@ -20,17 +20,17 @@ import {Post as PostFunctions} from '@/lib/watermelon/post';
 import {router} from 'expo-router';
 import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
 import {Text} from '@/components/StyledText';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useLayout} from '@/components/context/LayoutContext';
 import Navbar from '@/components/Navbar';
-import { LayoutProvider } from '@/components/context/LayoutContext';
-import { useLayout } from '@/components/context/LayoutContext';
-
+import {IJournalEntry} from '@/models/data/IJournalEntry';
 
 export default function HomeScreen() {
-  const { layout } = useLayout();
+  const {layout} = useLayout();
   const {isConnected} = useNet();
   const [isSyncing, setIsSyncing] = useState(false);
   const {
-    journalEntries: initialJournalEntries,
+    journalEntries: initialJournalEntries = [],
     isLoading,
     refreshJournalEntries,
   } = useJournalEntries();
@@ -38,10 +38,9 @@ export default function HomeScreen() {
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("Initial Journal Entries Updated:", initialJournalEntries);
+    console.log('Initial Journal Entries Updated:', initialJournalEntries);
     setJournalEntries(initialJournalEntries);
   }, [initialJournalEntries]);
-  
 
   const handleRefresh = () => {
     refreshJournalEntries();
@@ -101,61 +100,67 @@ export default function HomeScreen() {
   };
 
   // Create the date layout
-  const [sections, setSections] = useState([]);
+  const [sections, setSections] = useState<
+    {title: string; data: IJournalEntry[]}[]
+  >([]);
   useEffect(() => {
-    const groupedEntries = initialJournalEntries.reduce((acc, entry) => {
-      console.log("Entry Date:", entry.date);
-      const date = entry.date ? new Date(entry.date) : new Date();
-      if (isNaN(date.getTime())) {
-        console.error(`Invalid date for entry: ${entry.id}`);
+    const groupedEntries = initialJournalEntries.reduce(
+      (acc: Record<string, typeof initialJournalEntries>, entry) => {
+        console.log('Entry Date:', entry.date);
+        const date = entry.date ? new Date(entry.date) : new Date();
+        if (isNaN(date.getTime())) {
+          console.error(`Invalid date for entry: ${entry.id}`);
+          return acc;
+        }
+        const monthYear = `${date.toLocaleString('default', {month: 'long'})} ${date.getFullYear()}`;
+        if (!acc[monthYear]) {
+          acc[monthYear] = [];
+        }
+        acc[monthYear].push(entry);
         return acc;
-      }
-      const monthYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
-      if (!acc[monthYear]) {
-        acc[monthYear] = [];
-      }
-      acc[monthYear].push(entry);
-      return acc;
-    }, {});
-    const formattedSections = Object.entries(groupedEntries).map(([title, data]) => ({ title, data }));
+      },
+      {}
+    );
+    const formattedSections = Object.entries(groupedEntries).map(
+      ([title, data]) => ({title, data})
+    );
     setSections(formattedSections);
   }, [initialJournalEntries]);
- 
+
   return (
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
       {/* Import navbar */}
-      <Navbar/>
-      {
-        layout === 'horizontal' ? (
-          <ImageBackground
+      <Navbar />
+      {layout === 'horizontal' ? (
+        <ImageBackground
           style={styles.imageBg}
           resizeMode="cover"
           source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
-          >
+        >
           {/* Start of lists */}
           <SectionList
-              sections={sections}
-              renderItem={({ item }) => (
-                <Post
-                  id={item.id}
-                  date={item.date}
-                  title={item.title}
-                  content={item.content}
-                  tags={item.tags}
-                  onOpen={() => openPopupMenu(item.id)}
-                />
-              )}
-              renderSectionHeader={({ section: { title } }) => (
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionHeaderText}>{title}</Text>
-                </View>
-              )}
-              style={styles.list}
-              keyExtractor={(item) => item.id}
-              refreshing={isLoading}
-              onRefresh={handleRefresh}
+            sections={sections}
+            renderItem={({item}) => (
+              <Post
+                id={item.id}
+                date={item.date}
+                title={item.title}
+                content={item.content}
+                tags={item.tags}
+                onOpen={() => openPopupMenu(item.id)}
+              />
+            )}
+            renderSectionHeader={({section: {title}}) => (
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionHeaderText}>{title}</Text>
+              </View>
+            )}
+            style={styles.list}
+            keyExtractor={item => item.id}
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
           />
-  
+
           {/* Popup menu to edit, delete selected post */}
           <Popup ref={popupRef}>
             <View style={styles.buttons_container}>
@@ -207,43 +212,63 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
           </Popup>
-          <Button title="Create" onPress={() => router.push('/text-entry')} />
-          <Button
-            title="Settings"
-            onPress={() => router.push('/profile/settings' as any)}
-          />
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 25,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgba(142, 87, 192, 1)',
+                width: 56,
+                height: 56,
+                borderRadius: 28,
+                alignItems: 'center',
+                justifyContent: 'center',
+                shadowColor: '#000',
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 5,
+                marginBottom: 15,
+              }}
+              onPress={() => router.push('/text-entry')}
+            >
+              <Ionicons name="add" size={32} color="white" />
+            </TouchableOpacity>
+          </View>
         </ImageBackground>
-
-        ) : (
-          <ImageBackground
+      ) : (
+        <ImageBackground
           style={styles.imageBg}
           resizeMode="cover"
           source={require('../../../assets/images/home-screen/white-bg.jpg')}
-          >
+        >
           {/* Start of lists */}
           <SectionList
-              sections={sections}
-              renderItem={({ item }) => (
-                <Post
-                  id={item.id}
-                  date={item.date}
-                  title={item.title}
-                  content={item.content}
-                  tags={item.tags}
-                  onOpen={() => openPopupMenu(item.id)}
-                />
-              )}
-              renderSectionHeader={({ section: { title } }) => (
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionHeaderText}>{title}</Text>
-                </View>
-              )}
-              style={styles.list}
-              keyExtractor={(item) => item.id}
-              refreshing={isLoading}
-              onRefresh={handleRefresh}
+            sections={sections}
+            renderItem={({item}) => (
+              <Post
+                id={item.id}
+                date={item.date}
+                title={item.title}
+                content={item.content}
+                tags={item.tags}
+                onOpen={() => openPopupMenu(item.id)}
+              />
+            )}
+            renderSectionHeader={({section: {title}}) => (
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionHeaderText}>{title}</Text>
+              </View>
+            )}
+            style={styles.list}
+            keyExtractor={item => item.id}
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
           />
-  
+
           {/* Popup menu to edit, delete selected post */}
           <Popup ref={popupRef}>
             <View style={styles.buttons_container}>
@@ -295,17 +320,34 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
           </Popup>
-          <Button title="Create" onPress={() => router.push('/text-entry')} />
-          <Button
-            title="Settings"
-            onPress={() => router.push('/profile/settings' as any)}
-          />
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 25,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgba(142, 87, 192, 1)',
+                width: 56,
+                height: 56,
+                borderRadius: 28,
+                alignItems: 'center',
+                justifyContent: 'center',
+                shadowColor: '#000',
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 5,
+                marginBottom: 15,
+              }}
+              onPress={() => router.push('/text-entry')}
+            >
+              <Ionicons name="add" size={32} color="white" />
+            </TouchableOpacity>
+          </View>
         </ImageBackground>
-        )
-      }
-      
-      
-  
+      )}
     </SafeAreaView>
   );
 }
@@ -316,18 +358,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
   },
   imageBg: {
     flex: 1,
     width: '100%',
     height: '100%',
-
   },
   list: {
     flex: 1,
   },
-
   buttons_container: {
     flex: 1,
     flexDirection: 'column',
@@ -345,7 +384,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     padding: 6,
     marginTop: 22,
-    marginLeft: 5
+    marginLeft: 5,
   },
   sectionHeaderText: {
     fontSize: 20,
