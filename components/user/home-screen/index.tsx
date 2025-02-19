@@ -23,7 +23,7 @@ import {Text} from '@/components/StyledText';
 import Navbar from '@/components/Navbar';
 import { LayoutProvider } from '@/components/context/LayoutContext';
 import { useLayout } from '@/components/context/LayoutContext';
-
+import { TagEdit } from './TagEdit';
 
 export default function HomeScreen() {
   const { layout } = useLayout();
@@ -36,12 +36,12 @@ export default function HomeScreen() {
   } = useJournalEntries();
   const [journalEntries, setJournalEntries] = useState(initialJournalEntries);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+  const [showTagEdit, setShowTagEdit] = useState(false);
 
   useEffect(() => {
     console.log("Initial Journal Entries Updated:", initialJournalEntries);
     setJournalEntries(initialJournalEntries);
   }, [initialJournalEntries]);
-  
 
   const handleRefresh = () => {
     refreshJournalEntries();
@@ -62,13 +62,22 @@ export default function HomeScreen() {
     if (popupRef.current) {
       popupRef.current.scrollTo(CLOSED_POSITION);
     }
-    // reroute to main to trigger sync
+  };
+
+  const handleTagSave = async (selectedTags: number[]) => {
+    if (selectedPostId) {
+      console.log('Saving tags for post:', selectedPostId, selectedTags);
+      // TODO: Implement tag saving logic
+      // await PostFunctions.updateTags(database, selectedPostId, selectedTags);
+    }
+    setShowTagEdit(false);
+    if (popupRef.current) {
+      popupRef.current.scrollTo(CLOSED_POSITION);
+    }
   };
 
   useFocusEffect(
     useCallback(() => {
-      // makes sure there is no syncing concurrency issues
-
       const checkConnectionAndSync = async () => {
         handleRefresh();
         if (isConnected && !isSyncing) {
@@ -97,10 +106,10 @@ export default function HomeScreen() {
     if (popupRef.current) {
       popupRef.current.scrollTo(SCROLL_DESTINATION);
       setSelectedPostId(id);
+      setShowTagEdit(false);
     }
   };
 
-  // Create the date layout
   const [sections, setSections] = useState([]);
   useEffect(() => {
     const groupedEntries = initialJournalEntries.reduce((acc, entry) => {
@@ -120,92 +129,104 @@ export default function HomeScreen() {
     const formattedSections = Object.entries(groupedEntries).map(([title, data]) => ({ title, data }));
     setSections(formattedSections);
   }, [initialJournalEntries]);
+
+  const PopupContent = () => (
+    <View style={styles.buttons_container}>
+      {!showTagEdit ? (
+        <>
+          <TouchableOpacity
+            style={[styles.button, styles.button_border]}
+            onPress={() => {
+              if (selectedPostId) {
+                handleEdit(selectedPostId);
+              }
+            }}
+          >
+            <Image
+              source={require('../../../assets/images/home-screen/Pencil.png')}
+            />
+            <Text>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, styles.button_border]}>
+            <Image
+              source={require('../../../assets/images/home-screen/Bookmark.png')}
+            />
+            <Text>Mark As Favourite</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.button, styles.button_border]}
+            onPress={() => setShowTagEdit(true)}
+          >
+            <Image
+              source={require('../../../assets/images/home-screen/Price Tag.png')}
+            />
+            <Text>Edit Tag</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              if (selectedPostId) {
+                handleDelete(selectedPostId);
+              }
+            }}
+          >
+            <Image
+              source={require('../../../assets/images/home-screen/Delete.png')}
+            />
+            <Text style={{color: '#F34848'}}>Delete</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, styles.button_border]}
+            onPress={() => {
+              router.push('/profile/settings' as any);
+            }}
+          >
+            <Text>Settings (WIP)</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <TagEdit
+          onSave={handleTagSave}
+          onClose={() => setShowTagEdit(false)}
+          initialTags={[]} // TODO: Pass current post's tags
+        />
+      )}
+    </View>
+  );
  
   return (
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
-      {/* Import navbar */}
       <Navbar/>
-      {
-        layout === 'horizontal' ? (
-          <ImageBackground
+      {layout === 'horizontal' ? (
+        <ImageBackground
           style={styles.imageBg}
           resizeMode="cover"
           source={require('../../../assets/images/home-screen/gradient-home-screen.png')}
-          >
-          {/* Start of lists */}
+        >
           <SectionList
-              sections={sections}
-              renderItem={({ item }) => (
-                <Post
-                  id={item.id}
-                  date={item.date}
-                  title={item.title}
-                  content={item.content}
-                  tags={item.tags}
-                  onOpen={() => openPopupMenu(item.id)}
-                />
-              )}
-              renderSectionHeader={({ section: { title } }) => (
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionHeaderText}>{title}</Text>
-                </View>
-              )}
-              style={styles.list}
-              keyExtractor={(item) => item.id}
-              refreshing={isLoading}
-              onRefresh={handleRefresh}
+            sections={sections}
+            renderItem={({ item }) => (
+              <Post
+                id={item.id}
+                date={item.date}
+                title={item.title}
+                content={item.content}
+                tags={item.tags}
+                onOpen={() => openPopupMenu(item.id)}
+              />
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionHeaderText}>{title}</Text>
+              </View>
+            )}
+            style={styles.list}
+            keyExtractor={(item) => item.id}
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
           />
-  
-          {/* Popup menu to edit, delete selected post */}
           <Popup ref={popupRef}>
-            <View style={styles.buttons_container}>
-              <TouchableOpacity
-                style={[styles.button, styles.button_border]}
-                onPress={() => {
-                  if (selectedPostId) {
-                    handleEdit(selectedPostId);
-                  }
-                }}
-              >
-                <Image
-                  source={require('../../../assets/images/home-screen/Pencil.png')}
-                />
-                <Text>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.button_border]}>
-                <Image
-                  source={require('../../../assets/images/home-screen/Bookmark.png')}
-                />
-                <Text>Mark As Favourite</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.button_border]}>
-                <Image
-                  source={require('../../../assets/images/home-screen/Price Tag.png')}
-                />
-                <Text>Edit Tag</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  if (selectedPostId) {
-                    handleDelete(selectedPostId);
-                  }
-                }}
-              >
-                <Image
-                  source={require('../../../assets/images/home-screen/Delete.png')}
-                />
-                <Text style={{color: '#F34848'}}>Delete</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.button, styles.button_border]}
-                onPress={() => {
-                  router.push('/profile/settings' as any);
-                }}
-              >
-                <Text>Settings (WIP)</Text>
-              </TouchableOpacity>
-            </View>
+            <PopupContent />
           </Popup>
           <Button title="Create" onPress={() => router.push('/text-entry')} />
           <Button
@@ -213,87 +234,36 @@ export default function HomeScreen() {
             onPress={() => router.push('/profile/settings' as any)}
           />
         </ImageBackground>
-
-        ) : (
-          <ImageBackground
+      ) : (
+        <ImageBackground
           style={styles.imageBg}
           resizeMode="cover"
           source={require('../../../assets/images/home-screen/white-bg.jpg')}
-          >
-          {/* Start of lists */}
+        >
           <SectionList
-              sections={sections}
-              renderItem={({ item }) => (
-                <Post
-                  id={item.id}
-                  date={item.date}
-                  title={item.title}
-                  content={item.content}
-                  tags={item.tags}
-                  onOpen={() => openPopupMenu(item.id)}
-                />
-              )}
-              renderSectionHeader={({ section: { title } }) => (
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionHeaderText}>{title}</Text>
-                </View>
-              )}
-              style={styles.list}
-              keyExtractor={(item) => item.id}
-              refreshing={isLoading}
-              onRefresh={handleRefresh}
+            sections={sections}
+            renderItem={({ item }) => (
+              <Post
+                id={item.id}
+                date={item.date}
+                title={item.title}
+                content={item.content}
+                tags={item.tags}
+                onOpen={() => openPopupMenu(item.id)}
+              />
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionHeaderText}>{title}</Text>
+              </View>
+            )}
+            style={styles.list}
+            keyExtractor={(item) => item.id}
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
           />
-  
-          {/* Popup menu to edit, delete selected post */}
           <Popup ref={popupRef}>
-            <View style={styles.buttons_container}>
-              <TouchableOpacity
-                style={[styles.button, styles.button_border]}
-                onPress={() => {
-                  if (selectedPostId) {
-                    handleEdit(selectedPostId);
-                  }
-                }}
-              >
-                <Image
-                  source={require('../../../assets/images/home-screen/Pencil.png')}
-                />
-                <Text>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.button_border]}>
-                <Image
-                  source={require('../../../assets/images/home-screen/Bookmark.png')}
-                />
-                <Text>Mark As Favourite</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.button_border]}>
-                <Image
-                  source={require('../../../assets/images/home-screen/Price Tag.png')}
-                />
-                <Text>Edit Tag</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  if (selectedPostId) {
-                    handleDelete(selectedPostId);
-                  }
-                }}
-              >
-                <Image
-                  source={require('../../../assets/images/home-screen/Delete.png')}
-                />
-                <Text style={{color: '#F34848'}}>Delete</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.button, styles.button_border]}
-                onPress={() => {
-                  router.push('/profile/settings' as any);
-                }}
-              >
-                <Text>Settings (WIP)</Text>
-              </TouchableOpacity>
-            </View>
+            <PopupContent />
           </Popup>
           <Button title="Create" onPress={() => router.push('/text-entry')} />
           <Button
@@ -301,11 +271,7 @@ export default function HomeScreen() {
             onPress={() => router.push('/profile/settings' as any)}
           />
         </ImageBackground>
-        )
-      }
-      
-      
-  
+      )}
     </SafeAreaView>
   );
 }
@@ -322,12 +288,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-
   },
   list: {
     flex: 1,
   },
-
   buttons_container: {
     flex: 1,
     flexDirection: 'column',
