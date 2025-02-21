@@ -1,7 +1,6 @@
 import {Redirect, Stack} from 'expo-router';
 import {useAuth} from '@/providers/AuthProvider';
 import {JournalEntriesProvider} from '@/providers/JournalEntriesProvider';
-import SearchScreen from '@/components/user/search-screen/SearchScreen';
 export default function TabLayout() {
   const {session} = useAuth();
 
@@ -14,12 +13,12 @@ export default function TabLayout() {
     <JournalEntriesProvider>
       <Stack>
         <Stack.Screen name="home/index" options={{headerShown: false}} />
-        <Stack.Screen name="text-entry" options={{headerShown: true}} />
-        <Stack.Screen name="edit/[id]" options={{headerShown: true}} />
-        <Stack.Screen name="settings" options={{headerShown: true}} />
+        <Stack.Screen name="text-entry" options={{headerShown: false}} />
+        <Stack.Screen name="edit/[id]" options={{headerShown: false}} />
+        <Stack.Screen name="settings" options={{headerShown: false}} />
         <Stack.Screen name="profile" options={{headerShown: true}} />
         <Stack.Screen name="search/index" />
-        </Stack>
+      </Stack>
     </JournalEntriesProvider>
   );
 }

@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { View, SafeAreaView, Image, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, {useState} from 'react';
+import {View, SafeAreaView, Image, StyleSheet} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import the icon
-import { useLayout } from '@/components/context/LayoutContext'; // Import the context hook
-import { useNavigation } from '@react-navigation/native';
-import { useRouter } from "expo-router"
+import {useLayout} from '@/components/context/LayoutContext'; // Import the context hook
+import {useNavigation} from '@react-navigation/native';
+import {useRouter} from 'expo-router';
 
 const Navbar = () => {
   const router = useRouter();
   // State to track which button is selected
   const [selectedLayout, setSelectedLayout] = useState(null);
 
-  const { layout, setLayout } = useLayout(); // Use the context hook
+  const {layout, setLayout} = useLayout(); // Use the context hook
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
@@ -46,17 +46,22 @@ const Navbar = () => {
       {/* Right-aligned group (subcontainer) */}
       <View style={styles.subcontainer}>
         {/* Searching button */}
-        <TouchableOpacity style={styles.button} onPress={() => router.push('search')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => router.push('/search' as any)}
+        >
           <Icon name="search" size={30} color="purple" />
         </TouchableOpacity>
 
         {/* User Avatar button on press go to setting */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('profile')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => router.push('/profile/settings' as any)}
+        >
           <Image
             source={require('../assets/images/User/defaultAvatar.jpeg')} // Simplified path
             style={styles.avatar}
           />
-
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -79,7 +84,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     alignSelf: 'flex-end',
-
   },
   button: {
     justifyContent: 'center',
@@ -94,12 +98,12 @@ const styles = StyleSheet.create({
   },
   homepageLayout: {
     flexDirection: 'row',
-    alignItems: 'center',  // This centers the items vertically inside the container
-    justifyContent: 'flex-start',  // Align items to the left side of the container
-    marginLeft: 30,  // Add margin for spacing from the left side
+    alignItems: 'center', // This centers the items vertically inside the container
+    justifyContent: 'flex-start', // Align items to the left side of the container
+    marginLeft: 30, // Add margin for spacing from the left side
   },
   horizontalLayout: {
-    marginRight: 5,  // Space between the items horizontally
+    marginRight: 5, // Space between the items horizontally
     width: 45,
     height: 40,
     flexDirection: 'row',
