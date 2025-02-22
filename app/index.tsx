@@ -4,7 +4,7 @@ import {Redirect} from 'expo-router';
 import {ActivityIndicator} from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
-import Home from './(home)';
+//import Home from './(home)';
 
 export default function IndexPage() {
   const {session, loading} = useAuth();
@@ -18,6 +18,6 @@ export default function IndexPage() {
     return <WelcomeScreen />;
   }
 
-  return <Redirect href={'/(user)/home'} />;
-  // return <Home />;
+  return <Redirect href={'/home'} />;
+  //return <Home />;
 }
