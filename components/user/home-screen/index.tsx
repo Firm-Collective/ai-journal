@@ -20,9 +20,10 @@ import {Post as PostFunctions} from '@/lib/watermelon/post';
 import {router} from 'expo-router';
 import {Popup, SCROLL_DESTINATION, CLOSED_POSITION, PopupRef} from './Popup';
 import {Text} from '@/components/StyledText';
+import Ionicons from 'react-native-vector-icons/Ionicons';  // Added from David's code
+import {useLayout} from '@/components/context/LayoutContext';
 import Navbar from '@/components/Navbar';
-import { LayoutProvider } from '@/components/context/LayoutContext';
-import { useLayout } from '@/components/context/LayoutContext';
+import {IJournalEntry} from '@/models/data/IJournalEntry';  // Added from David's code
 import { TagEdit } from './TagEdit';
 
 export default function HomeScreen() {
@@ -30,7 +31,7 @@ export default function HomeScreen() {
   const {isConnected} = useNet();
   const [isSyncing, setIsSyncing] = useState(false);
   const {
-    journalEntries: initialJournalEntries,
+    journalEntries: initialJournalEntries = [],  // Added default value from David's code
     isLoading,
     refreshJournalEntries,
   } = useJournalEntries();
@@ -110,26 +111,38 @@ export default function HomeScreen() {
     }
   };
 
-  const [sections, setSections] = useState([]);
+  type Section = {
+    title: string;
+    data: IJournalEntry[];
+  };
+  
+  // Using David's type definition for sections
+  const [sections, setSections] = useState<Section[]>([]);
   useEffect(() => {
-    const groupedEntries = initialJournalEntries.reduce((acc, entry) => {
-      console.log("Entry Date:", entry.date);
-      const date = entry.date ? new Date(entry.date) : new Date();
-      if (isNaN(date.getTime())) {
-        console.error(`Invalid date for entry: ${entry.id}`);
+    const groupedEntries = initialJournalEntries.reduce(
+      (acc: Record<string, typeof initialJournalEntries>, entry) => {
+        console.log('Entry Date:', entry.date);
+        const date = entry.date ? new Date(entry.date) : new Date();
+        if (isNaN(date.getTime())) {
+          console.error(`Invalid date for entry: ${entry.id}`);
+          return acc;
+        }
+        const monthYear = `${date.toLocaleString('default', {month: 'long'})} ${date.getFullYear()}`;
+        if (!acc[monthYear]) {
+          acc[monthYear] = [];
+        }
+        acc[monthYear].push(entry);
         return acc;
-      }
-      const monthYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
-      if (!acc[monthYear]) {
-        acc[monthYear] = [];
-      }
-      acc[monthYear].push(entry);
-      return acc;
-    }, {});
-    const formattedSections = Object.entries(groupedEntries).map(([title, data]) => ({ title, data }));
+      },
+      {}
+    );
+    const formattedSections = Object.entries(groupedEntries).map(
+      ([title, data]) => ({title, data})
+    );
     setSections(formattedSections);
   }, [initialJournalEntries]);
 
+  
   const PopupContent = () => (
     <View style={styles.buttons_container}>
       {!showTagEdit ? (
@@ -196,7 +209,7 @@ export default function HomeScreen() {
  
   return (
     <SafeAreaView style={styles.view} edges={['left', 'right']}>
-      <Navbar/>
+      <Navbar />
       {layout === 'horizontal' ? (
         <ImageBackground
           style={styles.imageBg}
@@ -205,7 +218,7 @@ export default function HomeScreen() {
         >
           <SectionList
             sections={sections}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <Post
                 id={item.id}
                 date={item.date}
@@ -215,20 +228,47 @@ export default function HomeScreen() {
                 onOpen={() => openPopupMenu(item.id)}
               />
             )}
-            renderSectionHeader={({ section: { title } }) => (
+            renderSectionHeader={({section: {title}}) => (
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionHeaderText}>{title}</Text>
               </View>
             )}
             style={styles.list}
-            keyExtractor={(item) => item.id}
+            keyExtractor={item => item.id}
             refreshing={isLoading}
             onRefresh={handleRefresh}
           />
           <Popup ref={popupRef}>
             <PopupContent />
           </Popup>
-          <Button title="Create" onPress={() => router.push('/text-entry')} />
+          
+          {/* David's floating button */}
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 25,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgba(142, 87, 192, 1)',
+                width: 56,
+                height: 56,
+                borderRadius: 28,
+                alignItems: 'center',
+                justifyContent: 'center',
+                shadowColor: '#000',
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 5,
+                marginBottom: 15,
+              }}
+              onPress={() => router.push('/text-entry')}
+            >
+              <Ionicons name="add" size={32} color="white" />
+            </TouchableOpacity>
+          </View>
           <Button
             title="Settings"
             onPress={() => router.push('/profile/settings' as any)}
@@ -240,9 +280,10 @@ export default function HomeScreen() {
           resizeMode="cover"
           source={require('../../../assets/images/home-screen/white-bg.jpg')}
         >
+          {/* Same content as horizontal layout */}
           <SectionList
             sections={sections}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <Post
                 id={item.id}
                 date={item.date}
@@ -252,20 +293,46 @@ export default function HomeScreen() {
                 onOpen={() => openPopupMenu(item.id)}
               />
             )}
-            renderSectionHeader={({ section: { title } }) => (
+            renderSectionHeader={({section: {title}}) => (
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionHeaderText}>{title}</Text>
               </View>
             )}
             style={styles.list}
-            keyExtractor={(item) => item.id}
+            keyExtractor={item => item.id}
             refreshing={isLoading}
             onRefresh={handleRefresh}
           />
           <Popup ref={popupRef}>
             <PopupContent />
           </Popup>
-          <Button title="Create" onPress={() => router.push('/text-entry')} />
+          
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 25,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgba(142, 87, 192, 1)',
+                width: 56,
+                height: 56,
+                borderRadius: 28,
+                alignItems: 'center',
+                justifyContent: 'center',
+                shadowColor: '#000',
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 5,
+                marginBottom: 15,
+              }}
+              onPress={() => router.push('/text-entry')}
+            >
+              <Ionicons name="add" size={32} color="white" />
+            </TouchableOpacity>
+          </View>
           <Button
             title="Settings"
             onPress={() => router.push('/profile/settings' as any)}
@@ -282,7 +349,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
   },
   imageBg: {
     flex: 1,
@@ -309,7 +375,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     padding: 6,
     marginTop: 22,
-    marginLeft: 5
+    marginLeft: 5,
   },
   sectionHeaderText: {
     fontSize: 20,
